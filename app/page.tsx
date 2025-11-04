@@ -1,14 +1,11 @@
-import Navbar from "@/components/navbar";
-import { navbarLinks } from "@/utils/constants/navbar-links";
+import HeroSection from "@/shared/components/hero-section";
+import Navbar from "@/shared/components/navbar";
+import { navbarLinks } from "@/shared/utils/constants/navbar-links";
 
 const page = () => {
   return (
-    <div>
-      <Navbar
-        logo="/public/images/istar-logo.png"
-        links={navbarLinks}
-        search={false}
-      />
+    <div className="">
+      <HeroSection />
     </div>
   );
 };
