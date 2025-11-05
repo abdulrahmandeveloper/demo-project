@@ -15,41 +15,53 @@ type Slide = {
 
 const slides: Slide[] = [
   {
-    id: 1,
-    title: "Breaking Bad",
-    description: "A chemistry teacher turned meth producer.",
+    id: 3,
+    title: "fvdv",
+    description: "...",
     trailerUrl:
-      "https://www.youtube.com/embed/HhesaQXLuRY?autoplay=1&mute=1&loop=1",
-    posterUrl: "/images/breaking-bad.jpg",
-  },
-  {
-    id: 2,
-    title: "Stranger Things",
-    description: "Dark secrets lurk beneath Hawkins, Indiana.",
-    trailerUrl:
-      "https://www.youtube.com/embed/b9EkMc79ZSU?autoplay=1&mute=1&loop=1",
-    posterUrl: "/images/stranger-things.jpg",
+      "https://www.youtube.com/embed/9FYgZqzPLXc?autoplay=1&mute=1&loop=1",
+    posterUrl: "...",
   },
 ];
 
 export default function HeroSlider() {
   return (
-    <div className="w-full h-[70vh] overflow-hidden relative">
+    <div className="absolute inset-0 w-full h-[70vh] overflow-hidden  bg-[#2c3440]">
+      <div className="absolute inset-0 bg-[#2c3440]/80 backdrop-blur-sm z-0" />
+
       <Swiper
         modules={[Pagination, Autoplay]}
         pagination={{ clickable: true }}
         autoplay={{ delay: 60000 }}
         loop
-        className="h-full"
+        className="h-full w-full bg-[#2c3440]"
+        style={{
+          backgroundColor: "#2c3440",
+        }}
       >
         {slides.map((slide) => (
-          <SwiperSlide key={slide.id}>
-            <div className="relative h-full w-full">
+          <SwiperSlide
+            key={slide.id}
+            className="relative h-full w-full bg-[#2c3440]"
+            style={{
+              backgroundColor: "#2c3440",
+            }}
+          >
+            <div className="relative h-full w-full ">
               <iframe
                 src={slide.trailerUrl}
-                className="absolute top-0 left-0 w-full h-full object-cover"
+                className=" w-full h-full object-cover object-"
                 allow="autoplay; encrypted-media"
+                style={{ border: "none" }}
               />
+            </div>
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: `radial-gradient(ellipse at center, transparent 0%, transparent 50%, rgba(44, 52, 64, 0.3) 70%, rgba(44, 52, 64, 0.8) 100%)`,
+              }}
+            >
+              {" "}
             </div>
           </SwiperSlide>
         ))}

@@ -13,6 +13,7 @@ type NavbarProps = {
 };
 
 // for blurness backdrop-blur-sm
+
 const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
   console.log(links[0].name);
 

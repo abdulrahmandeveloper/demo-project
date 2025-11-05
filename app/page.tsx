@@ -1,11 +1,11 @@
+import CardDisplay from "@/shared/components/card/card-display";
 import HeroSection from "@/shared/components/hero-section";
-import Navbar from "@/shared/components/navbar";
-import { navbarLinks } from "@/shared/utils/constants/navbar-links";
 
 const page = () => {
   return (
-    <div className="">
+    <div className="bg-[rgb(44,52,64)]">
       <HeroSection />
+      <CardDisplay />
     </div>
   );
 };
