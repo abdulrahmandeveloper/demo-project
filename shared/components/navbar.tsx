@@ -19,7 +19,7 @@ const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
 
   return (
     <div
-      className={`bg-transparent  h-16 flex  gap-28 items-center justify-center ${className}`}
+      className={`bg-transparent hover:backdrop-blur-md transition-all duration-300 ease-in-out shadow-sm  h-16 flex  gap-28 items-center justify-center ${className}`}
     >
       <Image
         src={logoPath}

@@ -1,6 +1,6 @@
 import Navbar from "@/shared/components/navbar";
 import { navbarLinks } from "@/shared/utils/constants/navbar-links";
-import { Button } from "./ui/button";
+import { Button } from "../../../shared/components/ui/button";
 import HeroSlider from "./slide-show";
 
 const HeroSection = () => {

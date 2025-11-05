@@ -1,5 +1,3 @@
-import next from "next";
-
 interface getMovieReccomendationsPostersResponse {
   page: 1;
   results: [
@@ -22,7 +20,7 @@ interface getMovieReccomendationsPostersResponse {
   ];
 }
 
-export const getMovieReccomendationsPosters = async () => {
+export const getMovieReccomendationsPosters = async (limitNumber: number) => {
   console.log(process.env.NEXT_PUBLIC_TMDB_API_KEY);
 
   try {
@@ -38,7 +36,7 @@ export const getMovieReccomendationsPosters = async () => {
     if (!data) {
       console.log(data);
     }
-    const filteredMovies = data.results.slice(0, 6);
+    const filteredMovies = data.results.slice(0, limitNumber);
     /*  const moviePosters: [] = filteredMovies.map(
       (movie: any) => movie.poster_path
     ); */
