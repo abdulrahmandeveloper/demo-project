@@ -9,6 +9,7 @@ type carDisplayProps = {
   showOverlay?: boolean;
   size: "sm" | "md" | "lg";
   limit?: number;
+  showDataBeneth?: boolean;
 };
 
 const CardDisplay = ({ showOverlay, size, limit = 6 }: carDisplayProps) => {
@@ -22,9 +23,13 @@ const CardDisplay = ({ showOverlay, size, limit = 6 }: carDisplayProps) => {
     setPosters(data);
   };
   useEffect(() => {
-    setLimitNumber(limit);
-    handleGetPosters(limitNumber);
-  }, [limitNumber]);
+    const fetchData = () => {
+      setLimitNumber(limit);
+      handleGetPosters(limit);
+    };
+
+    fetchData();
+  }, [limit]);
 
   return (
     <div

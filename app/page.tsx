@@ -1,6 +1,7 @@
 import CardDisplay from "@/shared/components/card/card-display";
 import FeatureDisplayCard from "@/shared/components/card/feature-display-card";
 import HeroSection from "@/pages/home/components/hero-section";
+import Collections from "@/shared/components/collections";
 
 const page = () => {
   return (
@@ -27,6 +28,13 @@ const page = () => {
           own.
         </p>
       </div>
+      <div className="w-3/5 mx-auto mt-8">
+        <p className="text-amber-200 opacity-50 text-sm">
+          Popular Collections...
+        </p>
+        <div className="border border-white opacity-25 m-1"></div>
+      </div>
+      <Collections />
     </div>
   );
 };
