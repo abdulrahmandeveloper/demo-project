@@ -1,5 +1,5 @@
 import { collectionRespose } from "@/shared/interfaces/tmdb";
-import { collectionsID } from "@/shared/utils/constants/collections";
+import { collectionsID } from "@/shared/lib/utils/constants/collections";
 
 export const getCollectionFromTMDB = async () => {
   const collectionsData: collectionRespose[] = [];

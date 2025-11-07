@@ -1,6 +1,6 @@
 "use client";
 
-import { featuresData } from "@/shared/utils/constants/features-description";
+import { featuresData } from "@/shared/lib/utils/constants/features-description";
 
 const FeatureDisplayCard = () => {
   return (

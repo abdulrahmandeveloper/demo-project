@@ -1,5 +1,5 @@
 export const navbarLinks = [
-  { name: "Sign Up", path: "/signup" },
+  { name: "Series", path: "/series" },
   { name: "Films", path: "/films" },
   { name: "Lists", path: "/lists" },
   { name: "Members", path: "/members" },

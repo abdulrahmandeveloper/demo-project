@@ -1,5 +1,5 @@
 import Navbar from "@/shared/components/navbar";
-import { navbarLinks } from "@/shared/utils/constants/navbar-links";
+import { navbarLinks } from "@/shared/lib/utils/constants/navbar-links";
 import { Button } from "../../../shared/components/ui/button";
 import HeroSlider from "./slide-show";
 
@@ -16,7 +16,6 @@ const HeroSection = () => {
         />
       </div>
 
-      {/* Overlay content */}
       <div className="absolute inset-0 flex flex-col items-center justify-end text-center text-white space-y-6 pb-12 bg-black/40 z-10">
         <h2 className="w-[70%] md:w-[40%] font-bold text-4xl leading-snug">
           <p>Track films you&apos;ve watched.</p>
