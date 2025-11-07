@@ -4,41 +4,59 @@ import React, { useEffect, useState } from "react";
 import { getCollectionFromTMDB } from "../services/tmdb/tmdb";
 import { collectionParts, collectionRespose } from "../interfaces/tmdb";
 import PosterCard from "./card/poster-card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/shared/components/ui/tooltip";
 
-const ShowCollectionPartsPoster = ({ part }: { part: collectionParts[] }) => {
-  console.log("part: ", typeof part);
-
-  if (part.length === 0 || !Array.isArray(part)) {
-    return <p className="">No Parts Posters to show</p>;
+const ShowCollectionPartsPoster = ({ parts }: { parts: collectionParts[] }) => {
+  if (!Array.isArray(parts) || parts.length === 0) {
+    return <p>No Parts Posters to show</p>;
   }
-  console.log("part: ", part);
 
   return (
-    <>
-      {part.length > 0 &&
-        part.map((part, index) => {
-          console.log(typeof part);
-          if (part.poster_path === undefined || !part.poster_path) {
-            return (
-              <p className="" key={index}>
-                No Parts Posters to show
-              </p>
-            );
-          }
+    <div className="relative flex items-center justify-end">
+      <div className="flex items-center justify-end gap-0 relative">
+        {parts.map((part, index) => {
+          if (!part.poster_path) return null;
           return (
-            <div className="" key={index}>
-              <PosterCard src={part.poster_path} />
+            <div
+              key={index}
+              className={`relative transition-transform duration-700 ease-in-out hover:scale-125 hover:z-10  ${
+                index === 0 ? "" : "-ml-12"
+              }`}
+            >
+              <div className="hover:w-28">
+                <Tooltip>
+                  <TooltipTrigger>
+                    <PosterCard
+                      src={part.poster_path}
+                      className="w-28 h-44 rounded-md shadow-lg  hover:cursor-pointer"
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <h2 className="text-lg">{part.title}</h2>
+                    <p className="">
+                      {part.original_language === "en"
+                        ? "English"
+                        : part.original_language}{" "}
+                    </p>
+                    <p className="">Type: {part.media_type}</p>
+                    <p>Rating: {part.vote_average}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
             </div>
           );
         })}
-    </>
+      </div>
+    </div>
   );
 };
 
 const Collections = () => {
-  const [collectsions, setCollections] = useState<collectionRespose[]>([]);
-
-  console.log("client collections: ", collectsions);
+  const [collections, setCollections] = useState<collectionRespose[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,40 +67,38 @@ const Collections = () => {
   }, []);
 
   return (
-    <div className="flex flex-col w-3/5 mx-auto">
-      {collectsions.map((collection, index) => {
-        return (
-          <div className="" key={index}>
-            {collection.id ? (
-              <>
-                <div className="my-3 flex">
-                  <img
-                    alt=""
-                    src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}${collection.poster_path}`}
-                    className="size-16"
-                  ></img>
-                  <div className="flex size-48  flex-row gap-2">
-                    {" "}
-                    <ShowCollectionPartsPoster part={collection?.parts} />
-                  </div>
-                </div>
-                <div className="">
+    <div className="flex flex-col w-3/5 mx-auto space-y-6 pb-6">
+      {collections.map((collection, index) =>
+        collection.id ? (
+          <div key={index} className="w-full">
+            <div className="my-3 flex items-center justify-between ">
+              <div className="flex gap-4">
+                <img
+                  alt={collection.name}
+                  src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}${collection.poster_path}`}
+                  className="w-28 h-44 rounded-md shadow-md object-cover"
+                />
+                <div className="pt-4">
                   <h2 className="text-white opacity-90 text-lg">
                     {collection.name}
                   </h2>
                   <p className="text-neutral-500">
                     {collection.original_language}
                   </p>
-                  <div className="">
-                    {collection?.parts?.[index]?.name || ""}
-                  </div>
                 </div>
-                <div className="border border-white opacity-25 m-1"></div>{" "}
-              </>
-            ) : null}
+              </div>
+
+              <div className="w-[70%]">
+                <div className="flex-1 flex justify-end overflow-hidden py-4 relative ">
+                  <ShowCollectionPartsPoster parts={collection.parts} />
+                </div>
+              </div>
+            </div>
+
+            <div className="border border-white opacity-25 mt-2"></div>
           </div>
-        );
-      })}
+        ) : null
+      )}
     </div>
   );
 };
