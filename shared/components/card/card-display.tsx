@@ -10,21 +10,24 @@ type carDisplayProps = {
   size: "sm" | "md" | "lg";
   limit?: number;
   showDataBeneth?: boolean;
+  imgSource?: string;
 };
 
-const CardDisplay = ({ showOverlay, size, limit = 6 }: carDisplayProps) => {
+const CardDisplay = ({
+  showOverlay,
+  size,
+  limit = 1,
+  imgSource,
+}: carDisplayProps) => {
   const [posters, setPosters] = useState<[]>([]);
-  const [limitNumber, setLimitNumber] = useState<number>(0);
 
   const handleGetPosters = async (limit: number) => {
     const data = await getMovieReccomendationsPosters(limit);
-    console.log("client :", data);
 
     setPosters(data);
   };
   useEffect(() => {
     const fetchData = () => {
-      setLimitNumber(limit);
       handleGetPosters(limit);
     };
 
@@ -38,15 +41,17 @@ const CardDisplay = ({ showOverlay, size, limit = 6 }: carDisplayProps) => {
       } gap-4 `}
     >
       {posters.map((movie) => {
-        console.log("map: ", movie);
-
         return (
           <div
             key={movie.id}
             className="w-[10%] relative group border border-transparent overflow-hidden rounded-md transition-all duration-300 hover:border-[#00E054] hover:shadow-[0_0_10px_#00E054] hover:cursor-pointer "
           >
             <img
-              src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/original${movie.poster_path}`}
+              src={`${
+                imgSource
+                  ? imgSource
+                  : `${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}${movie.poster_path}`
+              }`}
               alt="poster"
               className="w-full h-full object-cover transition-all duration-300 group-hover:opacity-90"
               width={10}

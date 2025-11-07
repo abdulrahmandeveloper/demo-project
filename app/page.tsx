@@ -7,7 +7,12 @@ const page = () => {
   return (
     <div className="bg-[rgb(44,52,64)]">
       <HeroSection />
-      <CardDisplay showOverlay={true} size="lg" />
+      <div className="">
+        <h2 className="w-4/5 mb-0 text-neutral-500 text-3xl mt-5 mx-auto">
+          Reccomendations to you...
+        </h2>
+        <CardDisplay showOverlay={true} size="lg" limit={7} />
+      </div>
       <p className="w-2/3 mx-auto mb-4 text-amber-100 opacity-90 text-lg">
         We let you to:
       </p>
