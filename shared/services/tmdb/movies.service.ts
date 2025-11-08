@@ -1,34 +1,26 @@
+import { tmdbApi } from "@/shared/lib/axios/axios";
+
 export const getMovieReccomendationsPosters = async (limitNumber: number) => {
   try {
-    const recommendetMovies = await fetch(
-      `https://api.themoviedb.org/3/movie/popular?page=1`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_KEY}`,
-        },
-      }
+    const recommendetMovies = await tmdbApi.get(
+      `https://api.themoviedb.org/3/movie/popular?page=1`
     );
-    const data = await recommendetMovies.json();
-    if (!data) {
+
+    if (!recommendetMovies) {
       return;
     }
-    const filteredMovies = data.results.slice(0, limitNumber);
+    const filteredMovies = recommendetMovies.data.results.slice(0, limitNumber);
 
     return filteredMovies;
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 };
 
 export const getMovieSearchResultsFromTMDB = async (query) => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/search/movie?query=${query}`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_KEY}`,
-      },
-    }
+  const res = await tmdbApi.get(
+    `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/search/movie?query=${query}`
   );
-  const data = await res.json();
+  const data = res.data;
   return data;
 };

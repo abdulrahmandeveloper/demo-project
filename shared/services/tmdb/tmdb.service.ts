@@ -2,20 +2,20 @@ import { collectionRespose } from "@/shared/interfaces/tmdb";
 import { collectionsID } from "@/shared/lib/utils/constants/collections";
 import { getMovieSearchResultsFromTMDB } from "./movies.service";
 import { getSeriesSearchResultsFromTMDB } from "./series.service";
+import { tmdbApi } from "@/shared/lib/axios/axios";
 
 export const getCollectionFromTMDB = async () => {
   const collectionsData: collectionRespose[] = [];
 
   for (let i = 0; i < collectionsID.length; i++) {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/collection/${collectionsID[i]}`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_KEY}`,
-        },
-      }
+    const res = await tmdbApi.get(
+      `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/collection/${collectionsID[i]}`
     );
-    const data = await res.json();
+    if (!res) {
+      return;
+    }
+    const data = res.data;
+
     collectionsData.push(data);
   }
 
@@ -27,8 +27,6 @@ export const getSearchResultFromTMDB = async (query) => {
     getMovieSearchResultsFromTMDB(query),
     getSeriesSearchResultsFromTMDB(query),
   ]);
-  console.log("service :", movies);
-  console.log("service :", serieses);
 
   return {
     movies: movies.status === "fulfilled" ? movies.value.results : [],

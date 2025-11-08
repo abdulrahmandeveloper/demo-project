@@ -27,11 +27,8 @@ const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
   });
   const [open, setOpen] = useState<boolean>(false);
 
-  console.log("open: ", open);
-
   const handleSearchData = async () => {
     const data = await getSearchResultFromTMDB(query);
-    console.log("handleSearchData :", data);
 
     if (!data) {
       return null;
@@ -41,8 +38,6 @@ const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
   };
 
   const handleSearchInput = (e) => {
-    console.log("handleSearchInput: ", e);
-
     if (!e) {
       setOpen(false);
       return;
