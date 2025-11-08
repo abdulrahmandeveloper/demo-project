@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { getCollectionFromTMDB } from "../services/tmdb/tmdb.service";
-import { collectionParts, collectionRespose } from "../interfaces/tmdb";
-import PosterCard from "./card/poster-card";
+import { getCollectionFromTMDB } from "@/shared/services/tmdb/tmdb.service";
+import { collectionParts, collectionRespose } from "@/shared/interfaces/tmdb";
+import PosterCard from "@/shared/components/card/poster-card";
 import {
   Tooltip,
   TooltipContent,

@@ -3,7 +3,7 @@ import { tmdbApi } from "@/shared/lib/axios/axios";
 export const getMovieReccomendationsPosters = async (limitNumber: number) => {
   try {
     const recommendetMovies = await tmdbApi.get(
-      `https://api.themoviedb.org/3/movie/popular?page=1`
+      `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/movie/popular?page=1`
     );
 
     if (!recommendetMovies) {
@@ -17,7 +17,7 @@ export const getMovieReccomendationsPosters = async (limitNumber: number) => {
   }
 };
 
-export const getMovieSearchResultsFromTMDB = async (query) => {
+export const getMovieSearchResultsFromTMDB = async (query: string) => {
   const res = await tmdbApi.get(
     `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/search/movie?query=${query}`
   );
