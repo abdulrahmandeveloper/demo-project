@@ -4,13 +4,15 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
+import { useEffect, useState } from "react";
+import { GetSlideShowVidoes } from "@/shared/services/tmdb/tmdb.service";
 
 type Slide = {
   id: number;
   title: string;
   description: string;
-  trailerUrl: string; // YouTube embed or local video
-  posterUrl: string; // Fallback image if video doesn’t load
+  trailerUrl: string;
+  posterUrl: string;
 };
 
 const slides: Slide[] = [
@@ -25,6 +27,20 @@ const slides: Slide[] = [
 ];
 
 export default function HeroSlider() {
+  const [slideShowVideos, setSlideShowVideos] = useState<Slide[]>();
+
+  const handleGetSlideShowVideos = async () => {
+    const data = GetSlideShowVidoes();
+    if (!data) {
+      setSlideShowVideos(slides);
+    }
+  };
+
+  useEffect(() => {
+    const data = handleGetSlideShowVideos();
+    setSlideShowVideos(data);
+  }, []);
+
   return (
     <div className="absolute inset-0 w-full h-[70vh] overflow-hidden  bg-[#2c3440]">
       <div className="absolute inset-0 bg-[#2c3440]/80 backdrop-blur-sm z-0" />

@@ -3,6 +3,7 @@ import { collectionsID } from "@/shared/lib/utils/constants/collections";
 import { getMovieSearchResultsFromTMDB } from "./movies.service";
 import { getSeriesSearchResultsFromTMDB } from "./series.service";
 import { tmdbApi } from "@/shared/lib/axios/axios";
+import axios from "axios";
 
 export const getCollectionFromTMDB = async () => {
   const collectionsData: collectionRespose[] = [];
@@ -34,4 +35,11 @@ export const getSearchResultFromTMDB = async (query) => {
   };
 };
 
-export const GetSlideShowVidoes = () => {};
+export const GetSlideShowVidoes = async () => {
+  const res = await axios.get(`${process.env.NEXT_PUBLIC_TMDB_BASE_URL}`);
+  if (!res.status === 200) {
+    return [];
+  }
+  const data = res.data;
+  return data;
+};
