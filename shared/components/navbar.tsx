@@ -1,11 +1,14 @@
 "use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { Input } from "./ui/input";
-import { Search, User } from "lucide-react";
-import { Button } from "./ui/button";
+import { User } from "lucide-react";
 import "react-icons";
 import { ModeToggle } from "../lib/utils/theme/theme-toggler";
+import { useEffect, useState } from "react";
+import { getSearchResultFromTMDB } from "../services/tmdb/tmdb.service";
+import SearchComponent from "./search";
+import { queryResultsResponseData } from "../interfaces/search";
 
 type NavbarProps = {
   logoPath: string;
@@ -17,8 +20,44 @@ type NavbarProps = {
 // for blurness backdrop-blur-sm
 
 const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
-  console.log(links[0].name);
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<queryResultsResponseData>({
+    movies: [],
+    serieses: [],
+  });
+  const [open, setOpen] = useState<boolean>(false);
 
+  console.log("open: ", open);
+
+  const handleSearchData = async () => {
+    const data = await getSearchResultFromTMDB(query);
+    console.log("handleSearchData :", data);
+
+    if (!data) {
+      return null;
+    }
+    setResults(data);
+    return data;
+  };
+
+  const handleSearchInput = (e) => {
+    console.log("handleSearchInput: ", e);
+
+    if (!e) {
+      setOpen(false);
+      return;
+    }
+    setOpen(!!e);
+    setQuery(e);
+    handleSearchData();
+  };
+
+  const hasResults =
+    results &&
+    ((results.movies && results.movies.length > 0) ||
+      (results.serieses && results.serieses.length > 0));
+
+  useEffect(() => {});
   return (
     <div className="grid grid-cols-3 bg-transparent hover:backdrop-blur-md transition-all duration-300 ease-in-out shadow-sm h-16">
       <div className="flex items-center justify-center">
@@ -46,19 +85,14 @@ const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
           ))}
 
           {search && (
-            <div className="relative">
-              <Input
-                type="text"
-                aria-label="Search"
-                className=" w-25 focus-within:w-40 transition-all duration-300 ease-in-out shadow-sm border-none bg-white"
-              />
-              <Button
-                size={"icon"}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none w-4 h-4 bg-transparent hover:cursor-pointer"
-              >
-                <Search aria-hidden="true" className="text-black" />
-              </Button>
-            </div>
+            <SearchComponent
+              query={query}
+              results={results}
+              hasResults={hasResults}
+              open={open}
+              setOpen={setOpen}
+              handleSearchInput={handleSearchInput}
+            />
           )}
         </div>
       </div>

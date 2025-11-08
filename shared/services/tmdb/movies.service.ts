@@ -13,13 +13,22 @@ export const getMovieReccomendationsPosters = async (limitNumber: number) => {
       return;
     }
     const filteredMovies = data.results.slice(0, limitNumber);
-    /*  const moviePosters: [] = filteredMovies.map(
-      (movie: any) => movie.poster_path
-    ); 
-    console.log(filteredMovies);*/
 
     return filteredMovies;
   } catch (e) {
     console.log(e);
   }
+};
+
+export const getMovieSearchResultsFromTMDB = async (query) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/search/movie?query=${query}`,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_KEY}`,
+      },
+    }
+  );
+  const data = await res.json();
+  return data;
 };
