@@ -23,7 +23,7 @@ const ShowCollectionPartsPoster = ({ parts }: { parts: collectionParts[] }) => {
           return (
             <div
               key={index}
-              className={`relative transition-transform duration-700 ease-in-out hover:scale-125 hover:z-10  ${
+              className={`relative transition-transform duration-700 ease-in-out hover:scale-125 hover:z-10 hover:w-28 ${
                 index === 0 ? "" : "-ml-12"
               }`}
             >
@@ -89,7 +89,7 @@ const Collections = () => {
               </div>
 
               <div className="w-[70%]">
-                <div className="flex-1 flex justify-end overflow-hidden py-4 relative ">
+                <div className="flex-1 flex justify-end overflow-hidden py-6 relative">
                   <ShowCollectionPartsPoster parts={collection.parts} />
                 </div>
               </div>

@@ -7,38 +7,20 @@ import "swiper/css/pagination";
 import { useEffect, useState } from "react";
 import { GetSlideShowVidoes } from "@/shared/services/tmdb/tmdb.service";
 
-type Slide = {
-  id: number;
-  title: string;
-  description: string;
-  trailerUrl: string;
-  posterUrl: string;
-};
-
-const slides: Slide[] = [
-  {
-    id: 3,
-    title: "fvdv",
-    description: "...",
-    trailerUrl:
-      "https://www.youtube.com/embed/9FYgZqzPLXc?autoplay=1&mute=1&loop=1",
-    posterUrl: "...",
-  },
-];
-
 export default function HeroSlider() {
-  const [slideShowVideos, setSlideShowVideos] = useState<Slide[]>();
+  const [reccomendationVideos, setReccomendationVideos] = useState<string[]>(
+    []
+  );
 
-  const handleGetSlideShowVideos = async () => {
-    const data = GetSlideShowVidoes();
-    if (!data) {
-      setSlideShowVideos(slides);
-    }
-  };
+  console.log("reccomendationVideos: ", reccomendationVideos);
 
   useEffect(() => {
-    const data = handleGetSlideShowVideos();
-    setSlideShowVideos(data);
+    const fetchRecomendations = async () => {
+      const data = await GetSlideShowVidoes(157336, 1405, 1);
+      setReccomendationVideos(data);
+    };
+
+    fetchRecomendations();
   }, []);
 
   return (
@@ -48,16 +30,16 @@ export default function HeroSlider() {
       <Swiper
         modules={[Pagination, Autoplay]}
         pagination={{ clickable: true }}
-        autoplay={{ delay: 60000 }}
-        loop
+        autoplay={{ delay: 15000 }}
+        loop={reccomendationVideos.length > 1}
         className="h-full w-full bg-[#2c3440]"
         style={{
           backgroundColor: "#2c3440",
         }}
       >
-        {slides.map((slide) => (
+        {reccomendationVideos.map((url, key) => (
           <SwiperSlide
-            key={slide.id}
+            key={key}
             className="relative h-full w-full bg-[#2c3440]"
             style={{
               backgroundColor: "#2c3440",
@@ -65,8 +47,9 @@ export default function HeroSlider() {
           >
             <div className="relative h-full w-full ">
               <iframe
-                src={slide.trailerUrl}
-                className=" w-full h-full object-cover object-"
+                key={key}
+                src={url}
+                className=" w-full h-full object-cover"
                 allow="autoplay; encrypted-media"
                 style={{ border: "none" }}
               />

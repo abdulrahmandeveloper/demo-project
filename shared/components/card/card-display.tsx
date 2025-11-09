@@ -1,6 +1,6 @@
 "use client";
 
-import { getMovieReccomendationsPosters } from "@/shared/services/tmdb/movies.service";
+import { getPopularMoviesPosters } from "@/movie/services/tmdb.service";
 import { Eye } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AiFillHeart } from "react-icons/ai";
@@ -22,7 +22,7 @@ const CardDisplay = ({
   const [posters, setPosters] = useState<[]>([]);
 
   const handleGetPosters = async (limit: number) => {
-    const data = await getMovieReccomendationsPosters(limit);
+    const data = await getPopularMoviesPosters(limit);
 
     setPosters(data);
   };

@@ -7,3 +7,7 @@ export const tmdbApi = axios.create({
   },
   timeout: 2500,
 });
+
+export const youtubeApi = axios.create({
+  baseURL: `https://www.youtube.com`,
+});
