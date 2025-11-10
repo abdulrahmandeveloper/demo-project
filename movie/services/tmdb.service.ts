@@ -55,3 +55,8 @@ export const getMoviesVideosID = async (movieIDs: number[]) => {
 
   return trailerKeys;
 };
+
+//
+export const getMoviesListFromTmdb = () => {
+  const req = tmdbApi.get("");
+};

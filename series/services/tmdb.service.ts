@@ -1,6 +1,4 @@
 import { tmdbApi } from "@/shared/lib/axios/axios";
-import axios from "axios";
-import { log } from "console";
 
 export const getSeriesSearchResultsFromTMDB = async (query) => {
   const res = await tmdbApi.get(
@@ -37,4 +35,9 @@ export const getSeriesVideosID = async (seriesId: number[]) => {
   const trailerKeys = trailerKeysArray.slice(0, 5);
 
   return trailerKeys;
+};
+
+//
+export const getSeriesListFromTmdb = () => {
+  const req = tmdbApi.get("");
 };
