@@ -25,7 +25,5 @@ export const getYoutubeTrailer = (data: {
 
   videosUrl = videosUrl.filter((video) => video !== null);
 
-  //console.log("videosUrl: ", videosUrl);
-
   return videosUrl;
 };

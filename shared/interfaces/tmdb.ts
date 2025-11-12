@@ -26,3 +26,12 @@ export interface collectionRespose {
   backdrop_path: string;
   parts: collectionParts[];
 }
+
+export interface Genres {
+  id: number;
+  name: string;
+}
+
+export interface GenresResponse {
+  genres: [Genres];
+}

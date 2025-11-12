@@ -12,8 +12,6 @@ export default function HeroSlider() {
     []
   );
 
-  console.log("reccomendationVideos: ", reccomendationVideos);
-
   useEffect(() => {
     const fetchRecomendations = async () => {
       const data = await GetSlideShowVidoes(157336, 1405, 1);

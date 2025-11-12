@@ -19,13 +19,13 @@ export const getSeriesRecommendationsFromTMDB = async (
 };
 
 export const getSeriesVideosID = async (seriesId: number[]) => {
-  const req = await Promise.allSettled(
+  const res = await Promise.allSettled(
     seriesId.map((id) =>
       tmdbApi.get(`/movie/${id}/videos`).then((videos) => videos.data.results)
     )
   );
 
-  const trailerKeysArray = req.map((movie) => {
+  const trailerKeysArray = res.map((movie) => {
     const trailer = movie.value.find(
       (v) => v.site === "YouTube" && v.type === "Trailer"
     );
@@ -38,6 +38,10 @@ export const getSeriesVideosID = async (seriesId: number[]) => {
 };
 
 //
-export const getSeriesListFromTmdb = () => {
-  const req = tmdbApi.get("");
+export const getSeriesListFromTmdb = async () => {
+  const res = await tmdbApi.get("/tv/top_rated");
+
+  const data = res.data;
+
+  return data;
 };

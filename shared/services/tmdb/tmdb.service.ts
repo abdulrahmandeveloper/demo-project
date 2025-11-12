@@ -1,4 +1,4 @@
-import { collectionRespose } from "@/shared/interfaces/tmdb";
+import { collectionRespose, GenresResponse } from "@/shared/interfaces/tmdb";
 import { collectionsID } from "@/shared/lib/utils/constants/collections";
 import {
   getMovieRecommendationsFromTMDB,
@@ -84,4 +84,13 @@ export const GetSlideShowVidoes = async (
   const videos = getYoutubeTrailer(youtubeIDs);
 
   return videos;
+};
+
+// genres
+export const getGenresFromTmdb = async (): Promise<GenresResponse> => {
+  const res = await tmdbApi.get("/genre/tv/list");
+
+  const data = res.data;
+
+  return data;
 };
