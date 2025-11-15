@@ -38,8 +38,8 @@ export const getSeriesVideosID = async (seriesId: number[]) => {
 };
 
 //
-export const getSeriesListFromTmdb = async () => {
-  const res = await tmdbApi.get("/tv/top_rated");
+export const getSeriesListFromTmdb = async (page: number) => {
+  const res = await tmdbApi.get(`/tv/top_rated?page=${page}`);
 
   const data = res.data;
 

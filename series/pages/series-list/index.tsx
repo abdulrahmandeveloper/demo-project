@@ -9,19 +9,23 @@ import { useEffect, useState } from "react";
 
 const SeriesList = () => {
   const [lists, setLists] = useState<[]>([]);
+  const [pages, setPages] = useState();
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   useEffect(() => {
     const handleListsRequest = async () => {
-      const listsData = await getSeriesListFromTmdb();
+      const listsData = await getSeriesListFromTmdb(currentPage);
 
       if (!listsData) {
-        return [];
+        return;
       }
       setLists(listsData.results);
+      setCurrentPage(listsData.page);
+      setPages(listsData.total_pages);
     };
 
     handleListsRequest();
-  }, []);
+  }, [currentPage]);
 
   return (
     <div className="">
@@ -44,7 +48,11 @@ const SeriesList = () => {
               ))}
           </div>{" "}
           <div className=" flex   justify-end">
-            <Pagination></Pagination>
+            <Pagination
+              pages={pages}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            ></Pagination>
           </div>
         </div>
       </div>
