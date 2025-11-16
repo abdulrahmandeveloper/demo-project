@@ -2,6 +2,7 @@
 
 import { getSeriesListFromTmdb } from "@/series/services/tmdb.service";
 import ListCard from "@/shared/components/card/list-card";
+import Filters from "@/shared/components/filters/filters";
 import Navbar from "@/shared/components/navigation/navbar";
 import Pagination from "@/shared/components/navigation/pagination-container";
 import { navbarLinks } from "@/shared/lib/utils/constants/navbar-links";
@@ -9,8 +10,10 @@ import { useEffect, useState } from "react";
 
 const SeriesList = () => {
   const [lists, setLists] = useState<[]>([]);
-  const [pages, setPages] = useState();
+  const [pages, setPages] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
+
+  console.log(lists);
 
   useEffect(() => {
     const handleListsRequest = async () => {
@@ -36,9 +39,14 @@ const SeriesList = () => {
       />
       <div className="my-6">
         <div className="w-3/4 mx-auto ">
-          <label htmlFor="" className="font-bold text-2xl">
-            Serieses
-          </label>
+          <div className="flex ">
+            <label htmlFor="" className="font-bold text-2xl">
+              Serieses
+            </label>
+            <div className="w-2/3 ml-auto">
+              <Filters references={{ setLists, setPages, setCurrentPage }} />
+            </div>
+          </div>
           <div className="grid grid-cols-5 gap-8 py-5">
             {lists.length > 0 &&
               lists.map((list, index) => (

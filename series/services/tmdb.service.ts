@@ -38,8 +38,20 @@ export const getSeriesVideosID = async (seriesId: number[]) => {
 };
 
 //
-export const getSeriesListFromTmdb = async (page: number) => {
-  const res = await tmdbApi.get(`/tv/top_rated?page=${page}`);
+export const getSeriesListFromTmdb = async (page: number, queries?: string) => {
+  const res = await tmdbApi.get(`/tv/top_rated?page=${page}?${queries}`);
+
+  const data = res.data;
+
+  return data;
+};
+
+export const getSeriesDiscoveryFromTMDB = async (queries: string) => {
+  console.log("inside getSeriesDiscoveryFromTMDB:", queries);
+
+  const res = await tmdbApi(
+    `https://api.themoviedb.org/3/discover/tv?${queries}`
+  );
 
   const data = res.data;
 
