@@ -38,7 +38,6 @@ const PaginationContainer = ({
 
   const handleClick = (e, page: number) => {
     e.preventDefault();
-    console.log(page);
 
     setCurrentPage(page);
   };

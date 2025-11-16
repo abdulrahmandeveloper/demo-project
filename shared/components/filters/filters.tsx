@@ -29,8 +29,6 @@ const Filters = ({ references }: FiltersProps) => {
   const [popular, setPopular] = useState();
   const [age, setAge] = useState();
 
-  console.log(age);
-
   const queryObject = {
     language: selectedLanguage,
     vote_average: rating,
@@ -60,8 +58,6 @@ const Filters = ({ references }: FiltersProps) => {
   useEffect(() => {
     const fetchFilterData = async () => {
       const data = await getSeriesDiscoveryFromTMDB(queries);
-
-      console.log(data.results);
 
       if (!data) return;
       references.setLists(data.results);

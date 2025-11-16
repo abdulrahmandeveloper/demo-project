@@ -13,8 +13,6 @@ const SeriesList = () => {
   const [pages, setPages] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  console.log(lists);
-
   useEffect(() => {
     const handleListsRequest = async () => {
       const listsData = await getSeriesListFromTmdb(currentPage);

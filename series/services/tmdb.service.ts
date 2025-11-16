@@ -47,8 +47,6 @@ export const getSeriesListFromTmdb = async (page: number, queries?: string) => {
 };
 
 export const getSeriesDiscoveryFromTMDB = async (queries: string) => {
-  console.log("inside getSeriesDiscoveryFromTMDB:", queries);
-
   const res = await tmdbApi(
     `https://api.themoviedb.org/3/discover/tv?${queries}`
   );
