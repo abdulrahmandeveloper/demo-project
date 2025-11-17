@@ -1,6 +1,6 @@
 "use client";
 
-import { featuresData } from "@/shared/lib/utils/constants/features-description";
+import { featuresData } from "@/core/routes/home-page/constants/homepage-features-description";
 
 const FeatureDisplayCard = () => {
   return (

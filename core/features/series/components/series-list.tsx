@@ -1,11 +1,11 @@
 "use client";
 
-import { getSeriesListFromTmdb } from "@/series/services/tmdb.service";
-import ListCard from "@/shared/components/card/list-card";
-import Filters from "@/shared/components/filters/filters";
-import Navbar from "@/shared/components/navigation/navbar";
-import Pagination from "@/shared/components/navigation/pagination-container";
-import { navbarLinks } from "@/shared/lib/utils/constants/navbar-links";
+import { getSeriesListFromTmdb } from "@/core/features/series/services/tmdb.service";
+import ListCard from "@/core/shared/components/card/list-card";
+import Filters from "@/core/features/filters/components/filters";
+import Navbar from "@/core/shared/components/navigation/navbar";
+import Pagination from "@/core/shared/components/custom-ui/pagination-container";
+import { navbarLinks } from "@/core/shared/constants/navbar-links";
 import { useEffect, useState } from "react";
 
 const SeriesList = () => {

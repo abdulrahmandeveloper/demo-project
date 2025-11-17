@@ -1,17 +1,17 @@
 import { collectionRespose, GenresResponse } from "@/shared/interfaces/tmdb";
-import { collectionsID } from "@/shared/lib/utils/constants/collections";
+import { collectionsID } from "@/shared/constants/collections";
 import {
   getMovieRecommendationsFromTMDB,
   getMovieSearchResultsFromTMDB,
   getMoviesVideosID,
-} from "../../../core/movie/services/tmdb.service";
+} from "@/features/movie/services/tmdb.service";
 import {
   getSeriesRecommendationsFromTMDB,
   getSeriesSearchResultsFromTMDB,
   getSeriesVideosID,
 } from "../../features/series/services/tmdb.service";
 import { tmdbApi } from "@/shared/lib/axios/axios";
-import { getYoutubeTrailer } from "./tmdb/youtube.service";
+import { getYoutubeTrailer } from "@/shared/services/youtube.service";
 
 export const getCollectionFromTMDB = async (): Promise<
   collectionRespose[] | undefined

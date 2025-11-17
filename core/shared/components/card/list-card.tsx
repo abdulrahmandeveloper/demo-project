@@ -1,7 +1,7 @@
 "use client";
 
-import { TMDBSerieResponse } from "@/series/interfaces/tmdb";
-import { getGenresFromTmdb } from "@/shared/services/tmdb/tmdb.service";
+import { TMDBSerieResponse } from "@/core/features/series/interfaces/tmdb";
+import { getGenresFromTmdb } from "@/core/shared/services/tmdb.service";
 import { useEffect, useState } from "react";
 
 type ListCardProps = {

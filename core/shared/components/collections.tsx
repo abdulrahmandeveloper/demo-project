@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { getCollectionFromTMDB } from "@/shared/services/tmdb/tmdb.service";
+import { getCollectionFromTMDB } from "@/shared/services/tmdb.service";
 import { collectionParts, collectionRespose } from "@/shared/interfaces/tmdb";
 import PosterCard from "@/shared/components/card/poster-card";
 import {

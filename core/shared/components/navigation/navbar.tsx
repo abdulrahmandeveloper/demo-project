@@ -4,11 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { User } from "lucide-react";
 import "react-icons";
-import { ModeToggle } from "@/shared/lib/utils/theme/theme-toggler";
+import { ModeToggle } from "@/shared/utils/theme/theme-toggler";
 import { useEffect, useState } from "react";
-import { getSearchResultFromTMDB } from "@/shared/services/tmdb/tmdb.service";
+import { getSearchResultFromTMDB } from "@/shared/services/tmdb.service";
 import SearchComponent from "../../../features/search/components/search";
-import { queryResultsResponseData } from "@/shared/interfaces/search";
+import { queryResultsResponseData } from "@/features/search/interfaces/search";
 
 type NavbarProps = {
   logoPath: string;

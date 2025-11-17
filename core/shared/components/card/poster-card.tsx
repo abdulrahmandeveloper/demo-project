@@ -1,5 +1,3 @@
-import React from "react";
-
 type posterCardProps = { src: string; className?: string };
 
 const PosterCard = ({ src, className }: posterCardProps) => {

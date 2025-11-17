@@ -1,4 +1,4 @@
-interface getMovieReccomendationsPostersResponse {
+export interface getMovieReccomendationsPostersResponse {
   page: 1;
   results: [
     {
