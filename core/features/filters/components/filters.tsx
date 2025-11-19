@@ -1,7 +1,7 @@
 "ise client";
 
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import FilterSelection from "@/core/features/filters/components/custom-ui/filter-selection";
+import FilterSelection from "@/features/filters/components/custom-ui/filter-selection";
 import {
   tmdbContentRatings,
   tmdbCountryCodes,
@@ -9,8 +9,8 @@ import {
   tmdbRuntimeFilters,
   tmdbTvGenres,
   tmdbYearsRange,
-} from "@/core/features/filters/constants/tmdb.constants.ts";
-import { getSeriesDiscoveryFromTMDB } from "@/core/features/series/services/tmdb.service";
+} from "@/features/filters/constants/tmdb.constants.ts";
+import { getSeriesDiscoveryFromTMDB } from "@/features/series/services/tmdb.service";
 
 type FiltersProps = {
   references: {
@@ -21,13 +21,13 @@ type FiltersProps = {
 };
 
 const Filters = ({ references }: FiltersProps) => {
-  const [selectedLanguage, setSelectedLanguage] = useState();
-  const [year, setYear] = useState();
-  const [rating, setRating] = useState();
-  const [genre, setGenre] = useState();
-  const [length, setLength] = useState();
-  const [popular, setPopular] = useState();
-  const [age, setAge] = useState();
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("");
+  const [year, setYear] = useState<string>("");
+  const [rating, setRating] = useState<number>(1);
+  const [genre, setGenre] = useState<string>("");
+  const [length, setLength] = useState<number>(1);
+  const [popular, setPopular] = useState<string>("");
+  const [age, setAge] = useState<string>("");
 
   const queryObject = {
     language: selectedLanguage,

@@ -1,6 +1,6 @@
-import { tmdbApi } from "@/core/shared/lib/axios/axios";
+import { tmdbApi } from "@/shared/lib/axios/axios";
 
-export const getSeriesSearchResultsFromTMDB = async (query) => {
+export const getSeriesSearchResultsFromTMDB = async (query: string) => {
   const res = await tmdbApi.get(
     `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/search/tv?query=${query}`
   );

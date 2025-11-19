@@ -1,6 +1,6 @@
 "use client";
 
-import { getPopularMoviesPosters } from "@/core/features/movie/services/tmdb.service";
+import { getPopularMoviesPosters } from "@/features/movie/services/tmdb.service";
 import { Eye } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AiFillHeart } from "react-icons/ai";

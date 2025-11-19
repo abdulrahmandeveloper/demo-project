@@ -1,5 +1,4 @@
-import SeriesList from "@/series/pages/series-list";
-import React from "react";
+import SeriesList from "@/features/series/components/series-list";
 
 const index = () => {
   return (

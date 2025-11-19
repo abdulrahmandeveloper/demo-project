@@ -9,7 +9,7 @@ import {
   getSeriesRecommendationsFromTMDB,
   getSeriesSearchResultsFromTMDB,
   getSeriesVideosID,
-} from "../../features/series/services/tmdb.service";
+} from "@/features/series/services/tmdb.service";
 import { tmdbApi } from "@/shared/lib/axios/axios";
 import { getYoutubeTrailer } from "@/shared/services/youtube.service";
 

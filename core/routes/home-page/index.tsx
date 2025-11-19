@@ -1,7 +1,7 @@
-import CardDisplay from "@/core/shared/components/card/card-display";
-import FeatureDisplayCard from "@/core/shared/components/card/feature-display-card";
-import HeroSection from "@/core/routes/home-page/components/hero-section";
-import Collections from "@/core/shared/components/collections";
+import CardDisplay from "@/shared/components/card/card-display";
+import FeatureDisplayCard from "@/shared/components/card/feature-display-card";
+import HeroSection from "@/routes/home-page/components/hero-section";
+import Collections from "@/shared/components/collections";
 
 const HomePage = () => {
   return (

@@ -6,23 +6,23 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/core/shared/components/ui/select";
+} from "@/shared/components/ui/select";
 import { Dispatch, SetStateAction } from "react";
 
-type FilterSelectionProps = {
+type FilterSelectionProps<T> = {
   placeHolder: string;
   values: any[];
-  setValues: Dispatch<SetStateAction<[] | number>>;
+  setValues: Dispatch<SetStateAction<T>>;
   label?: string;
 };
-const FilterSelection = ({
+const FilterSelection = <T,>({
   placeHolder,
   label,
   values,
   setValues,
-}: FilterSelectionProps) => {
-  const handleClick = (e) => {
-    setValues(e);
+}: FilterSelectionProps<T>) => {
+  const handleClick = (e: string) => {
+    setValues(e as T);
   };
 
   return (

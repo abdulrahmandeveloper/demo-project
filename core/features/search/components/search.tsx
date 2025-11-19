@@ -1,13 +1,13 @@
-import { Input } from "@/core/shared/components/ui/input";
-import { Button } from "@/core/shared/components/ui/button";
-import PosterCard from "@/core/shared/components/card/poster-card";
+import { Input } from "@/shared/components/ui/input";
+import { Button } from "@/shared/components/ui/button";
+import PosterCard from "@/shared/components/card/poster-card";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/core/shared/components/ui/popover";
+} from "@/shared/components/ui/popover";
 import { Search } from "lucide-react";
-import { queryResultsResponseData } from "@/core/features/search/interfaces/search";
+import { queryResultsResponseData } from "@/features/search/interfaces/search";
 import { Dispatch, SetStateAction } from "react";
 
 type searchComponenProps = {

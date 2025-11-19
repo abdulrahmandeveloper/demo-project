@@ -1,5 +1,5 @@
-import { TMDBMovieResponse } from "@/core/features/movie/interfaces/tmdb.interface";
-import { TMDBSerieResponse } from "@/core/features/series/interfaces/tmdb";
+import { TMDBMovieResponse } from "@/features/movie/interfaces/tmdb.interface";
+import { TMDBSerieResponse } from "@/features/series/interfaces/tmdb";
 
 export interface queryResultsResponseData {
   movies: TMDBMovieResponse[];

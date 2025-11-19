@@ -1,4 +1,8 @@
 import { tmdbApi } from "@/shared/lib/axios/axios";
+import {
+  TMDBMovieTrailerDataResponse,
+  TMDBTrailerData,
+} from "../interfaces/tmdb.interface";
 
 export const getPopularMoviesPosters = async (limitNumber: number) => {
   try {
@@ -38,15 +42,22 @@ export const getMovieRecommendationsFromTMDB = async (
 };
 
 export const getMoviesVideosID = async (movieIDs: number[]) => {
-  const req = await Promise.allSettled(
+  const res = await Promise.allSettled(
     movieIDs.map((id) =>
       tmdbApi.get(`/movie/${id}/videos`).then((videos) => videos.data.results)
     )
   );
 
-  const trailerKeysArray = req.map((movie) => {
+  console.log("getMoviesVideosID: ", res);
+
+  const successfulResponses = res.filter(
+    (result): result is PromiseFulfilledResult<any> =>
+      result.status === "fulfilled"
+  );
+
+  const trailerKeysArray = successfulResponses.map((movie) => {
     const trailer = movie.value.find(
-      (v) => v.site === "YouTube" && v.type === "Trailer"
+      (v: TMDBTrailerData) => v.site === "YouTube" && v.type === "Trailer"
     );
     return trailer ? trailer.key : null;
   });
