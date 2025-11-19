@@ -1,8 +1,5 @@
 import { tmdbApi } from "@/shared/lib/axios/axios";
-import {
-  TMDBMovieTrailerDataResponse,
-  TMDBTrailerData,
-} from "../interfaces/tmdb.interface";
+import { TMDBTrailerData } from "../interfaces/tmdb.interface";
 
 export const getPopularMoviesPosters = async (limitNumber: number) => {
   try {
