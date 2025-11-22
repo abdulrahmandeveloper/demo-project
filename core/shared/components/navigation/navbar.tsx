@@ -7,8 +7,8 @@ import "react-icons";
 import { ModeToggle } from "@/shared/utils/theme/theme-toggler";
 import { useEffect, useState } from "react";
 import { getSearchResultFromTMDB } from "@/shared/services/tmdb.service";
-import SearchComponent from "@/shared/components/search/components/search";
-import { queryResultsResponseData } from "@/shared/components/search/interfaces/search";
+import SearchComponent from "@/modules/search/components/search";
+import { queryResultsResponseData } from "@/modules/search/interfaces/search.interface";
 
 type NavbarProps = {
   logoPath: string;

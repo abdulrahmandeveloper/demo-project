@@ -1,5 +1,5 @@
-import CardDisplay from "@/shared/components/card/media-display";
-import FeatureDisplayCard from "@/shared/components/card/features-card";
+import MediaCard from "@/shared/components/card/media-card";
+import FeatureCard from "@/shared/components/card/feature-card";
 import HeroSection from "@/routes/home-page/components/hero-section";
 import Collections from "@/shared/components/collections";
 
@@ -11,16 +11,16 @@ const HomePage = () => {
         <h2 className="w-4/5 mb-0 text-neutral-500 text-3xl mt-5 mx-auto">
           Reccomendations to you...
         </h2>
-        <CardDisplay showOverlay={true} size="lg" limit={7} />
+        <MediaCard showOverlay={true} size="lg" limit={7} />
       </div>
       <p className="w-2/3 mx-auto mb-4 text-amber-100 opacity-90 text-lg">
         We let you to:
       </p>
-      <FeatureDisplayCard />
+      <FeatureCard />
       <div className="w-3/4 mx-auto mt-8">
         <p className="text-amber-200 opacity-50 text-sm">JUST REVIEWED...</p>
         <div className="border border-white opacity-25 m-1"></div>
-        <CardDisplay showOverlay={false} size="sm" limit={12} />
+        <MediaCard showOverlay={false} size="sm" limit={12} />
       </div>
       <div className="w-3/5 mx-auto flex flex-col items-center justify-center pb-4">
         <p className="text-[#abc] text-3xl  m-1 my-3">

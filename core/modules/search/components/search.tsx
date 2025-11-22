@@ -7,7 +7,7 @@ import {
   PopoverTrigger,
 } from "@/shared/components/ui/popover";
 import { Search } from "lucide-react";
-import { queryResultsResponseData } from "@/features/search/interfaces/search";
+import { queryResultsResponseData } from "@/modules/search/interfaces/search.interface";
 import { Dispatch, SetStateAction } from "react";
 
 type searchComponenProps = {

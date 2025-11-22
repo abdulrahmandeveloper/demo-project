@@ -1,8 +1,8 @@
 "use client";
 
-import { featuresData } from "@/routes/home-page/constants/homepage-features-description";
+import { featuresData } from "@/routes/home-page/constants/homepage-features-description.constants";
 
-const FeatureDisplayCard = () => {
+const FeatureCard = () => {
   return (
     <div className="w-2/3 mx-auto   grid sm:grid-cols-2 lg:grid-cols-3 grid-cols-1 gap-5 px-6 text-white">
       {featuresData.map((feature, index) => {
@@ -20,4 +20,4 @@ const FeatureDisplayCard = () => {
   );
 };
 
-export default FeatureDisplayCard;
+export default FeatureCard;

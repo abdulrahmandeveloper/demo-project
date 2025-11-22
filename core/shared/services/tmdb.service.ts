@@ -2,7 +2,7 @@ import {
   collectionRespose,
   GenresResponse,
 } from "@/shared/interfaces/tmdb.interface";
-import { collectionsID } from "@/shared/constants/collections";
+import { collectionsID } from "@/shared/constants/collections.constants";
 import {
   getMovieRecommendationsFromTMDB,
   getMovieSearchResultsFromTMDB,

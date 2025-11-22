@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { AiFillHeart } from "react-icons/ai";
 import { TMDBMovieResponse } from "@/features/movie/interfaces/tmdb.interface";
 
-type carDisplayProps = {
+type MediaCardProps = {
   showOverlay?: boolean;
   size: "sm" | "md" | "lg";
   limit?: number;
@@ -14,12 +14,12 @@ type carDisplayProps = {
   imgSource?: string;
 };
 
-const CardDisplay = ({
+const MediaCard = ({
   showOverlay,
   size,
   limit = 1,
   imgSource,
-}: carDisplayProps) => {
+}: MediaCardProps) => {
   const [posters, setPosters] = useState<TMDBMovieResponse[]>([]);
 
   const handleGetPosters = async (limit: number) => {
@@ -82,4 +82,4 @@ const CardDisplay = ({
   );
 };
 
-export default CardDisplay;
+export default MediaCard;

@@ -1,5 +1,5 @@
 import Navbar from "@/shared/components/navigation/navbar";
-import { navbarLinks } from "@/shared/constants/navbar-links";
+import { navbarLinks } from "@/shared/constants/navbar-links.constants";
 import { Button } from "@/shared/components/ui/button";
 import HeroSlider from "@/routes/home-page/components/slide-show";
 

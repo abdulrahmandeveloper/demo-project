@@ -1,7 +1,7 @@
 "use client";
 
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import FilterSelection from "@/shared/components/custom-ui/selection-container";
+import FilterSelection from "@/shared/components/custom-ui/containers/selection-container";
 import {
   tmdbContentRatings,
   tmdbCountryCodes,
@@ -9,7 +9,7 @@ import {
   tmdbRuntimeFilters,
   tmdbTvGenres,
   tmdbYearsRange,
-} from "@/shared/components/filters/constants/tmdb.constants.ts";
+} from "@/shared/constants/tmdb.constants.ts";
 import { getSeriesDiscoveryFromTMDB } from "@/features/series/services/tmdb.service";
 
 type FiltersProps = {
@@ -35,7 +35,6 @@ const Filters = ({ references }: FiltersProps) => {
     sort_by: popular,
     with_genres: genre,
     with_runtime: length,
-
     certification_country: "US",
     "certification.lte": age,
   };
