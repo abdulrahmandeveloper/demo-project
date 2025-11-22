@@ -1,4 +1,4 @@
-"ise client";
+"use client";
 
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import FilterSelection from "@/features/filters/components/custom-ui/filter-selection";
@@ -66,7 +66,7 @@ const Filters = ({ references }: FiltersProps) => {
     };
 
     fetchFilterData();
-  }, [selectedLanguage, year, rating, genre, length, popular, age]);
+  }, [queries]);
 
   return (
     <div className="">

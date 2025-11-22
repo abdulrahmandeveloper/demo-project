@@ -16,7 +16,7 @@ type searchComponenProps = {
   hasResults: boolean;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  handleSearchInput: (e: any) => void;
+  handleSearchInput: (e: string) => void;
 };
 
 const SearchComponent = ({

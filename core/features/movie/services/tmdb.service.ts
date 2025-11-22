@@ -1,5 +1,5 @@
 import { tmdbApi } from "@/shared/lib/axios/axios";
-import { TMDBTrailerData } from "../interfaces/tmdb.interface";
+import { TMDBTrailerResponse } from "../interfaces/tmdb.interface";
 
 export const getPopularMoviesPosters = async (limitNumber: number) => {
   try {
@@ -54,7 +54,7 @@ export const getMoviesVideosID = async (movieIDs: number[]) => {
 
   const trailerKeysArray = successfulResponses.map((movie) => {
     const trailer = movie.value.find(
-      (v: TMDBTrailerData) => v.site === "YouTube" && v.type === "Trailer"
+      (v: TMDBTrailerResponse) => v.site === "YouTube" && v.type === "Trailer"
     );
     return trailer ? trailer.key : null;
   });

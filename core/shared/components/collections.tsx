@@ -61,7 +61,9 @@ const Collections = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await getCollectionFromTMDB();
-      setCollections(data);
+      if (data) {
+        setCollections(data);
+      } else setCollections([]);
     };
     fetchData();
   }, []);

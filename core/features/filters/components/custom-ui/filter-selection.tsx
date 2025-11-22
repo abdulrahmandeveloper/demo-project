@@ -9,9 +9,14 @@ import {
 } from "@/shared/components/ui/select";
 import { Dispatch, SetStateAction } from "react";
 
+type FilterValues = {
+  name: string;
+  value: string | number | null;
+};
+
 type FilterSelectionProps<T> = {
   placeHolder: string;
-  values: any[];
+  values: FilterValues[];
   setValues: Dispatch<SetStateAction<T>>;
   label?: string;
 };
@@ -34,7 +39,7 @@ const FilterSelection = <T,>({
         <SelectGroup>
           {label && <SelectLabel>{label}</SelectLabel>}
           {values.map((value, index) => (
-            <SelectItem key={index} value={value.value}>
+            <SelectItem key={index} value={String(value.value)}>
               {value?.name}
             </SelectItem>
           ))}

@@ -37,7 +37,7 @@ const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
     return data;
   };
 
-  const handleSearchInput = (e) => {
+  const handleSearchInput = (e: string) => {
     if (!e) {
       setOpen(false);
       return;

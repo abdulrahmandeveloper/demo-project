@@ -20,7 +20,9 @@ const PaginationContainer = ({
   currentPage,
   setCurrentPage,
 }: PaginationContainerProps) => {
-  const handleNextPageClick = (e) => {
+  const handleNextPageClick = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
     e.preventDefault();
 
     const newPage = currentPage + 1;
@@ -28,7 +30,7 @@ const PaginationContainer = ({
     setCurrentPage(newPage);
   };
 
-  const handlePreviousPageClick = (e: any) => {
+  const handlePreviousPageClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
 
     const newPage = currentPage - 1;
@@ -36,7 +38,10 @@ const PaginationContainer = ({
     setCurrentPage(newPage);
   };
 
-  const handleClick = (e, page: number) => {
+  const handleClick = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    page: number
+  ) => {
     e.preventDefault();
 
     setCurrentPage(page);

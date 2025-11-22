@@ -1,23 +1,6 @@
-export interface getMovieReccomendationsPostersResponse {
+export interface getMovieReccomendationsResponse {
   page: 1;
-  results: [
-    {
-      adult: boolean;
-      backdrop_path: string;
-      genre_ids: [number];
-      id: number;
-      original_language: string;
-      original_title: string;
-      overview: string;
-      popularity: 8567.865;
-      poster_path: string;
-      release_date: string;
-      title: string;
-      video: boolean;
-      vote_average: number;
-      vote_count: number;
-    }
-  ];
+  results: [TMDBMovieResponse];
 }
 
 export interface TMDBMovieResponse {
@@ -37,7 +20,7 @@ export interface TMDBMovieResponse {
   vote_count: number;
 }
 
-export interface TMDBTrailerData {
+export interface TMDBTrailerResponse {
   iso_639_1: string;
   iso_3166_1: string;
   name: string;
@@ -52,5 +35,5 @@ export interface TMDBTrailerData {
 
 export interface TMDBMovieTrailerDataResponse {
   status: string;
-  value: [TMDBTrailerData];
+  value: [TMDBTrailerResponse];
 }
