@@ -4,6 +4,8 @@ import { getPopularMoviesPosters } from "@/features/movie/services/tmdb.service"
 import { Eye } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AiFillHeart } from "react-icons/ai";
+import Image from "next/image";
+import { TMDBMovieResponse } from "@/features/movie/interfaces/tmdb.interface";
 
 type carDisplayProps = {
   showOverlay?: boolean;
@@ -19,7 +21,7 @@ const CardDisplay = ({
   limit = 1,
   imgSource,
 }: carDisplayProps) => {
-  const [posters, setPosters] = useState<[]>([]);
+  const [posters, setPosters] = useState<TMDBMovieResponse[]>([]);
 
   const handleGetPosters = async (limit: number) => {
     const data = await getPopularMoviesPosters(limit);
@@ -46,7 +48,7 @@ const CardDisplay = ({
             key={movie.id}
             className="w-[10%] relative group border border-transparent overflow-hidden rounded-md transition-all duration-300 hover:border-[#00E054] hover:shadow-[0_0_10px_#00E054] hover:cursor-pointer "
           >
-            <img
+            <Image
               src={`${
                 imgSource
                   ? imgSource
@@ -56,7 +58,8 @@ const CardDisplay = ({
               className="w-full h-full object-cover transition-all duration-300 group-hover:opacity-90"
               width={10}
               height={10}
-            ></img>
+            />
+
             {showOverlay && (
               <div className="absolute inset-0 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="flex flex-col items-center gap-1 bg-black/60 rounded-lg px-3 py-2">

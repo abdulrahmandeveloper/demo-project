@@ -45,8 +45,6 @@ export const getMoviesVideosID = async (movieIDs: number[]) => {
     )
   );
 
-  console.log("getMoviesVideosID: ", res);
-
   const successfulResponses = res.filter(
     (result): result is PromiseFulfilledResult<any> =>
       result.status === "fulfilled"

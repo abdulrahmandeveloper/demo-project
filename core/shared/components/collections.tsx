@@ -9,6 +9,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/shared/components/ui/tooltip";
+import Image from "next/image";
 
 const ShowCollectionPartsPoster = ({ parts }: { parts: collectionParts[] }) => {
   if (!Array.isArray(parts) || parts.length === 0) {
@@ -75,10 +76,12 @@ const Collections = () => {
           <div key={index} className="w-full">
             <div className="my-3 flex items-center justify-between ">
               <div className="flex gap-4">
-                <img
+                <Image
                   alt={collection.name}
                   src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}${collection.poster_path}`}
                   className="w-28 h-44 rounded-md shadow-md object-cover"
+                  width={112}
+                  height={176}
                 />
                 <div className="pt-4">
                   <h2 className="text-white opacity-90 text-lg">
