@@ -2,7 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import { getCollectionFromTMDB } from "@/shared/services/tmdb.service";
-import { collectionParts, collectionRespose } from "@/shared/interfaces/tmdb";
+import {
+  collectionParts,
+  collectionRespose,
+} from "@/shared/interfaces/tmdb.interface";
 import PosterCard from "@/shared/components/card/poster-card";
 import {
   Tooltip,

@@ -1,44 +1,60 @@
 import { tmdbApi } from "@/shared/lib/axios/axios";
-import { TMDBTrailerResponse } from "../interfaces/tmdb.interface";
+import { TMDBMovieResponse } from "@/features/movie/interfaces/tmdb.interface";
+import {
+  TMDBMediaResponse,
+  TMDBVideoReferenceResponse,
+} from "@/shared/interfaces/tmdb.interface";
 
-export const getPopularMoviesPosters = async (limitNumber: number) => {
+export const getPopularMoviesPosters = async (
+  limitNumber: number
+): Promise<TMDBMovieResponse[] | []> => {
   try {
-    const recommendetMovies = await tmdbApi.get(
+    const res = await tmdbApi.get(
       `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/movie/popular?page=1`
     );
 
-    if (!recommendetMovies) {
-      return;
+    if (!res) {
+      return [];
     }
-    const filteredMovies = recommendetMovies.data.results.slice(0, limitNumber);
+    const filteredMovies: TMDBMovieResponse[] = res.data.results.slice(
+      0,
+      limitNumber
+    );
 
     return filteredMovies;
   } catch (e) {
     console.error(e);
+    return [];
   }
 };
 
-export const getMovieSearchResultsFromTMDB = async (query: string) => {
+export const getMovieSearchResultsFromTMDB = async (
+  query: string
+): Promise<TMDBMediaResponse<TMDBMovieResponse>> => {
   const res = await tmdbApi.get(
     `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/search/movie?query=${query}`
   );
-  const data = res.data;
+  const data: TMDBMediaResponse<TMDBMovieResponse> = res.data;
+
   return data;
 };
 
 export const getMovieRecommendationsFromTMDB = async (
   movieID: number,
   pages: number
-) => {
+): Promise<TMDBMediaResponse<TMDBMovieResponse>> => {
   const res = tmdbApi.get(
     `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/movie/${movieID}/recommendations?page=${pages}`
   );
 
-  const data = (await res).data;
+  const data: TMDBMediaResponse<TMDBMovieResponse> = (await res).data;
+
   return data;
 };
 
-export const getMoviesVideosID = async (movieIDs: number[]) => {
+export const getMoviesVideosID = async (
+  movieIDs: number[]
+): Promise<string[]> => {
   const res = await Promise.allSettled(
     movieIDs.map((id) =>
       tmdbApi.get(`/movie/${id}/videos`).then((videos) => videos.data.results)
@@ -46,23 +62,26 @@ export const getMoviesVideosID = async (movieIDs: number[]) => {
   );
 
   const successfulResponses = res.filter(
-    (result): result is PromiseFulfilledResult<any> =>
+    (result): result is PromiseFulfilledResult<TMDBVideoReferenceResponse[]> =>
       result.status === "fulfilled"
   );
 
-  const trailerKeysArray = successfulResponses.map((movie) => {
-    const trailer = movie.value.find(
-      (v: TMDBTrailerResponse) => v.site === "YouTube" && v.type === "Trailer"
-    );
-    return trailer ? trailer.key : null;
-  });
+  const trailerKeysArray = successfulResponses
+    .map((movie) => {
+      const trailer = movie.value.find(
+        (v: TMDBVideoReferenceResponse) =>
+          v.site === "YouTube" && v.type === "Trailer"
+      );
+      return trailer?.key;
+    })
+    .filter((key): key is string => key !== undefined);
 
-  const trailerKeys = trailerKeysArray.slice(0, 5);
+  const trailerKeys: string[] = trailerKeysArray.slice(0, 5);
 
   return trailerKeys;
 };
 
 //
-export const getMoviesListFromTmdb = () => {
+/* export const getMoviesListFromTmdb = () => {
   const req = tmdbApi.get("");
-};
+}; */

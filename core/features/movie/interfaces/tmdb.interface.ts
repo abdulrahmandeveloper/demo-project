@@ -1,39 +1,8 @@
-export interface getMovieReccomendationsResponse {
-  page: 1;
-  results: [TMDBMovieResponse];
-}
+import { TMDBCommonMediaDataResponse } from "@/shared/interfaces/tmdb.interface";
 
-export interface TMDBMovieResponse {
-  adult: boolean;
-  backdrop_path: string;
-  genre_ids: [number];
-  id: number;
-  original_language: string;
+export interface TMDBMovieResponse extends TMDBCommonMediaDataResponse {
   original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
   release_date: string;
   title: string;
   video: boolean;
-  vote_average: number;
-  vote_count: number;
-}
-
-export interface TMDBTrailerResponse {
-  iso_639_1: string;
-  iso_3166_1: string;
-  name: string;
-  key: string;
-  site: string;
-  size: number;
-  type: string;
-  official: true;
-  published_at: string;
-  id: string;
-}
-
-export interface TMDBMovieTrailerDataResponse {
-  status: string;
-  value: [TMDBTrailerResponse];
 }

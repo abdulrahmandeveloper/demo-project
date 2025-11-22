@@ -1,5 +1,5 @@
-import CardDisplay from "@/shared/components/card/card-display";
-import FeatureDisplayCard from "@/shared/components/card/feature-display-card";
+import CardDisplay from "@/shared/components/card/media-display";
+import FeatureDisplayCard from "@/shared/components/card/features-card";
 import HeroSection from "@/routes/home-page/components/hero-section";
 import Collections from "@/shared/components/collections";
 

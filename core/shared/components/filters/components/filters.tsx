@@ -1,7 +1,7 @@
 "use client";
 
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import FilterSelection from "@/features/filters/components/custom-ui/filter-selection";
+import FilterSelection from "@/shared/components/custom-ui/selection-container";
 import {
   tmdbContentRatings,
   tmdbCountryCodes,
@@ -9,7 +9,7 @@ import {
   tmdbRuntimeFilters,
   tmdbTvGenres,
   tmdbYearsRange,
-} from "@/features/filters/constants/tmdb.constants.ts";
+} from "@/shared/components/filters/constants/tmdb.constants.ts";
 import { getSeriesDiscoveryFromTMDB } from "@/features/series/services/tmdb.service";
 
 type FiltersProps = {

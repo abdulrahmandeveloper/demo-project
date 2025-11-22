@@ -1,8 +1,8 @@
 "use client";
 
 import { getSeriesListFromTmdb } from "@/features/series/services/tmdb.service";
-import ListCard from "@/shared/components/card/list-card";
-import Filters from "@/features/filters/components/filters";
+import ListCard from "@/shared/components/card/list-item-card";
+import Filters from "@/shared/components/filters/components/filters";
 import Navbar from "@/shared/components/navigation/navbar";
 import Pagination from "@/shared/components/custom-ui/pagination-container";
 import { navbarLinks } from "@/shared/constants/navbar-links";

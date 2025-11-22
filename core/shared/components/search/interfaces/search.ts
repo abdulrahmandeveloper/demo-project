@@ -1,7 +1,7 @@
 import { TMDBMovieResponse } from "@/features/movie/interfaces/tmdb.interface";
-import { TMDBSerieResponse } from "@/features/series/interfaces/tmdb";
+import { TMDBSeriesResponse } from "@/features/series/interfaces/tmdb.interface";
 
 export interface queryResultsResponseData {
   movies: TMDBMovieResponse[];
-  serieses: TMDBSerieResponse[];
+  serieses: TMDBSeriesResponse[];
 }

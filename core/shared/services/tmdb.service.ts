@@ -1,4 +1,7 @@
-import { collectionRespose, GenresResponse } from "@/shared/interfaces/tmdb";
+import {
+  collectionRespose,
+  GenresResponse,
+} from "@/shared/interfaces/tmdb.interface";
 import { collectionsID } from "@/shared/constants/collections";
 import {
   getMovieRecommendationsFromTMDB,
@@ -12,9 +15,11 @@ import {
 } from "@/features/series/services/tmdb.service";
 import { tmdbApi } from "@/shared/lib/axios/axios";
 import { getYoutubeTrailer } from "@/shared/services/youtube.service";
+import { TMDBMovieResponse } from "@/features/movie/interfaces/tmdb.interface";
+import { TMDBSeriesResponse } from "@/features/series/interfaces/tmdb.interface";
 
 export const getCollectionFromTMDB = async (): Promise<
-  collectionRespose[] | undefined
+  collectionRespose[] | null
 > => {
   const collectionsData: collectionRespose[] = [];
 
@@ -23,7 +28,7 @@ export const getCollectionFromTMDB = async (): Promise<
       `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/collection/${collectionsID[i]}`
     );
     if (!res) {
-      return;
+      return null;
     }
     const data = res.data;
 
@@ -33,15 +38,20 @@ export const getCollectionFromTMDB = async (): Promise<
   return collectionsData;
 };
 
-export const getSearchResultFromTMDB = async (query: string) => {
-  const [movies, serieses] = await Promise.allSettled([
+export const getSearchResultFromTMDB = async (
+  query: string
+): Promise<{
+  movies: TMDBMovieResponse[];
+  series: TMDBSeriesResponse[];
+}> => {
+  const [movies, series] = await Promise.allSettled([
     getMovieSearchResultsFromTMDB(query),
     getSeriesSearchResultsFromTMDB(query),
   ]);
 
   return {
     movies: movies.status === "fulfilled" ? movies.value.results : [],
-    serieses: serieses.status === "fulfilled" ? serieses.value.results : [],
+    series: series.status === "fulfilled" ? series.value.results : [],
   };
 };
 
@@ -49,9 +59,9 @@ export const GetSlideShowVidoes = async (
   movieID: number,
   seriesId: number,
   pages: number
-) => {
+): Promise<string[]> => {
   //request to tmdb for getting recommended videos id.
-  const [movies, serieses] = await Promise.allSettled([
+  const [movies, series] = await Promise.allSettled([
     getMovieRecommendationsFromTMDB(movieID, pages),
     getSeriesRecommendationsFromTMDB(seriesId, pages),
   ]);
@@ -59,18 +69,18 @@ export const GetSlideShowVidoes = async (
   const data = {
     movies:
       movies.status === "fulfilled"
-        ? movies.value.results.map((item) => item.id)
+        ? movies.value.results.map((movie: TMDBMovieResponse) => movie.id)
         : [],
-    serieses:
-      serieses.status === "fulfilled"
-        ? serieses.value.results.map((item) => item.id)
+    series:
+      series.status === "fulfilled"
+        ? series.value.results.map((series: TMDBSeriesResponse) => series.id)
         : [],
   };
 
   // request to tmdb videos endpoint to get youtube trailer id.
   const [moviesVideoIds, seiesesVideoIds] = await Promise.allSettled([
     getMoviesVideosID(data.movies),
-    getSeriesVideosID(data.serieses),
+    getSeriesVideosID(data.series),
   ]);
 
   const youtubeIDs = {
@@ -90,7 +100,7 @@ export const GetSlideShowVidoes = async (
 export const getGenresFromTmdb = async (): Promise<GenresResponse> => {
   const res = await tmdbApi.get("/genre/tv/list");
 
-  const data = res.data;
+  const data: GenresResponse = res.data;
 
   return data;
 };
