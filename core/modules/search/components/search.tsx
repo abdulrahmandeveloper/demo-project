@@ -9,33 +9,41 @@ import {
 import { Search } from "lucide-react";
 import { queryResultsResponseData } from "@/modules/search/interfaces/search.interface";
 import { Dispatch, SetStateAction } from "react";
+import { TMDBSeriesResponse } from "@/features/series/interfaces/tmdb.interface";
+import { TMDBMediaResponse } from "@/shared/interfaces/tmdb.interface";
 
-type searchComponenProps = {
+type TMDBSearchResults = queryResultsResponseData;
+
+type SearchComponentProps = {
   query: string;
-  results: queryResultsResponseData;
+  searchResult: TMDBSearchResults;
   hasResults: boolean;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  handleSearchInput: (e: string) => void;
+  handleSearchInput: (inputValue: string) => void;
 };
 
 const SearchComponent = ({
   query,
-  results,
+  searchResult,
   hasResults,
   open,
   setOpen,
   handleSearchInput,
-}: searchComponenProps) => {
+}: SearchComponentProps) => {
+  console.log("results in SearchComponent: ", searchResult);
+  //destructuring results
+  const { movies, series } = searchResult;
+
   return (
-    <div className="relative">
+    <div className="relative ">
       <Popover open={open}>
         <PopoverTrigger asChild>
-          <div className="">
+          <div className="flex relative">
             <Input
               type="text"
               aria-label="Search"
-              className=" w-25 focus-within:w-40 transition-all duration-300 ease-in-out shadow-sm border-none bg-white"
+              className=" w-25 focus-within:w-40 transition-all duration-300 ease-in-out shadow-sm origin-right ml-auto border-none bg-white dark:bg-white dark:text-black"
               onChange={(e) => handleSearchInput(e.target.value)}
               onFocus={() => setOpen(true)}
             />
@@ -71,10 +79,10 @@ const SearchComponent = ({
               ))}
 
             {/* Movies */}
-            {results?.movies?.length > 0 && (
+            {movies?.length > 0 ? (
               <>
                 <h4 className="text-sm font-semibold mb-1">Movies</h4>
-                {results.movies.slice(0, 10).map((movie) => (
+                {movies.slice(0, 10).map((movie) => (
                   <div
                     key={movie.id}
                     className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded cursor-pointer"
@@ -87,26 +95,26 @@ const SearchComponent = ({
                   </div>
                 ))}
               </>
-            )}
+            ) : null}
 
             {/* Series */}
-            {results?.series?.length > 0 && (
+            {series?.length > 0 ? (
               <>
                 <h4 className="text-sm font-semibold mt-2 mb-1">Series</h4>
-                {results.series.slice(0, 10).map((series) => (
+                {series.slice(0, 10).map((series) => (
                   <div
                     key={series.id}
-                    className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded cursor-pointer"
+                    className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded cursor-pointer dark:hover:bg-gray-800"
                   >
                     <PosterCard
                       src={series.poster_path}
-                      className="w-8 h-12"
+                      className="w-8 h-12 "
                     ></PosterCard>
                     <p className="text-sm">{series.name}</p>
                   </div>
                 ))}
               </>
-            )}
+            ) : null}
           </PopoverContent>
         ) : null}
       </Popover>
@@ -115,3 +123,5 @@ const SearchComponent = ({
 };
 
 export default SearchComponent;
+
+/* series?  .series*/

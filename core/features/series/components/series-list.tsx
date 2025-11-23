@@ -7,7 +7,6 @@ import Navbar from "@/shared/components/navigation/navbar";
 import Pagination from "@/shared/components/custom-ui/containers/pagination-container";
 import { navbarLinks } from "@/shared/constants/navbar-links.constants";
 import { useEffect, useState } from "react";
-import SearchComponent from "@/modules/search/components/search";
 
 const SeriesList = () => {
   const [lists, setLists] = useState<[]>([]);
@@ -48,7 +47,6 @@ const SeriesList = () => {
             </label>
             <div className="w-2/3 ml-auto">
               <div className="">
-                {/* <SearchComponent /> */}
                 <Filters
                   references={{
                     setLists,

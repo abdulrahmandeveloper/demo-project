@@ -82,7 +82,7 @@ const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
           {search && (
             <SearchComponent
               query={query}
-              results={results}
+              searchResult={results}
               hasResults={hasResults}
               open={open}
               setOpen={setOpen}

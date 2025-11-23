@@ -12,6 +12,11 @@ import {
 } from "@/shared/constants/tmdb.constants.ts";
 import { getSeriesDiscoveryFromTMDB } from "@/modules/filters/services/filter.service";
 import { Button } from "@/shared/components/ui/button";
+import SearchComponent from "@/modules/search/components/search";
+import { queryResultsResponseData } from "@/modules/search/interfaces/search.interface";
+import { getSeriesSearchResultsFromTMDB } from "@/features/series/services/tmdb.service";
+import { TMDBMediaResponse } from "@/shared/interfaces/tmdb.interface";
+import { TMDBSeriesResponse } from "@/features/series/interfaces/tmdb.interface";
 
 type FiltersProps = {
   references: {
@@ -32,6 +37,23 @@ const Filters = ({ references }: FiltersProps) => {
   const [length, setLength] = useState<number | null>(null);
   const [popular, setPopular] = useState<string>("");
   const [age, setAge] = useState<string>("");
+
+  //search states
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [searchResults, setSearchResults] =
+    useState<TMDBMediaResponse<TMDBSeriesResponse> | null>(null);
+  const [searchOpenModal, setSearchOpenModal] = useState<boolean>(false);
+  const [searchHasResults, setSearchHasResults] = useState<boolean>(false);
+
+  //destructuring references
+  const {
+    currentPage,
+    setLists,
+    setPages,
+    setCurrentPage,
+    setRefetchContent,
+    setHasFiltersSelected,
+  } = references;
 
   const isFilterSelected: boolean =
     !!selectedLanguage ||
@@ -68,15 +90,6 @@ const Filters = ({ references }: FiltersProps) => {
     )
     .join("&");
 
-  const {
-    currentPage,
-    setLists,
-    setPages,
-    setCurrentPage,
-    setRefetchContent,
-    setHasFiltersSelected,
-  } = references;
-
   useEffect(() => {
     const fetchFilterData = async () => {
       if (!isFilterSelected) return;
@@ -108,10 +121,37 @@ const Filters = ({ references }: FiltersProps) => {
     setHasFiltersSelected(false);
   };
 
+  const handleSeachInput = async (value: string) => {
+    if (!value) return;
+    setSearchQuery(value);
+    setSearchOpenModal(!!searchOpenModal);
+
+    const data = await getSeriesSearchResultsFromTMDB(value);
+    console.log(data);
+
+    if (!data) {
+      setSearchResults(null);
+      return;
+    }
+    setSearchResults(data);
+    const hasResults: boolean = data && data.results && data.results.length > 0;
+    setSearchHasResults(hasResults);
+  };
+
   return (
     <div className="">
       <div className="gap-5 flex">
-        {queries && (
+        <div className="w-56">
+          <SearchComponent
+            query={searchQuery}
+            searchResult={{ series: searchResults?.results }}
+            hasResults={searchHasResults}
+            open={searchOpenModal}
+            setOpen={setSearchOpenModal}
+            handleSearchInput={handleSeachInput}
+          />
+        </div>
+        {queries.length > 1 && (
           <Button className="cursor-pointer" onClick={handleRemoveFilters}>
             Remove filters
           </Button>
