@@ -147,7 +147,7 @@ const Filters = ({ references }: FiltersProps) => {
             hasResults={searchHasResults}
             open={searchOpenModal}
             setOpen={setSearchOpenModal}
-            handleSearchInput={handleSeachInput}
+            onSearchInput={handleSeachInput}
           />
         </div>
         {queries.length > 1 && (

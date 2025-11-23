@@ -18,7 +18,7 @@ type SearchComponentProps = {
   hasResults: boolean;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  handleSearchInput: (inputValue: string) => void;
+  onSearchInput: (inputValue: string) => void;
 };
 
 const SearchComponent = ({
@@ -27,7 +27,7 @@ const SearchComponent = ({
   hasResults,
   open,
   setOpen,
-  handleSearchInput,
+  onSearchInput,
 }: SearchComponentProps) => {
   //destructuring results
   const { movies, series } = searchResult;
@@ -41,7 +41,7 @@ const SearchComponent = ({
               type="text"
               aria-label="Search"
               className=" w-25 focus-within:w-40 transition-all duration-300 ease-in-out shadow-sm origin-right ml-auto border-none bg-white dark:bg-white dark:text-black"
-              onChange={(e) => handleSearchInput(e.target.value)}
+              onChange={(e) => onSearchInput(e.target.value)}
               onFocus={() => setOpen(true)}
             />
             <Button
@@ -76,7 +76,7 @@ const SearchComponent = ({
               ))}
 
             {/* Movies */}
-            {movies && movies?.length > 0 ? (
+            {movies && movies?.length > 0 && (
               <>
                 <h4 className="text-sm font-semibold mb-1">Movies</h4>
                 {movies.slice(0, 10).map((movie) => (
@@ -92,10 +92,10 @@ const SearchComponent = ({
                   </div>
                 ))}
               </>
-            ) : null}
+            )}
 
             {/* Series */}
-            {series && series?.length > 0 ? (
+            {series && series?.length > 0 && (
               <>
                 <h4 className="text-sm font-semibold mt-2 mb-1">Series</h4>
                 {series.slice(0, 10).map((series) => (
@@ -111,7 +111,7 @@ const SearchComponent = ({
                   </div>
                 ))}
               </>
-            ) : null}
+            )}
           </PopoverContent>
         ) : null}
       </Popover>
