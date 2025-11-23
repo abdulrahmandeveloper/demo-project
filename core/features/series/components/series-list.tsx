@@ -16,10 +16,6 @@ const SeriesList = () => {
   const [hasFiltersSelected, setHasFiltersSelected] = useState<boolean>(false);
   const [refetchContent, setRefetchContent] = useState<boolean>(true);
 
-  console.log(currentPage);
-  console.log(pages);
-  console.log(refetchContent);
-
   useEffect(() => {
     const handleListsRequest = async () => {
       const listsData = await getSeriesListFromTmdb(currentPage);

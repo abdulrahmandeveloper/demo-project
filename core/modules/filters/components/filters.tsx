@@ -42,8 +42,6 @@ const Filters = ({ references }: FiltersProps) => {
     !!popular ||
     !!age;
 
-  console.log(year);
-
   const queryObject = {
     language: selectedLanguage,
     vote_average: rating,
@@ -70,8 +68,6 @@ const Filters = ({ references }: FiltersProps) => {
     )
     .join("&");
 
-  console.log("queries: ", queries);
-
   const {
     currentPage,
     setLists,
@@ -88,8 +84,6 @@ const Filters = ({ references }: FiltersProps) => {
       if (!queries || queries.length === 0) return;
 
       const data = await getSeriesDiscoveryFromTMDB(queries, currentPage);
-
-      console.log("new data: ", data);
 
       if (!data) return;
       setLists(data.results);
