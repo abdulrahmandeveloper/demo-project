@@ -11,23 +11,37 @@ import {
   tmdbYearsRange,
 } from "@/shared/constants/tmdb.constants.ts";
 import { getSeriesDiscoveryFromTMDB } from "@/modules/filters/services/filter.service";
+import { Button } from "@/shared/components/ui/button";
 
 type FiltersProps = {
   references: {
     setLists: Dispatch<SetStateAction<[]>>;
     setPages: Dispatch<SetStateAction<number>>;
     setCurrentPage: Dispatch<SetStateAction<number>>;
+    currentPage: number;
+    setRefetchContent: Dispatch<SetStateAction<boolean>>;
   };
 };
 
 const Filters = ({ references }: FiltersProps) => {
   const [selectedLanguage, setSelectedLanguage] = useState<string>("");
   const [year, setYear] = useState<string>("");
-  const [rating, setRating] = useState<number>(1);
+  const [rating, setRating] = useState<number>(0);
   const [genre, setGenre] = useState<string>("");
-  const [length, setLength] = useState<number>(1);
+  const [length, setLength] = useState<number>(0);
   const [popular, setPopular] = useState<string>("");
   const [age, setAge] = useState<string>("");
+
+  const filterSelected: boolean =
+    !!selectedLanguage ||
+    !!year ||
+    rating > 0 ||
+    !!genre ||
+    length > 0 ||
+    !!popular ||
+    !!age;
+
+  console.log(filterSelected);
 
   const queryObject = {
     language: selectedLanguage,
@@ -41,7 +55,7 @@ const Filters = ({ references }: FiltersProps) => {
 
   const queries = Object.entries(queryObject)
     .filter(
-      ([_, value]) => value !== undefined && value !== "" && value !== null
+      ([, value]) => value !== undefined && value !== "" && value !== null
     )
     .map(([key, value]) =>
       key === "vote_average"
@@ -54,22 +68,45 @@ const Filters = ({ references }: FiltersProps) => {
     )
     .join("&");
 
+  const { currentPage, setLists, setPages, setCurrentPage, setRefetchContent } =
+    references;
+
   useEffect(() => {
     const fetchFilterData = async () => {
-      const data = await getSeriesDiscoveryFromTMDB(queries);
+      if (!filterSelected) return;
+
+      if (!queries || queries.length === 0) return;
+
+      const data = await getSeriesDiscoveryFromTMDB(queries, currentPage);
 
       if (!data) return;
-      references.setLists(data.results);
-      references.setPages(data.total_pages);
-      references.setCurrentPage(data.page);
+      setLists(data.results);
+      setPages(data.total_pages);
+      setCurrentPage(data.page);
     };
 
     fetchFilterData();
   }, [queries]);
 
+  const handleRemoveFilters = () => {
+    setSelectedLanguage("");
+    setYear("");
+    setRating(1);
+    setGenre("");
+    setLength(1);
+    setPopular("");
+    setAge("");
+    setRefetchContent((prev) => !prev);
+  };
+
   return (
     <div className="">
       <div className="gap-5 flex">
+        {queries && (
+          <Button className="cursor-pointer" onClick={handleRemoveFilters}>
+            Remove filters
+          </Button>
+        )}
         <FilterSelection
           placeHolder={"Language by"}
           values={tmdbCountryCodes}

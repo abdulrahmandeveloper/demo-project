@@ -7,11 +7,13 @@ import Navbar from "@/shared/components/navigation/navbar";
 import Pagination from "@/shared/components/custom-ui/containers/pagination-container";
 import { navbarLinks } from "@/shared/constants/navbar-links.constants";
 import { useEffect, useState } from "react";
+import SearchComponent from "@/modules/search/components/search";
 
 const SeriesList = () => {
   const [lists, setLists] = useState<[]>([]);
   const [pages, setPages] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [refetchContent, setRefetchContent] = useState<boolean>(false);
 
   useEffect(() => {
     const handleListsRequest = async () => {
@@ -26,14 +28,14 @@ const SeriesList = () => {
     };
 
     handleListsRequest();
-  }, [currentPage]);
+  }, [currentPage, refetchContent]);
 
   return (
     <div className="">
       <Navbar
         logoPath={"/images/istar-logo.png"}
         links={navbarLinks}
-        search={true}
+        search={false}
       />
       <div className="my-6">
         <div className="w-3/4 mx-auto ">
@@ -42,7 +44,18 @@ const SeriesList = () => {
               Series
             </label>
             <div className="w-2/3 ml-auto">
-              <Filters references={{ setLists, setPages, setCurrentPage }} />
+              <div className="">
+                {/* <SearchComponent /> */}
+                <Filters
+                  references={{
+                    setLists,
+                    setPages,
+                    setCurrentPage,
+                    currentPage,
+                    setRefetchContent,
+                  }}
+                />
+              </div>
             </div>
           </div>
           <div className="grid grid-cols-5 gap-8 py-5">

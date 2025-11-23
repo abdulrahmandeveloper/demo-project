@@ -68,8 +68,20 @@ const PaginationContainer = ({
     <div>
       <Pagination>
         <PaginationContent className="cursor-pointer">
-          <PaginationItem>
-            <PaginationPrevious onClick={(e) => handlePreviousPageClick(e)} />
+          <PaginationItem aria-disabled={currentPage === 1}>
+            <PaginationPrevious
+              onClick={(e) => {
+                if (currentPage === 1) {
+                  e.preventDefault();
+                  return;
+                }
+                handlePreviousPageClick(e);
+              }}
+              aria-disabled={currentPage === 1}
+              className={`${
+                currentPage === 1 ? "pointer-events-none opacity-50" : ""
+              }`}
+            />
           </PaginationItem>
           {currentPage > 3 && (
             <div className="flex">
@@ -112,7 +124,19 @@ const PaginationContainer = ({
           )}
 
           <PaginationItem>
-            <PaginationNext onClick={(e) => handleNextPageClick(e)} />
+            <PaginationNext
+              onClick={(e) => {
+                if (currentPage === pages) {
+                  e.preventDefault();
+                  return;
+                }
+                handleNextPageClick(e);
+              }}
+              aria-disabled={currentPage === pages}
+              className={`${
+                currentPage === pages ? "pointer-events-none opacity-50" : ""
+              }`}
+            />
           </PaginationItem>
         </PaginationContent>
       </Pagination>
