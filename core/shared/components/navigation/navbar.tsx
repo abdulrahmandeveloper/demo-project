@@ -47,10 +47,10 @@ const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
     handleSearchData();
   };
 
-  const hasResults =
-    results &&
-    ((results.movies && results.movies.length > 0) ||
-      (results.series && results.series.length > 0));
+  const hasResults: boolean = Boolean(
+    (results.movies && results.movies.length > 0) ||
+      (results.series && results.series.length > 0)
+  );
 
   useEffect(() => {});
   return (

@@ -9,8 +9,6 @@ import {
 import { Search } from "lucide-react";
 import { queryResultsResponseData } from "@/modules/search/interfaces/search.interface";
 import { Dispatch, SetStateAction } from "react";
-import { TMDBSeriesResponse } from "@/features/series/interfaces/tmdb.interface";
-import { TMDBMediaResponse } from "@/shared/interfaces/tmdb.interface";
 
 type TMDBSearchResults = queryResultsResponseData;
 
@@ -31,7 +29,6 @@ const SearchComponent = ({
   setOpen,
   handleSearchInput,
 }: SearchComponentProps) => {
-  console.log("results in SearchComponent: ", searchResult);
   //destructuring results
   const { movies, series } = searchResult;
 
@@ -79,7 +76,7 @@ const SearchComponent = ({
               ))}
 
             {/* Movies */}
-            {movies?.length > 0 ? (
+            {movies && movies?.length > 0 ? (
               <>
                 <h4 className="text-sm font-semibold mb-1">Movies</h4>
                 {movies.slice(0, 10).map((movie) => (
@@ -98,7 +95,7 @@ const SearchComponent = ({
             ) : null}
 
             {/* Series */}
-            {series?.length > 0 ? (
+            {series && series?.length > 0 ? (
               <>
                 <h4 className="text-sm font-semibold mt-2 mb-1">Series</h4>
                 {series.slice(0, 10).map((series) => (

@@ -127,7 +127,6 @@ const Filters = ({ references }: FiltersProps) => {
     setSearchOpenModal(!!searchOpenModal);
 
     const data = await getSeriesSearchResultsFromTMDB(value);
-    console.log(data);
 
     if (!data) {
       setSearchResults(null);
@@ -144,7 +143,7 @@ const Filters = ({ references }: FiltersProps) => {
         <div className="w-56">
           <SearchComponent
             query={searchQuery}
-            searchResult={{ series: searchResults?.results }}
+            searchResult={{ series: searchResults?.results || [] }}
             hasResults={searchHasResults}
             open={searchOpenModal}
             setOpen={setSearchOpenModal}
