@@ -20,6 +20,7 @@ type FiltersProps = {
     setCurrentPage: Dispatch<SetStateAction<number>>;
     currentPage: number;
     setRefetchContent: Dispatch<SetStateAction<boolean>>;
+    setHasFiltersSelected: Dispatch<SetStateAction<boolean>>;
   };
 };
 
@@ -40,8 +41,6 @@ const Filters = ({ references }: FiltersProps) => {
     length > 0 ||
     !!popular ||
     !!age;
-
-  console.log(isFilterSelected);
 
   const queryObject = {
     language: selectedLanguage,
@@ -68,8 +67,14 @@ const Filters = ({ references }: FiltersProps) => {
     )
     .join("&");
 
-  const { currentPage, setLists, setPages, setCurrentPage, setRefetchContent } =
-    references;
+  const {
+    currentPage,
+    setLists,
+    setPages,
+    setCurrentPage,
+    setRefetchContent,
+    setHasFiltersSelected,
+  } = references;
 
   useEffect(() => {
     const fetchFilterData = async () => {
@@ -79,14 +84,17 @@ const Filters = ({ references }: FiltersProps) => {
 
       const data = await getSeriesDiscoveryFromTMDB(queries, currentPage);
 
+      console.log("new data: ", data);
+
       if (!data) return;
       setLists(data.results);
       setPages(data.total_pages);
       setCurrentPage(data.page);
+      setHasFiltersSelected((prev) => !prev);
     };
 
     fetchFilterData();
-  }, [queries]);
+  }, [queries, isFilterSelected, currentPage]);
 
   const handleRemoveFilters = () => {
     setSelectedLanguage("");

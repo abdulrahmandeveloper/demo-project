@@ -13,7 +13,12 @@ const SeriesList = () => {
   const [lists, setLists] = useState<[]>([]);
   const [pages, setPages] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [refetchContent, setRefetchContent] = useState<boolean>(false);
+  const [hasFiltersSelected, setHasFiltersSelected] = useState<boolean>(false);
+  const [refetchContent, setRefetchContent] = useState<boolean>(true);
+
+  console.log(currentPage);
+  console.log(pages);
+  console.log(refetchContent);
 
   useEffect(() => {
     const handleListsRequest = async () => {
@@ -22,9 +27,11 @@ const SeriesList = () => {
       if (!listsData) {
         return;
       }
-      setLists(listsData.results);
-      setCurrentPage(listsData.page);
-      setPages(listsData.total_pages);
+      if (!hasFiltersSelected) {
+        setLists(listsData.results);
+        setCurrentPage(listsData.page);
+        setPages(listsData.total_pages);
+      }
     };
 
     handleListsRequest();
@@ -53,6 +60,7 @@ const SeriesList = () => {
                     setCurrentPage,
                     currentPage,
                     setRefetchContent,
+                    setHasFiltersSelected,
                   }}
                 />
               </div>
