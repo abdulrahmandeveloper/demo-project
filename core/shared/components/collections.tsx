@@ -19,6 +19,8 @@ const ShowCollectionPartsPoster = ({ parts }: { parts: collectionParts[] }) => {
     return <p>No Parts Posters to show</p>;
   }
 
+  console.log(parts);
+
   return (
     <div className="relative flex items-center justify-end">
       <div className="flex items-center justify-end gap-0 relative">

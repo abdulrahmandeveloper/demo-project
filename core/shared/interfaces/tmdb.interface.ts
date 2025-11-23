@@ -50,6 +50,7 @@ export interface TMDBVideoReferenceResponse {
 }
 
 export interface collectionParts extends TMDBCommonMediaDataResponse {
+  title: string;
   media_type: string;
 }
 

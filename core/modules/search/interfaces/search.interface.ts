@@ -3,5 +3,5 @@ import { TMDBSeriesResponse } from "@/features/series/interfaces/tmdb.interface"
 
 export interface queryResultsResponseData {
   movies: TMDBMovieResponse[];
-  serieses: TMDBSeriesResponse[];
+  series: TMDBSeriesResponse[];
 }

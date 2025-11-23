@@ -23,7 +23,7 @@ const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<queryResultsResponseData>({
     movies: [],
-    serieses: [],
+    series: [],
   });
   const [open, setOpen] = useState<boolean>(false);
 
@@ -50,7 +50,7 @@ const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
   const hasResults =
     results &&
     ((results.movies && results.movies.length > 0) ||
-      (results.serieses && results.serieses.length > 0));
+      (results.series && results.series.length > 0));
 
   useEffect(() => {});
   return (

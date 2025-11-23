@@ -39,7 +39,7 @@ const SeriesList = () => {
         <div className="w-3/4 mx-auto ">
           <div className="flex ">
             <label htmlFor="" className="font-bold text-2xl">
-              Serieses
+              Series
             </label>
             <div className="w-2/3 ml-auto">
               <Filters references={{ setLists, setPages, setCurrentPage }} />

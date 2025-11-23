@@ -90,10 +90,10 @@ const SearchComponent = ({
             )}
 
             {/* Series */}
-            {results?.serieses?.length > 0 && (
+            {results?.series?.length > 0 && (
               <>
                 <h4 className="text-sm font-semibold mt-2 mb-1">Series</h4>
-                {results.serieses.slice(0, 10).map((series) => (
+                {results.series.slice(0, 10).map((series) => (
                   <div
                     key={series.id}
                     className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded cursor-pointer"

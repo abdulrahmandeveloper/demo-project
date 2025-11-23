@@ -10,7 +10,7 @@ import {
   tmdbTvGenres,
   tmdbYearsRange,
 } from "@/shared/constants/tmdb.constants.ts";
-import { getSeriesDiscoveryFromTMDB } from "@/features/series/services/tmdb.service";
+import { getSeriesDiscoveryFromTMDB } from "@/modules/filters/services/filter.service";
 
 type FiltersProps = {
   references: {
