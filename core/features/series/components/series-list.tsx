@@ -33,7 +33,7 @@ const SeriesList = () => {
       <Navbar
         logoPath={"/images/istar-logo.png"}
         links={navbarLinks}
-        search={false}
+        search={true}
       />
       <div className="my-6">
         <div className="w-3/4 mx-auto ">

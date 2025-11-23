@@ -33,18 +33,16 @@ const ListCard = ({ list, className }: ListCardProps) => {
   }, []);
 
   return (
-    <div className=" ">
-      <div className="relative p-2 group">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-
+    <div className="p-1">
+      <div className="relative  group w-full px-[3px] py-[4.85px]">
         <img
           src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${list.poster_path}`}
           alt={list.original_name}
-          className={`${className}  aspect-2/3 overflow-hidden transition-all duration-300 group-hover:scale-[1.02] group-hover:shadow-lg shadow-inner group-hover:shadow-white/50`}
+          className={`${className}  aspect-2/3 overflow-hidden transition-all duration-300 group-hover:scale-[1.025] group-hover:shadow-lg shadow-inner group-hover:shadow-white/50 `}
         />
 
-        <div className="absolute cursor-pointer inset-0 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/75 hover:rounded-lg">
-          <div className="flex flex-col items-center gap-1 rounded-lg px-3 py-2">
+        <div className="absolute cursor-pointer inset-0 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/75 hover:rounded-lg ">
+          <div className="flex flex-col items-center gap-1 rounded-lg ">
             {genres?.map((genre, index) => (
               <p className="text-lg" key={index}>
                 {genre}
