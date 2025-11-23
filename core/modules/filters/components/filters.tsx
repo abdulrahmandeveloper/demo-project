@@ -27,20 +27,22 @@ type FiltersProps = {
 const Filters = ({ references }: FiltersProps) => {
   const [selectedLanguage, setSelectedLanguage] = useState<string>("");
   const [year, setYear] = useState<string>("");
-  const [rating, setRating] = useState<number>(0);
+  const [rating, setRating] = useState<number | null>(null);
   const [genre, setGenre] = useState<string>("");
-  const [length, setLength] = useState<number>(0);
+  const [length, setLength] = useState<number | null>(null);
   const [popular, setPopular] = useState<string>("");
   const [age, setAge] = useState<string>("");
 
   const isFilterSelected: boolean =
     !!selectedLanguage ||
     !!year ||
-    rating > 0 ||
+    (rating !== null && rating > 0) ||
     !!genre ||
-    length > 0 ||
+    (length !== null && length > 0) ||
     !!popular ||
     !!age;
+
+  console.log(year);
 
   const queryObject = {
     language: selectedLanguage,
@@ -50,6 +52,7 @@ const Filters = ({ references }: FiltersProps) => {
     with_runtime: length,
     certification_country: "US",
     "certification.lte": age,
+    first_air_date_year: year,
   };
 
   const queries = Object.entries(queryObject)
@@ -61,11 +64,13 @@ const Filters = ({ references }: FiltersProps) => {
         ? rating
         : key === "with_runtime"
         ? length
-        : key === "first_air_dat"
+        : key === "first_air_date_year"
         ? year
         : `${key}=${value}`
     )
     .join("&");
+
+  console.log("queries: ", queries);
 
   const {
     currentPage,
@@ -99,12 +104,14 @@ const Filters = ({ references }: FiltersProps) => {
   const handleRemoveFilters = () => {
     setSelectedLanguage("");
     setYear("");
-    setRating(1);
+    setRating(null);
     setGenre("");
-    setLength(1);
+    setLength(null);
     setPopular("");
     setAge("");
     setRefetchContent((prev) => !prev);
+    setCurrentPage(1);
+    setHasFiltersSelected(false);
   };
 
   return (
