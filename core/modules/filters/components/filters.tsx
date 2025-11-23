@@ -32,7 +32,7 @@ const Filters = ({ references }: FiltersProps) => {
   const [popular, setPopular] = useState<string>("");
   const [age, setAge] = useState<string>("");
 
-  const filterSelected: boolean =
+  const isFilterSelected: boolean =
     !!selectedLanguage ||
     !!year ||
     rating > 0 ||
@@ -41,7 +41,7 @@ const Filters = ({ references }: FiltersProps) => {
     !!popular ||
     !!age;
 
-  console.log(filterSelected);
+  console.log(isFilterSelected);
 
   const queryObject = {
     language: selectedLanguage,
@@ -73,7 +73,7 @@ const Filters = ({ references }: FiltersProps) => {
 
   useEffect(() => {
     const fetchFilterData = async () => {
-      if (!filterSelected) return;
+      if (!isFilterSelected) return;
 
       if (!queries || queries.length === 0) return;
 
