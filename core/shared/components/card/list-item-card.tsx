@@ -1,17 +1,21 @@
 "use client";
 
-import { TMDBSeriesResponse } from "@/features/series/interfaces/tmdb.interface";
+import { TMDBMovieResponse } from "@/features/movie/interfaces/tmdb.interface";
+//import { TMDBSeriesResponse } from "@/features/series/interfaces/tmdb.interface";
 import { getGenresFromTmdb } from "@/shared/services/tmdb.service";
 import { useEffect, useState } from "react";
 
-type ListCardProps = {
-  list: TMDBSeriesResponse;
+type ListItemCardProps<T> = {
+  list: T;
   className: string;
 };
 
-const ListCard = ({ list, className }: ListCardProps) => {
+const ListItemCard = ({ list, className }: ListItemCardProps<T>) => {
   const [genres, setGenres] = useState<string[]>();
 
+  //console.log(list.original_title);
+
+  const title = list.name ? list.name : list.original_title;
   useEffect(() => {
     const selectGenres = async () => {
       const data = await getGenresFromTmdb();
@@ -37,7 +41,7 @@ const ListCard = ({ list, className }: ListCardProps) => {
       <div className="relative  group w-full px-[3px] py-[4.85px]">
         <img
           src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${list.poster_path}`}
-          alt={list.original_name}
+          alt={list.original_name ? list.original_name : list.original_title}
           className={`${className}  aspect-2/3 overflow-hidden transition-all duration-300 group-hover:scale-[1.025] group-hover:shadow-lg shadow-inner group-hover:shadow-white/50 `}
         />
 
@@ -53,11 +57,13 @@ const ListCard = ({ list, className }: ListCardProps) => {
       </div>
 
       <div className="flex items-center justify-center flex-col gap-2 mt-4">
-        <h2 className="text-lg font-bold text-center ">{list.name}</h2>
+        <h2 className="text-lg font-bold text-center ">
+          {list.name ? list.name : title}
+        </h2>
         <p>{list.vote_average}</p>
       </div>
     </div>
   );
 };
 
-export default ListCard;
+export default ListItemCard;

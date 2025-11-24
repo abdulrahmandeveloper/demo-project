@@ -1,9 +1,1 @@
-import React from 'react'
-
-const MoviesList = () => {
-  return (
-    <div>MoviesList</div>
-  )
-}
-
-export default MoviesList
+export { default as MoviesList } from "@/features/movie/components/movie-list";

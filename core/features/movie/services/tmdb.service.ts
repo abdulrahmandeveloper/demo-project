@@ -82,6 +82,14 @@ export const getMoviesVideosID = async (
 };
 
 //
-/* export const getMoviesListFromTmdb = () => {
-  const req = tmdbApi.get("");
-}; */
+export const getMoviesListFromTmdb = async (): Promise<
+  TMDBMediaResponse<TMDBMovieResponse>
+> => {
+  const res = await tmdbApi.get(
+    `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/movie/top_rated`
+  );
+
+  const data = res.data;
+
+  return data;
+};

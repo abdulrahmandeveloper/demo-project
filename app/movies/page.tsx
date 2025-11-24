@@ -1,5 +1,4 @@
-import MoviesList from "@/routes/movies";
-import React from "react";
+import { MoviesList } from "@/routes/movies";
 
 const page = () => {
   return (

@@ -1,7 +1,7 @@
 "use client";
 
 import { getSeriesListFromTmdb } from "@/features/series/services/tmdb.service";
-import ListCard from "@/shared/components/card/list-item-card";
+import ListItemCard from "@/shared/components/card/list-item-card";
 import Filters from "@/modules/filters/components/filters";
 import Navbar from "@/shared/components/navigation/navbar";
 import Pagination from "@/shared/components/custom-ui/containers/pagination-container";
@@ -40,11 +40,11 @@ const SeriesList = () => {
         links={navbarLinks}
         search={false}
       />
-      <div className="my-6">
+      <div className="p-8">
         <div className="w-3/4 mx-auto ">
           <div className="flex ">
             <label htmlFor="" className="font-bold text-2xl">
-              Series
+              Discover Series
             </label>
             <div className="w-2/3 ml-auto">
               <div className="">
@@ -61,11 +61,11 @@ const SeriesList = () => {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-5 gap-8 py-5">
+          <div className="grid grid-cols-5 gap-3 py-5 w-19/20 mx-auto">
             {lists.length > 0 &&
               lists.map((list, index) => (
                 <div key={index}>
-                  <ListCard list={list} className="rounded-lg " />
+                  <ListItemCard list={list} className="rounded-lg " />
                 </div>
               ))}
           </div>{" "}
