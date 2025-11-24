@@ -1,6 +1,6 @@
 "use client";
 
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import FilterSelection from "@/shared/components/custom-ui/containers/selection-container";
 import {
   tmdbContentRatings,
@@ -90,6 +90,8 @@ const Filters = ({ references }: FiltersProps) => {
     )
     .join("&");
 
+  const queriesRef = useRef(queries);
+
   useEffect(() => {
     const fetchFilterData = async () => {
       if (!isFilterSelected) return;
@@ -99,14 +101,23 @@ const Filters = ({ references }: FiltersProps) => {
       const data = await getSeriesDiscoveryFromTMDB(queries, currentPage);
 
       if (!data) return;
+
       setLists(data.results);
       setPages(data.total_pages);
-      setCurrentPage(data.page);
+
+      //check if queries have changed
+      if (queriesRef.current !== queries) {
+        setCurrentPage(1);
+        queriesRef.current = queries;
+      } else {
+        setCurrentPage(data.page);
+      }
+
       setHasFiltersSelected((prev) => !prev);
     };
 
     fetchFilterData();
-  }, [queries, isFilterSelected, currentPage]);
+  }, [queries, isFilterSelected, currentPage, setPages]);
 
   const handleRemoveFilters = () => {
     setSelectedLanguage("");

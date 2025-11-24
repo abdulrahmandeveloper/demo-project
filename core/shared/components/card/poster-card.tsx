@@ -1,19 +1,18 @@
-import Image from "next/image";
-
 type posterCardProps = { src: string; className?: string };
 
 const PosterCard = ({ src, className }: posterCardProps) => {
   return (
     <div>
-      <Image
+      <img
         src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}${src}`}
         alt="image"
-        className={className}
-        width={0}
-        height={0}
+        className={`${className} rounded-lg`}
       />
     </div>
   );
 };
 
 export default PosterCard;
+
+// object-cover
+// width: 300px height:450px

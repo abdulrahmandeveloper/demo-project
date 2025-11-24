@@ -54,7 +54,7 @@ const MediaCard = ({
                   : `${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}${movie.poster_path}`
               }`}
               alt="poster"
-              className="w-full h-full object-cover transition-all duration-300 group-hover:opacity-90"
+              className="w-full h-full "
             />
 
             {showOverlay && (
