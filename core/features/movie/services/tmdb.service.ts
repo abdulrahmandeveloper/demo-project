@@ -82,11 +82,24 @@ export const getMoviesVideosID = async (
 };
 
 //
-export const getMoviesListFromTmdb = async (): Promise<
-  TMDBMediaResponse<TMDBMovieResponse>
-> => {
+export const getMoviesListFromTmdb = async (
+  page: number = 1
+): Promise<TMDBMediaResponse<TMDBMovieResponse>> => {
   const res = await tmdbApi.get(
-    `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/movie/top_rated`
+    `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/movie/top_rated?page=${page}&language=en-US`
+  );
+
+  const data = res.data;
+
+  return data;
+};
+
+export const getMoviesDiscoveryFromTmdb = async (
+  queries: string,
+  page: number = 1
+): Promise<TMDBMediaResponse<TMDBMovieResponse>> => {
+  const res = await tmdbApi.get(
+    `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/discover/movie?page=${page}&${queries}`
   );
 
   const data = res.data;

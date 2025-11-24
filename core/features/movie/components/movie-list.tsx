@@ -6,17 +6,21 @@ import { navbarLinks } from "@/shared/constants/navbar-links.constants";
 import React, { useEffect, useState } from "react";
 import { getMoviesListFromTmdb } from "../services/tmdb.service";
 import ListItemCard from "@/shared/components/card/list-item-card";
+import PaginationContainer from "@/shared/components/custom-ui/containers/pagination-container";
+import Filters from "@/modules/filters/components/filters";
 
 const MoviesList = () => {
   const [list, setList] = useState<TMDBMovieResponse[]>([]);
   const [pages, setPages] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [hasFiltersSelected, setHasFiltersSelected] = useState<boolean>(false);
-  //const [refetchContent, setRefetchContent] = useState<boolean>(true);
+  const [refetchContent, setRefetchContent] = useState<boolean>(true);
+  console.log(hasFiltersSelected);
 
   useEffect(() => {
     const fetchMovies = async () => {
-      const data = await getMoviesListFromTmdb();
+      const data = await getMoviesListFromTmdb(currentPage);
+
       if (data) {
         setList(data.results);
         setPages(data.total_pages);
@@ -25,7 +29,8 @@ const MoviesList = () => {
     };
 
     fetchMovies();
-  }, []);
+  }, [hasFiltersSelected]);
+
   return (
     <div className="w-3/4 mx-auto">
       <Navbar
@@ -34,7 +39,22 @@ const MoviesList = () => {
         search={false}
       />
       <div className="p-8">
-        <h1 className="font-bold text-2xl">Discover Movies</h1>
+        <div className="flex  gap-28 items-center my-2 mr-auto">
+          <h1 className="font-bold text-2xl">Discover Movies</h1>
+          <div className="w-1/3">
+            <Filters
+              references={{
+                setList,
+                setPages,
+                currentPage,
+                setCurrentPage,
+                setHasFiltersSelected,
+                setRefetchContent,
+                mediaType: "movie",
+              }}
+            />
+          </div>
+        </div>
         <div className="grid grid-cols-5 w-19/20 mx-auto gap-3 py-5">
           {" "}
           {list.map((movie) => {
@@ -44,6 +64,13 @@ const MoviesList = () => {
               </div>
             );
           })}
+        </div>
+        <div className="flex ml-auto justify-end py-3 px-12">
+          <PaginationContainer
+            pages={pages}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </div>
       </div>
     </div>

@@ -3,32 +3,42 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import FilterSelection from "@/shared/components/custom-ui/containers/filter-selection-container";
 import {
-  tmdbContentRatings,
-  tmdbCountryCodes,
-  tmdbRating,
-  tmdbRuntimeFilters,
+  tmdbTvContentRatings,
   tmdbTvGenres,
-  tmdbYearsRange,
-} from "@/shared/constants/tmdb.constants.ts";
+  tmdbTvRuntimeFilters,
+  tmdbTvYearsRange,
+} from "@/features/series/constants/tmdb.constants.ts";
 import { getSeriesDiscoveryFromTMDB } from "@/modules/filters/services/filter.service";
 import { Button } from "@/shared/components/ui/button";
 import SearchComponent from "@/modules/search/components/search";
 import { getSeriesSearchResultsFromTMDB } from "@/features/series/services/tmdb.service";
 import { TMDBMediaResponse } from "@/shared/interfaces/tmdb.interface";
 import { TMDBSeriesResponse } from "@/features/series/interfaces/tmdb.interface";
+import { getMoviesDiscoveryFromTmdb } from "@/features/movie/services/tmdb.service";
+import {
+  tmdbMovieContentRatings,
+  tmdbMovieGenres,
+  tmdbMovieRuntimeFilters,
+  tmdbMovieYearsRange,
+} from "@/features/movie/constants/tmdb.constants";
+import {
+  tmdbCountryCodes,
+  tmdbRating,
+} from "@/shared/constants/tmdb.constants";
 
-type FiltersProps = {
+type FiltersProps<T> = {
   references: {
-    setLists: Dispatch<SetStateAction<TMDBSeriesResponse[]>>;
+    setList: Dispatch<SetStateAction<T[]>>;
     setPages: Dispatch<SetStateAction<number>>;
     setCurrentPage: Dispatch<SetStateAction<number>>;
     currentPage: number;
     setRefetchContent: Dispatch<SetStateAction<boolean>>;
     setHasFiltersSelected: Dispatch<SetStateAction<boolean>>;
+    mediaType: "movie" | "tv";
   };
 };
 
-const Filters = ({ references }: FiltersProps) => {
+const Filters = ({ references }: FiltersProps<T>) => {
   const [selectedLanguage, setSelectedLanguage] = useState<string>("");
   const [year, setYear] = useState<string>("");
   const [rating, setRating] = useState<number | null>(null);
@@ -47,21 +57,33 @@ const Filters = ({ references }: FiltersProps) => {
   //destructuring references
   const {
     currentPage,
-    setLists,
+    setList,
     setPages,
     setCurrentPage,
     setRefetchContent,
     setHasFiltersSelected,
+    mediaType,
   } = references;
 
-  /*   const isFilterSelected: boolean =
-    !!selectedLanguage ||
-    !!year ||
-    (rating !== null && rating > 0) ||
-    !!genre ||
-    (length !== null && length > 0) ||
-    !!popular ||
-    !!age; */
+  // determinig values objects
+  const selectionOptions =
+    mediaType === "tv"
+      ? {
+          tmdbCountryCodes: tmdbCountryCodes,
+          tmdbRating: tmdbRating,
+          tmdbGenre: tmdbTvGenres,
+          tmdbRuntimeFilters: tmdbTvRuntimeFilters,
+          tmdbYearsRange: tmdbTvYearsRange,
+          tmdbContentRatings: tmdbTvContentRatings,
+        }
+      : {
+          tmdbCountryCodes: tmdbCountryCodes,
+          tmdbRating: tmdbRating,
+          tmdbGenre: tmdbMovieGenres,
+          tmdbRuntimeFilters: tmdbMovieRuntimeFilters,
+          tmdbYearsRange: tmdbMovieYearsRange,
+          tmdbContentRatings: tmdbMovieContentRatings,
+        };
 
   const queryObject = {
     language: selectedLanguage,
@@ -94,12 +116,21 @@ const Filters = ({ references }: FiltersProps) => {
   useEffect(() => {
     const fetchFilterData = async () => {
       if (!queries || queries.length === 0) return;
+      console.log(queries);
 
-      const data = await getSeriesDiscoveryFromTMDB(queries, currentPage);
+      let data;
+      if (mediaType === "tv") {
+        data = await getSeriesDiscoveryFromTMDB(queries, currentPage);
+      } else if (mediaType === "movie") {
+        console.log("inside movie discovery");
+
+        data = await getMoviesDiscoveryFromTmdb(queries, currentPage);
+        setHasFiltersSelected((prev) => !prev);
+      }
 
       if (!data) return;
 
-      setLists(data.results);
+      setList(data.results);
       setPages(data.total_pages);
 
       //check if queries have changed
@@ -109,8 +140,6 @@ const Filters = ({ references }: FiltersProps) => {
       } else {
         setCurrentPage(data.page);
       }
-
-      setHasFiltersSelected((prev) => !prev);
     };
 
     fetchFilterData();
@@ -147,8 +176,8 @@ const Filters = ({ references }: FiltersProps) => {
 
   return (
     <div className="">
-      <div className="gap-5 flex">
-        <div className="w-56">
+      <div className="gap-5 flex mx-auto object-cover">
+        <div className="">
           <SearchComponent
             query={searchQuery}
             searchResult={{ series: searchResults?.results || [] }}
@@ -165,13 +194,13 @@ const Filters = ({ references }: FiltersProps) => {
         )}
         <FilterSelection
           placeHolder={"Language by"}
-          values={tmdbCountryCodes}
+          values={selectionOptions.tmdbCountryCodes}
           value={selectedLanguage}
           setValues={setSelectedLanguage}
         />
         <FilterSelection
           placeHolder={"Rating"}
-          values={tmdbRating}
+          values={selectionOptions?.tmdbRating}
           value={rating}
           setValues={setRating}
         />
@@ -186,25 +215,25 @@ const Filters = ({ references }: FiltersProps) => {
         />
         <FilterSelection
           placeHolder={"Genre"}
-          values={tmdbTvGenres}
+          values={selectionOptions?.tmdbGenre}
           value={genre}
           setValues={setGenre}
         />
         <FilterSelection
           placeHolder={"year"}
-          values={tmdbYearsRange}
+          values={selectionOptions?.tmdbYearsRange}
           value={year}
           setValues={setYear}
         />
         <FilterSelection
           placeHolder={"Length"}
-          values={tmdbRuntimeFilters}
+          values={selectionOptions?.tmdbRuntimeFilters}
           value={length}
           setValues={setLength}
         />
         <FilterSelection
           placeHolder={"Age"}
-          values={tmdbContentRatings}
+          values={selectionOptions?.tmdbContentRatings}
           value={age}
           setValues={setAge}
         />

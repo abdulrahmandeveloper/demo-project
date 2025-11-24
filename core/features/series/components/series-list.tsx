@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { TMDBSeriesResponse } from "../interfaces/tmdb.interface";
 
 const SeriesList = () => {
-  const [lists, setLists] = useState<TMDBSeriesResponse[]>([]);
+  const [list, setList] = useState<TMDBSeriesResponse[]>([]);
   const [pages, setPages] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [hasFiltersSelected, setHasFiltersSelected] = useState<boolean>(false);
@@ -24,7 +24,7 @@ const SeriesList = () => {
         return;
       }
       if (!hasFiltersSelected) {
-        setLists(listsData.results);
+        setList(listsData.results);
         setCurrentPage(listsData.page);
         setPages(listsData.total_pages);
       }
@@ -50,7 +50,7 @@ const SeriesList = () => {
               <div className="">
                 <Filters
                   references={{
-                    setLists,
+                    setList,
                     setPages,
                     setCurrentPage,
                     currentPage,
@@ -62,8 +62,8 @@ const SeriesList = () => {
             </div>
           </div>
           <div className="grid grid-cols-5 gap-3 py-5 w-19/20 mx-auto">
-            {lists.length > 0 &&
-              lists.map((list, index) => (
+            {list.length > 0 &&
+              list.map((list, index) => (
                 <div key={index}>
                   <ListItemCard list={list} className="rounded-lg " />
                 </div>

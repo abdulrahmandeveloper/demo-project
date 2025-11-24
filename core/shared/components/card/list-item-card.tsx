@@ -1,6 +1,5 @@
 "use client";
 
-import { TMDBMovieResponse } from "@/features/movie/interfaces/tmdb.interface";
 //import { TMDBSeriesResponse } from "@/features/series/interfaces/tmdb.interface";
 import { getGenresFromTmdb } from "@/shared/services/tmdb.service";
 import { useEffect, useState } from "react";
@@ -13,9 +12,8 @@ type ListItemCardProps<T> = {
 const ListItemCard = ({ list, className }: ListItemCardProps<T>) => {
   const [genres, setGenres] = useState<string[]>();
 
-  //console.log(list.original_title);
+  const title = list.name ? list.name : list.title;
 
-  const title = list.name ? list.name : list.original_title;
   useEffect(() => {
     const selectGenres = async () => {
       const data = await getGenresFromTmdb();

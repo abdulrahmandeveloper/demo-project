@@ -11,7 +11,6 @@ export const getSeriesDiscoveryFromTMDB = async (
   );
 
   const data = res.data;
-  console.log(data);
 
   return data;
 };

@@ -1,20 +1,3 @@
-export const tmdbCountryCodes = [
-  { name: "English", value: "en" },
-  { name: "French", value: "fr" },
-  { name: "Spanish", value: "es" },
-  { name: "Russian", value: "ru" },
-  { name: "German", value: "de" },
-  { name: "Japanese", value: "ja" },
-  { name: "Korean", value: "ko" },
-  { name: "Hindi", value: "hi" },
-  { name: "Portuguese", value: "pt" },
-  { name: "Tamil", value: "ta" },
-  { name: "Telugu", value: "te" },
-  { name: "Malay", value: "ms" },
-  { name: "Ukrainian", value: "uk" },
-  { name: "Turkish", value: "tr" },
-];
-
 export const tmdbTvGenres = [
   { value: null, name: "All genres" },
   { value: 10759, name: "Action & Adventure" },
@@ -35,7 +18,7 @@ export const tmdbTvGenres = [
   { value: 37, name: "Western" },
 ];
 
-export const tmdbContentRatings = [
+export const tmdbTvContentRatings = [
   { value: null, name: "No Ratings" },
   { value: "TV-Y", name: "All Children" },
   { value: "TV-Y7", name: "Directed to Older Children (7+)" },
@@ -46,7 +29,7 @@ export const tmdbContentRatings = [
   { value: "NR", name: "Not Rated" },
 ];
 
-export const tmdbRuntimeFilters = [
+export const tmdbTvRuntimeFilters = [
   { value: null, name: "Any time" },
   {
     name: "0-30 minutes",
@@ -74,7 +57,7 @@ export const tmdbRuntimeFilters = [
   },
 ];
 
-export const tmdbYearsRange = [
+export const tmdbTvYearsRange = [
   { value: null, name: "Any years" },
   {
     name: "1950s - 1970s",
@@ -100,17 +83,4 @@ export const tmdbYearsRange = [
     name: "2010s - present",
     value: "first_air_date.gte=2011-01-01",
   },
-];
-
-export const tmdbRating = [
-  { value: null, name: "Any ratings" },
-  { value: "vote_average.gte=1", name: "1+" },
-  { value: "vote_average.gte=2", name: "2+" },
-  { value: "vote_average.gte=3", name: "3+" },
-  { value: "vote_average.gte=4", name: "4+" },
-  { value: "vote_average.gte=5", name: "5+" },
-  { value: "vote_average.gte=6", name: "6+" },
-  { value: "vote_average.gte=7", name: "7+" },
-  { value: "vote_average.gte=8", name: "8+" },
-  { value: "vote_average.gte=9", name: "9+" },
 ];
