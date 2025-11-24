@@ -7,9 +7,10 @@ import Navbar from "@/shared/components/navigation/navbar";
 import Pagination from "@/shared/components/custom-ui/containers/pagination-container";
 import { navbarLinks } from "@/shared/constants/navbar-links.constants";
 import { useEffect, useState } from "react";
+import { TMDBSeriesResponse } from "../interfaces/tmdb.interface";
 
 const SeriesList = () => {
-  const [lists, setLists] = useState<[]>([]);
+  const [lists, setLists] = useState<TMDBSeriesResponse[]>([]);
   const [pages, setPages] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [hasFiltersSelected, setHasFiltersSelected] = useState<boolean>(false);

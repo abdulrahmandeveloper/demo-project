@@ -1,7 +1,7 @@
 "use client";
 
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import FilterSelection from "@/shared/components/custom-ui/containers/selection-container";
+import FilterSelection from "@/shared/components/custom-ui/containers/filter-selection-container";
 import {
   tmdbContentRatings,
   tmdbCountryCodes,
@@ -13,14 +13,13 @@ import {
 import { getSeriesDiscoveryFromTMDB } from "@/modules/filters/services/filter.service";
 import { Button } from "@/shared/components/ui/button";
 import SearchComponent from "@/modules/search/components/search";
-import { queryResultsResponseData } from "@/modules/search/interfaces/search.interface";
 import { getSeriesSearchResultsFromTMDB } from "@/features/series/services/tmdb.service";
 import { TMDBMediaResponse } from "@/shared/interfaces/tmdb.interface";
 import { TMDBSeriesResponse } from "@/features/series/interfaces/tmdb.interface";
 
 type FiltersProps = {
   references: {
-    setLists: Dispatch<SetStateAction<[]>>;
+    setLists: Dispatch<SetStateAction<TMDBSeriesResponse[]>>;
     setPages: Dispatch<SetStateAction<number>>;
     setCurrentPage: Dispatch<SetStateAction<number>>;
     currentPage: number;
@@ -33,7 +32,7 @@ const Filters = ({ references }: FiltersProps) => {
   const [selectedLanguage, setSelectedLanguage] = useState<string>("");
   const [year, setYear] = useState<string>("");
   const [rating, setRating] = useState<number | null>(null);
-  const [genre, setGenre] = useState<string>("");
+  const [genre, setGenre] = useState<string | null>(null);
   const [length, setLength] = useState<number | null>(null);
   const [popular, setPopular] = useState<string>("");
   const [age, setAge] = useState<string>("");
@@ -55,14 +54,14 @@ const Filters = ({ references }: FiltersProps) => {
     setHasFiltersSelected,
   } = references;
 
-  const isFilterSelected: boolean =
+  /*   const isFilterSelected: boolean =
     !!selectedLanguage ||
     !!year ||
     (rating !== null && rating > 0) ||
     !!genre ||
     (length !== null && length > 0) ||
     !!popular ||
-    !!age;
+    !!age; */
 
   const queryObject = {
     language: selectedLanguage,
@@ -94,8 +93,6 @@ const Filters = ({ references }: FiltersProps) => {
 
   useEffect(() => {
     const fetchFilterData = async () => {
-      if (!isFilterSelected) return;
-
       if (!queries || queries.length === 0) return;
 
       const data = await getSeriesDiscoveryFromTMDB(queries, currentPage);
@@ -117,13 +114,13 @@ const Filters = ({ references }: FiltersProps) => {
     };
 
     fetchFilterData();
-  }, [queries, isFilterSelected, currentPage, setPages]);
+  }, [queries, currentPage, setPages, genre]);
 
   const handleRemoveFilters = () => {
     setSelectedLanguage("");
     setYear("");
     setRating(null);
-    setGenre("");
+    setGenre(null);
     setLength(null);
     setPopular("");
     setAge("");
@@ -169,11 +166,13 @@ const Filters = ({ references }: FiltersProps) => {
         <FilterSelection
           placeHolder={"Language by"}
           values={tmdbCountryCodes}
+          value={selectedLanguage}
           setValues={setSelectedLanguage}
         />
         <FilterSelection
           placeHolder={"Rating"}
           values={tmdbRating}
+          value={rating}
           setValues={setRating}
         />
         <FilterSelection
@@ -182,26 +181,31 @@ const Filters = ({ references }: FiltersProps) => {
             { value: "popularity.desc", name: "Most popular" },
             { value: "popularity.asc", name: "Least popular" },
           ]}
+          value={popular}
           setValues={setPopular}
         />
         <FilterSelection
           placeHolder={"Genre"}
           values={tmdbTvGenres}
+          value={genre}
           setValues={setGenre}
         />
         <FilterSelection
           placeHolder={"year"}
           values={tmdbYearsRange}
+          value={year}
           setValues={setYear}
         />
         <FilterSelection
           placeHolder={"Length"}
           values={tmdbRuntimeFilters}
+          value={length}
           setValues={setLength}
         />
         <FilterSelection
           placeHolder={"Age"}
           values={tmdbContentRatings}
+          value={age}
           setValues={setAge}
         />
       </div>

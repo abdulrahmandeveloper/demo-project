@@ -36,6 +36,7 @@ export const tmdbTvGenres = [
 ];
 
 export const tmdbContentRatings = [
+  { value: null, name: "No Ratings" },
   { value: "TV-Y", name: "All Children" },
   { value: "TV-Y7", name: "Directed to Older Children (7+)" },
   { value: "TV-G", name: "General Audience" },
