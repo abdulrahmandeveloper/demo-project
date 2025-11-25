@@ -1,18 +1,25 @@
 "use client";
 
-//import { TMDBSeriesResponse } from "@/features/series/interfaces/tmdb.interface";
+import { TMDBMovieResponse } from "@/features/movie/interfaces/tmdb.interface";
+import { TMDBSeriesResponse } from "@/features/series/interfaces/tmdb.interface";
 import { getGenresFromTmdb } from "@/shared/services/tmdb.service";
 import { useEffect, useState } from "react";
 
-type ListItemCardProps<T> = {
+type ListTypes = TMDBMovieResponse | TMDBSeriesResponse;
+
+type ListItemCardProps<T extends ListTypes> = {
   list: T;
   className: string;
 };
 
-const ListItemCard = ({ list, className }: ListItemCardProps<T>) => {
+const ListItemCard = <T extends ListTypes>({
+  list,
+  className,
+}: ListItemCardProps<T>) => {
   const [genres, setGenres] = useState<string[]>();
+  const dataList = listTypeIndicator(list);
 
-  const title = list.name ? list.name : list.title;
+  const title = dataList.name ? dataList.name : dataList.title;
 
   useEffect(() => {
     const selectGenres = async () => {
@@ -39,7 +46,11 @@ const ListItemCard = ({ list, className }: ListItemCardProps<T>) => {
       <div className="relative  group w-full px-[3px] py-[4.85px]">
         <img
           src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${list.poster_path}`}
-          alt={list.original_name ? list.original_name : list.original_title}
+          alt={
+            dataList.original_name
+              ? dataList.original_name
+              : dataList.original_title
+          }
           className={`${className}  aspect-2/3 overflow-hidden transition-all duration-300 group-hover:scale-[1.025] group-hover:shadow-lg shadow-inner group-hover:shadow-white/50 `}
         />
 
@@ -65,3 +76,11 @@ const ListItemCard = ({ list, className }: ListItemCardProps<T>) => {
 };
 
 export default ListItemCard;
+
+const listTypeIndicator = (list: ListTypes): any => {
+  if ("original_title" in list) {
+    return list as TMDBMovieResponse;
+  } else if ("first_air_date" in list) {
+    return list as TMDBSeriesResponse;
+  }
+};

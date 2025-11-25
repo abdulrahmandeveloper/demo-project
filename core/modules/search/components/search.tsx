@@ -7,10 +7,10 @@ import {
   PopoverTrigger,
 } from "@/shared/components/ui/popover";
 import { Search } from "lucide-react";
-import { queryResultsResponseData } from "@/modules/search/interfaces/search.interface";
+import { QueryResultsResponseData } from "@/modules/search/interfaces/search.interface";
 import { Dispatch, SetStateAction } from "react";
 
-type TMDBSearchResults = queryResultsResponseData;
+type TMDBSearchResults = QueryResultsResponseData;
 
 type SearchComponentProps = {
   query: string;

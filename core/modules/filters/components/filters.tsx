@@ -52,8 +52,9 @@ const Filters = <T extends TMDBMovieResponse | TMDBSeriesResponse>({
 
   //search states
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [searchResults, setSearchResults] =
-    useState<TMDBMediaResponse<TMDBSeriesResponse> | null>(null);
+  const [searchResults, setSearchResults] = useState<TMDBMediaResponse<
+    TMDBSeriesResponse | TMDBMovieResponse
+  > | null>(null);
   const [searchOpenModal, setSearchOpenModal] = useState<boolean>(false);
   const [searchHasResults, setSearchHasResults] = useState<boolean>(false);
 
@@ -124,7 +125,12 @@ const Filters = <T extends TMDBMovieResponse | TMDBSeriesResponse>({
 
         if (!data) return;
 
-        setList(data.results as T[]);
+        if (mediaType === "movie") {
+          setList(data.results as TMDBMovieResponse[] as T[]);
+        } else if (mediaType === "tv") {
+          setList(data.results as TMDBSeriesResponse[] as T[]);
+        }
+
         setPages(data.total_pages);
 
         //check if queries have changed
@@ -176,8 +182,8 @@ const Filters = <T extends TMDBMovieResponse | TMDBSeriesResponse>({
           <SearchComponent
             query={searchQuery}
             searchResult={{
-              series: searchResults?.results || [],
-              movies: searchResults?.results || [],
+              series: searchResults?.results as TMDBSeriesResponse[] | [],
+              movies: searchResults?.results as TMDBMovieResponse[] | [],
             }}
             hasResults={searchHasResults}
             open={searchOpenModal}

@@ -8,7 +8,7 @@ import { ModeToggle } from "@/shared/utils/theme/theme-toggler";
 import { useEffect, useState } from "react";
 import { getSearchResultFromTMDB } from "@/shared/services/tmdb.service";
 import SearchComponent from "@/modules/search/components/search";
-import { queryResultsResponseData } from "@/modules/search/interfaces/search.interface";
+import { QueryResultsResponseData } from "@/modules/search/interfaces/search.interface";
 
 type NavbarProps = {
   logoPath: string;
@@ -21,7 +21,7 @@ type NavbarProps = {
 
 const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<queryResultsResponseData>({
+  const [results, setResults] = useState<QueryResultsResponseData>({
     movies: [],
     series: [],
   });

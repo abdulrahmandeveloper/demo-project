@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { getCollectionFromTMDB } from "@/shared/services/tmdb.service";
 import {
-  collectionParts,
-  collectionRespose,
+  CollectionParts,
+  CollectionRespose,
 } from "@/shared/interfaces/tmdb.interface";
 import PosterCard from "@/shared/components/card/poster-card";
 import {
@@ -14,7 +14,7 @@ import {
 } from "@/shared/components/ui/tooltip";
 import Image from "next/image";
 
-const ShowCollectionPartsPoster = ({ parts }: { parts: collectionParts[] }) => {
+const ShowCollectionPartsPoster = ({ parts }: { parts: CollectionParts[] }) => {
   if (!Array.isArray(parts) || parts.length === 0) {
     return <p>No Parts Posters to show</p>;
   }
@@ -60,7 +60,7 @@ const ShowCollectionPartsPoster = ({ parts }: { parts: collectionParts[] }) => {
 };
 
 const Collections = () => {
-  const [collections, setCollections] = useState<collectionRespose[]>([]);
+  const [collections, setCollections] = useState<CollectionRespose[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {

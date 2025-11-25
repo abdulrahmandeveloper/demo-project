@@ -1,4 +1,4 @@
-export interface collectionRespose {
+export interface CollectionRespose {
   id: number;
   name: string;
   original_language: string;
@@ -6,7 +6,7 @@ export interface collectionRespose {
   overview: string;
   poster_path: string;
   backdrop_path: string;
-  parts: collectionParts[];
+  parts: CollectionParts[];
 }
 
 export interface Genres {
@@ -52,7 +52,7 @@ export interface TMDBVideoReferenceResponse {
   id: string;
 }
 
-export interface collectionParts extends TMDBCommonMediaDataResponse {
+export interface CollectionParts extends TMDBCommonMediaDataResponse {
   title: string;
   media_type: string;
 }

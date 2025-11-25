@@ -1,5 +1,5 @@
 import {
-  collectionRespose,
+  CollectionRespose,
   GenresResponse,
 } from "@/shared/interfaces/tmdb.interface";
 import { collectionsID } from "@/shared/constants/collections.constants";
@@ -19,9 +19,9 @@ import { TMDBMovieResponse } from "@/features/movie/interfaces/tmdb.interface";
 import { TMDBSeriesResponse } from "@/features/series/interfaces/tmdb.interface";
 
 export const getCollectionFromTMDB = async (): Promise<
-  collectionRespose[] | null
+  CollectionRespose[] | null
 > => {
-  const collectionsData: collectionRespose[] = [];
+  const collectionsData: CollectionRespose[] = [];
 
   for (let i = 0; i < collectionsID.length; i++) {
     const res = await tmdbApi.get(

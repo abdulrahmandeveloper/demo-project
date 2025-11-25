@@ -1,6 +1,6 @@
-type posterCardProps = { src: string; className?: string };
+type PosterCardProps = { src: string; className?: string };
 
-const PosterCard = ({ src, className }: posterCardProps) => {
+const PosterCard = ({ src, className }: PosterCardProps) => {
   return (
     <div>
       <img
