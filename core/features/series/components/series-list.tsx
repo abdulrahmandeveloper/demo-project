@@ -44,7 +44,7 @@ const SeriesList = () => {
         <div className="w-3/4 mx-auto ">
           <div className="flex ">
             <label htmlFor="" className="font-bold text-2xl">
-              Discover Series
+              Discover Top Series
             </label>
             <div className="w-2/3 ml-auto">
               <div className="">
@@ -56,6 +56,7 @@ const SeriesList = () => {
                     currentPage,
                     setRefetchContent,
                     setHasFiltersSelected,
+                    mediaType: "tv",
                   }}
                 />
               </div>

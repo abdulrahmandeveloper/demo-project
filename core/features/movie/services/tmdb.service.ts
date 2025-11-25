@@ -98,6 +98,8 @@ export const getMoviesDiscoveryFromTmdb = async (
   queries: string,
   page: number = 1
 ): Promise<TMDBMediaResponse<TMDBMovieResponse>> => {
+  console.log("inside movies discoverY: ", queries);
+
   const res = await tmdbApi.get(
     `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/discover/movie?page=${page}&${queries}`
   );

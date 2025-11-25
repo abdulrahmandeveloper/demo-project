@@ -25,6 +25,7 @@ import {
   tmdbCountryCodes,
   tmdbRating,
 } from "@/shared/constants/tmdb.constants";
+import { log } from "console";
 
 type FiltersProps<T> = {
   references: {
@@ -91,7 +92,7 @@ const Filters = ({ references }: FiltersProps<T>) => {
     sort_by: popular,
     with_genres: genre,
     with_runtime: length,
-    certification_country: "US",
+    ...(age && { certification_country: "US" }),
     "certification.lte": age,
     first_air_date_year: year,
   };
@@ -111,39 +112,46 @@ const Filters = ({ references }: FiltersProps<T>) => {
     )
     .join("&");
 
-  const queriesRef = useRef(queries);
+  console.log("queries in filter: ", queries);
+
+  const queriesRef = useRef(queries ? queries : null);
 
   useEffect(() => {
+    console.log("queries ref:", queriesRef.current);
+
     const fetchFilterData = async () => {
-      if (!queries || queries.length === 0) return;
-      console.log(queries);
+      if (queriesRef.current === null && (!queries || queries.length === 0)) {
+        console.log("inside first if which will throw the user out.");
 
-      let data;
-      if (mediaType === "tv") {
-        data = await getSeriesDiscoveryFromTMDB(queries, currentPage);
-      } else if (mediaType === "movie") {
-        console.log("inside movie discovery");
-
-        data = await getMoviesDiscoveryFromTmdb(queries, currentPage);
-        setHasFiltersSelected((prev) => !prev);
-      }
-
-      if (!data) return;
-
-      setList(data.results);
-      setPages(data.total_pages);
-
-      //check if queries have changed
-      if (queriesRef.current !== queries) {
-        setCurrentPage(1);
-        queriesRef.current = queries;
+        //setRefetchContent(true);
+        return;
       } else {
-        setCurrentPage(data.page);
+        let data;
+        if (mediaType === "tv") {
+          data = await getSeriesDiscoveryFromTMDB(queries, currentPage);
+        } else if (mediaType === "movie") {
+          console.log("inside movie discovery");
+
+          data = await getMoviesDiscoveryFromTmdb(queries, currentPage);
+        }
+
+        if (!data) return;
+
+        setList(data.results);
+        setPages(data.total_pages);
+
+        //check if queries have changed
+        if (queriesRef.current !== queries) {
+          setCurrentPage(1);
+          queriesRef.current = queries;
+        } else {
+          setCurrentPage(data.page);
+        }
       }
     };
 
     fetchFilterData();
-  }, [queries, currentPage, setPages, genre]);
+  }, [queries, currentPage, setPages]);
 
   const handleRemoveFilters = () => {
     setSelectedLanguage("");
@@ -153,7 +161,7 @@ const Filters = ({ references }: FiltersProps<T>) => {
     setLength(null);
     setPopular("");
     setAge("");
-    setRefetchContent((prev) => !prev);
+    setRefetchContent(true);
     setCurrentPage(1);
     setHasFiltersSelected(false);
   };

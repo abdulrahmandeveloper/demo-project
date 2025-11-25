@@ -15,7 +15,7 @@ const MoviesList = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [hasFiltersSelected, setHasFiltersSelected] = useState<boolean>(false);
   const [refetchContent, setRefetchContent] = useState<boolean>(true);
-  console.log(hasFiltersSelected);
+  console.log(currentPage);
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -29,7 +29,7 @@ const MoviesList = () => {
     };
 
     fetchMovies();
-  }, [hasFiltersSelected]);
+  }, [currentPage, refetchContent]);
 
   return (
     <div className="w-3/4 mx-auto">
@@ -40,7 +40,7 @@ const MoviesList = () => {
       />
       <div className="p-8">
         <div className="flex  gap-28 items-center my-2 mr-auto">
-          <h1 className="font-bold text-2xl">Discover Movies</h1>
+          <h1 className="font-bold text-2xl">Discover Top Movies</h1>
           <div className="w-1/3">
             <Filters
               references={{
