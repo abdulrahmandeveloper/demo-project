@@ -19,6 +19,7 @@ type SearchComponentProps = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   onSearchInput: (inputValue: string) => void;
+  mediaType: "movie" | "tv" | "any";
 };
 
 const SearchComponent = ({
@@ -28,9 +29,13 @@ const SearchComponent = ({
   open,
   setOpen,
   onSearchInput,
+  mediaType,
 }: SearchComponentProps) => {
   //destructuring results
   const { movies, series } = searchResult;
+  console.log("movies: ", movies);
+  console.log("series: ", series);
+  console.log("series: ", searchResult);
 
   return (
     <div className="relative ">
@@ -76,42 +81,46 @@ const SearchComponent = ({
               ))}
 
             {/* Movies */}
-            {movies && movies?.length > 0 && (
-              <>
-                <h4 className="text-sm font-semibold mb-1">Movies</h4>
-                {movies.slice(0, 10).map((movie) => (
-                  <div
-                    key={movie.id}
-                    className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded cursor-pointer"
-                  >
-                    <PosterCard
-                      src={movie.poster_path}
-                      className="w-8 h-12"
-                    ></PosterCard>
-                    <p className="text-sm">{movie.title}</p>
-                  </div>
-                ))}
-              </>
-            )}
+            {(mediaType === "movie" || mediaType === "any") &&
+              movies &&
+              movies.length > 0 && (
+                <>
+                  <h4 className="text-sm font-semibold mb-1">Movies</h4>
+                  {movies.slice(0, 10).map((movie) => (
+                    <div
+                      key={movie.id}
+                      className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded cursor-pointer"
+                    >
+                      <PosterCard
+                        src={movie.poster_path}
+                        className="w-8 h-12"
+                      ></PosterCard>
+                      <p className="text-sm">{movie.name}</p>
+                    </div>
+                  ))}
+                </>
+              )}
 
             {/* Series */}
-            {series && series?.length > 0 && (
-              <>
-                <h4 className="text-sm font-semibold mt-2 mb-1">Series</h4>
-                {series.slice(0, 10).map((series) => (
-                  <div
-                    key={series.id}
-                    className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded cursor-pointer dark:hover:bg-gray-800"
-                  >
-                    <PosterCard
-                      src={series.poster_path}
-                      className="w-8 h-12 "
-                    ></PosterCard>
-                    <p className="text-sm">{series.name}</p>
-                  </div>
-                ))}
-              </>
-            )}
+            {(mediaType === "tv" || mediaType === "any") &&
+              series &&
+              series?.length > 0 && (
+                <>
+                  <h4 className="text-sm font-semibold mt-2 mb-1">Series</h4>
+                  {series.slice(0, 10).map((series) => (
+                    <div
+                      key={series.id}
+                      className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded cursor-pointer dark:hover:bg-gray-800"
+                    >
+                      <PosterCard
+                        src={series.poster_path}
+                        className="w-8 h-12 "
+                      ></PosterCard>
+                      <p className="text-sm">{series.name}</p>
+                    </div>
+                  ))}
+                </>
+              )}
           </PopoverContent>
         ) : null}
       </Popover>

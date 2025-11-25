@@ -25,9 +25,9 @@ import {
   tmdbCountryCodes,
   tmdbRating,
 } from "@/shared/constants/tmdb.constants";
-import { log } from "console";
+import { TMDBMovieResponse } from "@/features/movie/interfaces/tmdb.interface";
 
-type FiltersProps<T> = {
+type FiltersProps<T extends TMDBMovieResponse | TMDBSeriesResponse> = {
   references: {
     setList: Dispatch<SetStateAction<T[]>>;
     setPages: Dispatch<SetStateAction<number>>;
@@ -39,7 +39,9 @@ type FiltersProps<T> = {
   };
 };
 
-const Filters = ({ references }: FiltersProps<T>) => {
+const Filters = <T extends TMDBMovieResponse | TMDBSeriesResponse>({
+  references,
+}: FiltersProps<T>) => {
   const [selectedLanguage, setSelectedLanguage] = useState<string>("");
   const [year, setYear] = useState<string>("");
   const [rating, setRating] = useState<number | null>(null);
@@ -86,58 +88,43 @@ const Filters = ({ references }: FiltersProps<T>) => {
           tmdbContentRatings: tmdbMovieContentRatings,
         };
 
-  const queryObject = {
-    language: selectedLanguage,
-    vote_average: rating,
-    sort_by: popular,
-    with_genres: genre,
-    with_runtime: length,
-    ...(age && { certification_country: "US" }),
-    "certification.lte": age,
-    first_air_date_year: year,
-  };
+  const queryObject: Record<string, string | number> = {};
+
+  if (selectedLanguage) queryObject.language = selectedLanguage;
+  if (year) queryObject.year = year;
+  if (rating) queryObject["vote_average.gte"] = rating;
+  if (genre) queryObject.with_genres = genre;
+  if (length) queryObject.with_runtime = length;
+  if (popular) queryObject.sort_by = popular;
+  if (age) {
+    queryObject["certification_country"] = "US";
+    queryObject["certification.lte"] = age;
+  }
 
   const queries = Object.entries(queryObject)
-    .filter(
-      ([, value]) => value !== undefined && value !== "" && value !== null
-    )
-    .map(([key, value]) =>
-      key === "vote_average"
-        ? rating
-        : key === "with_runtime"
-        ? length
-        : key === "first_air_date_year"
-        ? year
-        : `${key}=${value}`
-    )
+    .map(([key, value]) => `${key}=${value}`)
     .join("&");
-
-  console.log("queries in filter: ", queries);
 
   const queriesRef = useRef(queries ? queries : null);
 
   useEffect(() => {
-    console.log("queries ref:", queriesRef.current);
-
     const fetchFilterData = async () => {
-      if (queriesRef.current === null && (!queries || queries.length === 0)) {
-        console.log("inside first if which will throw the user out.");
-
-        //setRefetchContent(true);
+      if (!queries || queries.length === 0) {
+        setHasFiltersSelected(false);
+        setRefetchContent(true);
         return;
       } else {
+        setHasFiltersSelected(true);
         let data;
         if (mediaType === "tv") {
           data = await getSeriesDiscoveryFromTMDB(queries, currentPage);
         } else if (mediaType === "movie") {
-          console.log("inside movie discovery");
-
           data = await getMoviesDiscoveryFromTmdb(queries, currentPage);
         }
 
         if (!data) return;
 
-        setList(data.results);
+        setList(data.results as T[]);
         setPages(data.total_pages);
 
         //check if queries have changed
@@ -151,7 +138,7 @@ const Filters = ({ references }: FiltersProps<T>) => {
     };
 
     fetchFilterData();
-  }, [queries, currentPage, setPages]);
+  }, [queries, currentPage, mediaType]);
 
   const handleRemoveFilters = () => {
     setSelectedLanguage("");
@@ -188,11 +175,15 @@ const Filters = ({ references }: FiltersProps<T>) => {
         <div className="">
           <SearchComponent
             query={searchQuery}
-            searchResult={{ series: searchResults?.results || [] }}
+            searchResult={{
+              series: searchResults?.results || [],
+              movies: searchResults?.results || [],
+            }}
             hasResults={searchHasResults}
             open={searchOpenModal}
             setOpen={setSearchOpenModal}
             onSearchInput={handleSeachInput}
+            mediaType={mediaType}
           />
         </div>
         {queries.length > 1 && (

@@ -15,10 +15,11 @@ const MoviesList = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [hasFiltersSelected, setHasFiltersSelected] = useState<boolean>(false);
   const [refetchContent, setRefetchContent] = useState<boolean>(true);
-  console.log(currentPage);
 
   useEffect(() => {
     const fetchMovies = async () => {
+      if (hasFiltersSelected) return;
+
       const data = await getMoviesListFromTmdb(currentPage);
 
       if (data) {
@@ -29,7 +30,7 @@ const MoviesList = () => {
     };
 
     fetchMovies();
-  }, [currentPage, refetchContent]);
+  }, [currentPage, refetchContent, hasFiltersSelected]);
 
   return (
     <div className="w-3/4 mx-auto">

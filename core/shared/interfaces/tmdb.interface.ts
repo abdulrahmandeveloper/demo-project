@@ -30,6 +30,7 @@ export interface TMDBCommonMediaDataResponse {
   backdrop_path: string;
   genre_ids: [number];
   id: number;
+  name: string;
   original_language: string;
   overview: string;
   popularity: number;
