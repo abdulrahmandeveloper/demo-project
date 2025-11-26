@@ -33,9 +33,6 @@ const SearchComponent = ({
 }: SearchComponentProps) => {
   //destructuring results
   const { movies, series } = searchResult;
-  console.log("movies: ", movies);
-  console.log("series: ", series);
-  console.log("series: ", searchResult);
 
   return (
     <div className="relative ">

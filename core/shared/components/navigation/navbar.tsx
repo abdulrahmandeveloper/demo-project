@@ -6,7 +6,7 @@ import { User } from "lucide-react";
 import "react-icons";
 import { ModeToggle } from "@/shared/utils/theme/theme-toggler";
 import { useEffect, useState } from "react";
-import { getSearchResultFromTMDB } from "@/shared/services/tmdb.service";
+import { getSearchResultFromTMDB } from "@/shared/services/tmdb/tmdb.service";
 import SearchComponent from "@/modules/search/components/search";
 import { QueryResultsResponseData } from "@/modules/search/interfaces/search.interface";
 

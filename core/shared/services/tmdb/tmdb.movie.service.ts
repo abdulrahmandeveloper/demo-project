@@ -1,0 +1,14 @@
+import { TMDBMovieResponse } from "@/features/movie/interfaces/tmdb.interface";
+import { tmdbApi } from "@/shared/lib/axios/axios";
+
+export const getMovieByIDFromTMDB = async (
+  movieId: number
+): Promise<TMDBMovieResponse> => {
+  const res = await tmdbApi.get(
+    `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/movie/${movieId}`
+  );
+
+  const data = res.data;
+
+  return data;
+};

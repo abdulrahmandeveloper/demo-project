@@ -2,7 +2,7 @@
 
 import { TMDBMovieResponse } from "@/features/movie/interfaces/tmdb.interface";
 import { TMDBSeriesResponse } from "@/features/series/interfaces/tmdb.interface";
-import { getGenresFromTmdb } from "@/shared/services/tmdb.service";
+import { getGenresFromTmdb } from "@/shared/services/tmdb/tmdb.service";
 import { useEffect, useState } from "react";
 
 type ListTypes = TMDBMovieResponse | TMDBSeriesResponse;

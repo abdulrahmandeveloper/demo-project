@@ -8,6 +8,7 @@ import { getMoviesListFromTmdb } from "../services/tmdb.service";
 import ListItemCard from "@/shared/components/card/list-item-card";
 import PaginationContainer from "@/shared/components/custom-ui/containers/pagination-container";
 import Filters from "@/modules/filters/components/filters";
+import Link from "next/link";
 
 const MoviesList = () => {
   const [list, setList] = useState<TMDBMovieResponse[]>([]);
@@ -31,6 +32,8 @@ const MoviesList = () => {
 
     fetchMovies();
   }, [currentPage, refetchContent, hasFiltersSelected]);
+
+  const handleMovieClick = () => {};
 
   return (
     <div className="w-3/4 mx-auto">
@@ -61,7 +64,9 @@ const MoviesList = () => {
           {list.map((movie) => {
             return (
               <div className="" key={movie.id}>
-                <ListItemCard list={movie} className={"rounded-lg"} />
+                <Link href={`/movies/${movie.id}`}>
+                  <ListItemCard list={movie} className={"rounded-lg"} />
+                </Link>
               </div>
             );
           })}

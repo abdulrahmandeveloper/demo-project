@@ -5,7 +5,7 @@ import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import { useEffect, useState } from "react";
-import { GetSlideShowVidoes } from "@/shared/services/tmdb.service";
+import { GetSlideShowVidoes } from "@/shared/services/tmdb/tmdb.service";
 
 export default function HeroSlider() {
   const [reccomendationVideos, setReccomendationVideos] = useState<string[]>(
