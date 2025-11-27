@@ -8,6 +8,7 @@ import Pagination from "@/shared/components/custom-ui/containers/pagination-cont
 import { navbarLinks } from "@/shared/constants/navbar-links.constants";
 import { useEffect, useState } from "react";
 import { TMDBSeriesResponse } from "../interfaces/tmdb.interface";
+import Link from "next/link";
 
 const SeriesList = () => {
   const [list, setList] = useState<TMDBSeriesResponse[]>([]);
@@ -64,10 +65,10 @@ const SeriesList = () => {
           </div>
           <div className="grid grid-cols-5 gap-3 py-5 w-19/20 mx-auto">
             {list.length > 0 &&
-              list.map((list, index) => (
-                <div key={index}>
-                  <ListItemCard list={list} className="rounded-lg " />
-                </div>
+              list.map((series, index) => (
+                <Link key={index} href={`/series/${series.id}`}>
+                  <ListItemCard list={series} className="rounded-lg " />
+                </Link>
               ))}
           </div>{" "}
           <div className=" flex   justify-end">
