@@ -1,4 +1,7 @@
-import { TMDBMovieResponse } from "@/features/movie/interfaces/tmdb.interface";
+import {
+  TMDBCastResponse,
+  TMDBMovieResponse,
+} from "@/features/movie/interfaces/tmdb.interface";
 import { tmdbApi } from "@/shared/lib/axios/axios";
 
 export const getMovieByIDFromTMDB = async (
@@ -9,6 +12,22 @@ export const getMovieByIDFromTMDB = async (
   );
 
   const data = res.data;
+
+  return data;
+};
+
+export const getMovieByIdCredits = async (
+  movieId: number
+): Promise<TMDBCastResponse[]> => {
+  const res = await tmdbApi.get(`/movie/${movieId}/credits`);
+  const data = res.data;
+
+  if (data.cast) {
+    const selectedCast = data.cast.slice(0, 9);
+    console.log("selectedCast: ", selectedCast);
+
+    return selectedCast;
+  }
 
   return data;
 };

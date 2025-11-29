@@ -1,10 +1,16 @@
 "use client";
 
-import { TMDBMovieResponse } from "@/features/movie/interfaces/tmdb.interface";
+import {
+  TMDBCastResponse,
+  TMDBMovieResponse,
+} from "@/features/movie/interfaces/tmdb.interface";
 import { getMoviesVideosID } from "@/features/movie/services/tmdb.service";
 import Navbar from "@/shared/components/navigation/navbar";
 import { navbarLinks } from "@/shared/constants/navbar-links.constants";
-import { getMovieByIDFromTMDB } from "@/shared/services/tmdb/tmdb.movie.service";
+import {
+  getMovieByIdCredits,
+  getMovieByIDFromTMDB,
+} from "@/shared/services/tmdb/tmdb.movie.service";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -15,6 +21,9 @@ const MoviePage = () => {
   const [movieTrailerUrl, setMovieTrailerUrl] = useState<
     string | string[] | null
   >(null);
+  const [casts, setCasts] = useState<TMDBCastResponse[] | null>();
+
+  console.log("creduts: ", casts);
 
   const params = useParams();
 
@@ -23,10 +32,14 @@ const MoviePage = () => {
   useEffect(() => {
     const fetchMovie = async () => {
       const data = await getMovieByIDFromTMDB(movieId);
+      const casts = await getMovieByIdCredits(movieId);
 
       if (!data) return;
+      if (!casts) return;
+      console.log("casts: ", casts);
 
       setMovie(data);
+      setCasts(casts);
     };
 
     fetchMovie();
@@ -94,9 +107,10 @@ const MoviePage = () => {
                       </div>
                     ))}
                   </div>
-                  <p className="text-xl opacity-70">
+                  <p className="text-xl opacity-70 my-10">
                     Release year: {movie.release_date}
                   </p>
+                  <div className="">{}</div>
                 </div>
               </div>
               <div className="flex flex-col justify-center w-full ml-5">
@@ -111,6 +125,13 @@ const MoviePage = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="">
+        <p className="">
+          {casts?.map((cast, key) => (
+            <div key={key}>{cast.character}</div>
+          ))}
+        </p>
       </div>
     </div>
   );
