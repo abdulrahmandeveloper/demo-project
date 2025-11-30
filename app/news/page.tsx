@@ -1,4 +1,4 @@
-import NewsPage from "@/routes/news";
+import NewsPage from "entry/routes/news";
 
 const page = () => {
   return (

@@ -1,4 +1,4 @@
-import SeriesList from "@/features/series/components/series-list";
+import SeriesList from "entry/features/series/components/series-list";
 
 const index = () => {
   return (

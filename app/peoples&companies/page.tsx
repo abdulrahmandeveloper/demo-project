@@ -1,4 +1,4 @@
-import PeopleAndCompaniesPage from "@/routes/people&companies";
+import PeopleAndCompaniesPage from "entry/routes/people&companies";
 import React from "react";
 
 const page = () => {
