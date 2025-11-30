@@ -9,7 +9,6 @@ export const getSeriesByIDFromTMDB = async (
   );
 
   const data = res.data;
-  console.log(data);
 
   return data;
 };

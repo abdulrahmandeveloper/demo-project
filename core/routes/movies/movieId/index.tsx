@@ -11,6 +11,7 @@ import {
   getMovieByIdCredits,
   getMovieByIDFromTMDB,
 } from "@/shared/services/tmdb/tmdb.movie.service";
+import { DetectOriginalCounryName } from "@/shared/utils/language-selector";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -23,8 +24,6 @@ const MoviePage = () => {
   >(null);
   const [casts, setCasts] = useState<TMDBCastResponse[] | null>();
 
-  console.log("creduts: ", casts);
-
   const params = useParams();
 
   const movieId = Number(params.movieId);
@@ -36,7 +35,6 @@ const MoviePage = () => {
 
       if (!data) return;
       if (!casts) return;
-      console.log("casts: ", casts);
 
       setMovie(data);
       setCasts(casts);
@@ -49,14 +47,11 @@ const MoviePage = () => {
     const fetchYoutubeUrl = async () => {
       const data = await getMoviesVideosID(movieId);
       if (!data) return;
-      console.log(data);
 
       setMovieTrailerUrl(data);
     };
     fetchYoutubeUrl();
-  }, []);
-
-  console.log("movieTrailerUrl: ", movieTrailerUrl);
+  }, [movieId]);
 
   return (
     <div className="">
@@ -91,7 +86,7 @@ const MoviePage = () => {
                     </p>{" "}
                   </div>
                   <p className="text-lg font-sm ">{movie.overview}</p>
-                  <div className="flex gap-4 mt-10">
+                  <div className="flex gap-4 mt-10 mb-2">
                     <p className="text-3xl text-center flex my-auto">
                       {" "}
                       Genres:
@@ -107,7 +102,13 @@ const MoviePage = () => {
                       </div>
                     ))}
                   </div>
-                  <p className="text-xl opacity-70 my-10">
+                  <div className="text-xl opacity-85 gap-1 grid">
+                    <p className="">
+                      Language:{" "}
+                      {DetectOriginalCounryName(movie.original_language)}
+                    </p>
+                  </div>
+                  <p className="text-xl opacity-70 my-8">
                     Release year: {movie.release_date}
                   </p>
                   <div className="">{}</div>

@@ -1,11 +1,11 @@
 "use client";
 
-import { getMoviesVideosID } from "@/features/movie/services/tmdb.service";
 import { TMDBSeriesResponse } from "@/features/series/interfaces/tmdb.interface";
 import { getSeriesVideosID } from "@/features/series/services/tmdb.service";
 import Navbar from "@/shared/components/navigation/navbar";
 import { navbarLinks } from "@/shared/constants/navbar-links.constants";
 import { getSeriesByIDFromTMDB } from "@/shared/services/tmdb/tmdb.series.service";
+import { DetectOriginalCounryName } from "@/shared/utils/language-selector";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -37,14 +37,11 @@ const SeriesPage = () => {
     const fetchYoutubeUrl = async () => {
       const data = await getSeriesVideosID(seriesId);
       if (!data) return;
-      console.log(data);
 
       setSeriesTrailerUrl(data);
     };
     fetchYoutubeUrl();
   }, []);
-
-  console.log("movieTrailerUrl: ", seriesTrailerUrl);
 
   return (
     <div className="">
@@ -79,12 +76,12 @@ const SeriesPage = () => {
                     </p>{" "}
                   </div>
                   <p className="text-lg font-sm ">{series.overview}</p>
-                  <div className="flex gap-4 mt-10">
+                  <div className="flex gap-4 mt-10 mb-2">
                     <p className="text-3xl text-center flex my-auto">
                       {" "}
                       Genres:
                     </p>
-                    {series?.genres?.map((genre, index) => (
+                    {series?.genres?.map((genre: any, index: string) => (
                       <div
                         className="flex items-center justify-center"
                         key={index}
@@ -95,8 +92,15 @@ const SeriesPage = () => {
                       </div>
                     ))}
                   </div>
-                  <p className="text-xl opacity-70">
-                    Release year: {series.release_date}
+                  <div className="text-xl opacity-85 gap-1 grid">
+                    <p className="">From: {series.origin_country}</p>
+                    <p className="">
+                      Language:{" "}
+                      {DetectOriginalCounryName(series.original_language)}
+                    </p>
+                  </div>
+                  <p className="text-xl opacity-70 my-8">
+                    Aired in: {series.first_air_date}
                   </p>
                 </div>
               </div>

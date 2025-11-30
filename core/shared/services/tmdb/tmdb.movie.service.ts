@@ -24,7 +24,6 @@ export const getMovieByIdCredits = async (
 
   if (data.cast) {
     const selectedCast = data.cast.slice(0, 9);
-    console.log("selectedCast: ", selectedCast);
 
     return selectedCast;
   }

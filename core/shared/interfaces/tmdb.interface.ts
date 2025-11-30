@@ -29,6 +29,7 @@ export interface TMDBCommonMediaDataResponse {
   id: number;
   adult: boolean;
   backdrop_path: string;
+  genres?: any;
   genre_ids: [number];
   original_language: string;
   overview: string;

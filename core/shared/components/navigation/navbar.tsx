@@ -17,8 +17,6 @@ type NavbarProps = {
   className?: string;
 };
 
-// for blurness backdrop-blur-sm
-
 const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<QueryResultsResponseData>({
@@ -54,7 +52,7 @@ const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
 
   useEffect(() => {});
   return (
-    <div className="grid grid-cols-3 bg-transparent hover:backdrop-blur-md transition-all duration-300 ease-in-out shadow-sm h-16">
+    <div className="grid grid-cols-3 bg-transparent/5 hover:backdrop-blur-md transition-all duration-300 ease-in-out shadow-sm h-16">
       <div className="flex items-center justify-center">
         {" "}
         <Image

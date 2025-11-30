@@ -1,0 +1,106 @@
+export const languageCodes = {
+  // Most Common Languages
+  en: { name: "English", nativeName: "English" },
+  es: { name: "Spanish", nativeName: "Español" },
+  fr: { name: "French", nativeName: "Français" },
+  de: { name: "German", nativeName: "Deutsch" },
+  it: { name: "Italian", nativeName: "Italiano" },
+  pt: { name: "Portuguese", nativeName: "Português" },
+  ru: { name: "Russian", nativeName: "Русский" },
+  ja: { name: "Japanese", nativeName: "日本語" },
+  ko: { name: "Korean", nativeName: "한국어" },
+  zh: { name: "Chinese", nativeName: "中文" },
+  ar: { name: "Arabic", nativeName: "العربية" },
+  hi: { name: "Hindi", nativeName: "हिन्दी" },
+  tr: { name: "Turkish", nativeName: "Türkçe" },
+  nl: { name: "Dutch", nativeName: "Nederlands" },
+  pl: { name: "Polish", nativeName: "Polski" },
+  sv: { name: "Swedish", nativeName: "Svenska" },
+  no: { name: "Norwegian", nativeName: "Norsk" },
+  da: { name: "Danish", nativeName: "Dansk" },
+  fi: { name: "Finnish", nativeName: "Suomi" },
+  cs: { name: "Czech", nativeName: "Čeština" },
+  hu: { name: "Hungarian", nativeName: "Magyar" },
+  ro: { name: "Romanian", nativeName: "Română" },
+  el: { name: "Greek", nativeName: "Ελληνικά" },
+  he: { name: "Hebrew", nativeName: "עברית" },
+  th: { name: "Thai", nativeName: "ไทย" },
+  vi: { name: "Vietnamese", nativeName: "Tiếng Việt" },
+  id: { name: "Indonesian", nativeName: "Bahasa Indonesia" },
+  ms: { name: "Malay", nativeName: "Bahasa Melayu" },
+  fa: { name: "Persian", nativeName: "فارسی" },
+  uk: { name: "Ukrainian", nativeName: "Українська" },
+
+  // Additional European Languages
+  bg: { name: "Bulgarian", nativeName: "Български" },
+  hr: { name: "Croatian", nativeName: "Hrvatski" },
+  sk: { name: "Slovak", nativeName: "Slovenčina" },
+  sl: { name: "Slovenian", nativeName: "Slovenščina" },
+  sr: { name: "Serbian", nativeName: "Српски" },
+  et: { name: "Estonian", nativeName: "Eesti" },
+  lv: { name: "Latvian", nativeName: "Latviešu" },
+  lt: { name: "Lithuanian", nativeName: "Lietuvių" },
+  is: { name: "Icelandic", nativeName: "Íslenska" },
+  ga: { name: "Irish", nativeName: "Gaeilge" },
+  mt: { name: "Maltese", nativeName: "Malti" },
+  cy: { name: "Welsh", nativeName: "Cymraeg" },
+
+  // Middle Eastern & Central Asian
+  ku: { name: "Kurdish", nativeName: "کوردی" },
+  az: { name: "Azerbaijani", nativeName: "Azərbaycan" },
+  ka: { name: "Georgian", nativeName: "ქართული" },
+  hy: { name: "Armenian", nativeName: "Հայերեն" },
+
+  // South & Southeast Asian
+  bn: { name: "Bengali", nativeName: "বাংলা" },
+  ur: { name: "Urdu", nativeName: "اردو" },
+  ta: { name: "Tamil", nativeName: "தமிழ்" },
+  te: { name: "Telugu", nativeName: "తెలుగు" },
+  ml: { name: "Malayalam", nativeName: "മലയാളം" },
+  kn: { name: "Kannada", nativeName: "ಕನ್ನಡ" },
+  mr: { name: "Marathi", nativeName: "मराठी" },
+  pa: { name: "Punjabi", nativeName: "ਪੰਜਾਬੀ" },
+  si: { name: "Sinhala", nativeName: "සිංහල" },
+  my: { name: "Burmese", nativeName: "မြန်မာ" },
+  km: { name: "Khmer", nativeName: "ខ្មែរ" },
+  lo: { name: "Lao", nativeName: "ລາວ" },
+
+  // East Asian
+  "zh-CN": { name: "Chinese (Simplified)", nativeName: "简体中文" },
+  "zh-TW": { name: "Chinese (Traditional)", nativeName: "繁體中文" },
+  "zh-HK": { name: "Chinese (Hong Kong)", nativeName: "香港中文" },
+
+  // Latin American & Others
+  "pt-BR": { name: "Portuguese (Brazil)", nativeName: "Português (Brasil)" },
+  "pt-PT": {
+    name: "Portuguese (Portugal)",
+    nativeName: "Português (Portugal)",
+  },
+  "es-MX": { name: "Spanish (Mexico)", nativeName: "Español (México)" },
+  "es-ES": { name: "Spanish (Spain)", nativeName: "Español (España)" },
+  "en-US": { name: "English (US)", nativeName: "English (US)" },
+  "en-GB": { name: "English (UK)", nativeName: "English (UK)" },
+  "fr-CA": { name: "French (Canada)", nativeName: "Français (Canada)" },
+
+  // African Languages
+  af: { name: "Afrikaans", nativeName: "Afrikaans" },
+  sw: { name: "Swahili", nativeName: "Kiswahili" },
+  zu: { name: "Zulu", nativeName: "isiZulu" },
+  xh: { name: "Xhosa", nativeName: "isiXhosa" },
+
+  // Other Languages
+  ca: { name: "Catalan", nativeName: "Català" },
+  eu: { name: "Basque", nativeName: "Euskara" },
+  gl: { name: "Galician", nativeName: "Galego" },
+  sq: { name: "Albanian", nativeName: "Shqip" },
+  mk: { name: "Macedonian", nativeName: "Македонски" },
+  be: { name: "Belarusian", nativeName: "Беларуская" },
+  kk: { name: "Kazakh", nativeName: "Қазақ" },
+  uz: { name: "Uzbek", nativeName: "Oʻzbek" },
+  mn: { name: "Mongolian", nativeName: "Монгол" },
+  ne: { name: "Nepali", nativeName: "नेपाली" },
+
+  // Special codes
+  xx: { name: "No Language", nativeName: "No Language" },
+  cn: { name: "Cantonese", nativeName: "粵語" },
+};

@@ -84,14 +84,12 @@ export const getMoviesVideosID = async (
     return trailerKeys;
   } else {
     const res = await tmdbApi.get(`/movie/${movieIDs}/videos`);
-    console.log("res: ", res.data.results);
 
     const data: string = res.data.results
       .filter((item) => item.site === "YouTube" && item.type === "Trailer")
       .map((item) => item.key)
       .slice(0, 1)
       .join(" ");
-    console.log("getMoviesVideosID data: ", data);
 
     return data;
   }
