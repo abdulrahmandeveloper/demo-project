@@ -1,4 +1,4 @@
-import SeriesPage from "entry/routes/series/seriesId";
+import { SeriesPage } from "entry/routes/series/seriesId";
 import React from "react";
 
 const page = () => {

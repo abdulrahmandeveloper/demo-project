@@ -92,7 +92,7 @@ const SearchComponent = ({
                         src={movie.poster_path}
                         className="w-8 h-12"
                       ></PosterCard>
-                      <p className="text-sm">{movie.name}</p>
+                      <p className="text-sm">{movie.title}</p>
                     </div>
                   ))}
                 </>

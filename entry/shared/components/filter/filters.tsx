@@ -8,7 +8,7 @@ import {
   tmdbTvRuntimeFilters,
   tmdbTvYearsRange,
 } from "entry/features/series/constants/tmdb.constants.ts";
-import { getSeriesDiscoveryFromTMDB } from "entry/modules/filters/services/filter.service";
+import { getSeriesDiscoveryFromTMDB } from "entry/shared/services/tmdb/tmdb.series.service";
 import { Button } from "entry/shared/components/ui/button";
 import SearchComponent from "@/shared/components/search/search";
 import { getSeriesSearchResultsFromTMDB } from "entry/features/series/services/tmdb.service";

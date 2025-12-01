@@ -1,6 +1,6 @@
 export const getYoutubeTrailer = (data: {
-  moviesVideoIds: string[];
-  seiesesVideoIds: string[];
+  moviesVideoIds: string | string[];
+  seiesesVideoIds: string | string[];
 }): string[] => {
   let videosUrl = [];
 

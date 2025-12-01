@@ -1,13 +1,18 @@
 import {
-  Genres,
+  CollectionRespose,
   TMDBCommonMediaDataResponse,
 } from "entry/shared/interfaces/tmdb.interface";
 
 export interface TMDBMovieResponse extends TMDBCommonMediaDataResponse {
+  media_type: "movie";
+  title: string;
   original_title: string;
   release_date: string;
-  genres: Genres[];
-  title: string;
+  budget: number;
+  revenue: number;
+  runtime: number;
+  belongs_to_collection: CollectionRespose | null;
+  imdb_id: string;
   video: boolean;
 }
 
@@ -36,13 +41,11 @@ export interface TMDBCreditResponse {
   popularity: number;
   profile_path: string;
   credit_id: string;
-  departmen:string;
+  departmen: string;
   order: number;
 }
 
-
 export interface TMDBCreditMediaResponse {
-  id:number;
-  cast:TMDBCastResponse;
-  crew:
+  id: number;
+  cast: TMDBCastResponse;
 }

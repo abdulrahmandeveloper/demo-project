@@ -1,4 +1,4 @@
-import MoviePage from "entry/routes/movies/movieId";
+import { MoviePage } from "@/routes/movies/movieId";
 
 const page = () => {
   return (

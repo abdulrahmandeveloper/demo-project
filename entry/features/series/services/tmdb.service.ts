@@ -59,8 +59,11 @@ export const getSeriesVideosID = async (
     const res = await tmdbApi.get(`/tv/${seriesId}/videos`);
 
     const data: string = res.data.results
-      .filter((item) => item.site === "YouTube" && item.type === "Trailer")
-      .map((item) => item.key)
+      .filter(
+        (item: TMDBVideoReferenceResponse) =>
+          item.site === "YouTube" && item.type === "Trailer"
+      )
+      .map((item: TMDBVideoReferenceResponse) => item.key)
       .slice(0, 1)
       .join(" ");
 

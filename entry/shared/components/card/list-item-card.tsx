@@ -5,7 +5,7 @@ import { TMDBSeriesResponse } from "entry/features/series/interfaces/tmdb.interf
 import { getGenresFromTmdb } from "entry/shared/services/tmdb/tmdb.service";
 import { useEffect, useState } from "react";
 
-type ListTypes = TMDBMovieResponse | TMDBSeriesResponse;
+type ListTypes = TMDBSeriesResponse | TMDBMovieResponse;
 
 type ListItemCardProps<T extends ListTypes> = {
   list: T;
@@ -28,10 +28,10 @@ const ListItemCard = <T extends ListTypes>({
 
       const genresList: string[] = [];
 
-      for (let i = 0; i < list.genre_ids.length; i++) {
-        data.genres.map((genre) => {
-          if (genre.id === list.genre_ids[i]) {
-            genresList.push(genre.name);
+      for (let i = 0; i < list.genres.length; i++) {
+        data.genres.map((contentGenre) => {
+          if (list.genres.map((genre) => genre.id === contentGenre.id)) {
+            genresList.push(contentGenre.name);
           }
         });
       }
@@ -66,9 +66,7 @@ const ListItemCard = <T extends ListTypes>({
       </div>
 
       <div className="flex items-center justify-center flex-col gap-2 mt-4">
-        <h2 className="text-lg font-bold text-center ">
-          {list.name ? list.name : title}
-        </h2>
+        <h2 className="text-lg font-bold text-center ">{title}</h2>
         <p>{list.vote_average}</p>
       </div>
     </div>
