@@ -1,5 +1,7 @@
 import { tmdbApi } from "entry/shared/lib/axios/axios";
 import {
+  TMDBCastResponse,
+  TMDBCreditMediaResponse,
   TMDBMediaResponse,
   TMDBVideoReferenceResponse,
 } from "entry/shared/interfaces/tmdb.interface";
@@ -8,10 +10,10 @@ import { TMDBSeriesResponse } from "../interfaces/tmdb.interface";
 export const getSeriesSearchResultsFromTMDB = async (
   query: string
 ): Promise<TMDBMediaResponse<TMDBSeriesResponse>> => {
-  const res = await tmdbApi.get(
+  const response = await tmdbApi.get(
     `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/search/tv?query=${query}`
   );
-  const data: TMDBMediaResponse<TMDBSeriesResponse> = res.data;
+  const data: TMDBMediaResponse<TMDBSeriesResponse> = response.data;
   return data;
 };
 
@@ -19,9 +21,11 @@ export const getSeriesRecommendationsFromTMDB = async (
   seriesID: number,
   pages: number
 ): Promise<TMDBMediaResponse<TMDBSeriesResponse>> => {
-  const res = tmdbApi.get(`/movie/${seriesID}/recommendations?page=${pages}`);
+  const response = tmdbApi.get(
+    `/movie/${seriesID}/recommendations?page=${pages}`
+  );
 
-  const data: TMDBMediaResponse<TMDBSeriesResponse> = (await res).data;
+  const data: TMDBMediaResponse<TMDBSeriesResponse> = (await response).data;
 
   return data;
 };
@@ -30,13 +34,13 @@ export const getSeriesVideosID = async (
   seriesId: number | number[]
 ): Promise<string | string[]> => {
   if (typeof seriesId === "object") {
-    const res = await Promise.allSettled(
+    const response = await Promise.allSettled(
       seriesId.map((id) =>
         tmdbApi.get(`/movie/${id}/videos`).then((videos) => videos.data.results)
       )
     );
 
-    const successfulResponses = res.filter(
+    const successfulResponses = response.filter(
       (
         result
       ): result is PromiseFulfilledResult<TMDBVideoReferenceResponse[]> =>
@@ -56,9 +60,9 @@ export const getSeriesVideosID = async (
 
     return trailerKeys;
   } else {
-    const res = await tmdbApi.get(`/tv/${seriesId}/videos`);
+    const response = await tmdbApi.get(`/tv/${seriesId}/videos`);
 
-    const data: string = res.data.results
+    const data: string = response.data.results
       .filter(
         (item: TMDBVideoReferenceResponse) =>
           item.site === "YouTube" && item.type === "Trailer"
@@ -73,9 +77,22 @@ export const getSeriesVideosID = async (
 
 //
 export const getSeriesListFromTmdb = async (page: number, queries?: string) => {
-  const res = await tmdbApi.get(`/tv/top_rated?page=${page}?${queries}`);
+  const response = await tmdbApi.get(`/tv/top_rated?page=${page}?${queries}`);
 
-  const data = res.data;
+  const data = response.data;
 
+  return data;
+};
+
+export const getSeriesCastFromTmdb = async (
+  tvId: number
+): Promise<TMDBCastResponse[] | []> => {
+  const response = await tmdbApi.get(`/tv/${tvId}/credits`);
+  if (!response) return [];
+  const data = response.data.cast
+    .filter(
+      (person: TMDBCastResponse) => person.known_for_department === "Acting"
+    )
+    .slice(0, 9);
   return data;
 };

@@ -1,7 +1,5 @@
-import {
-  TMDBCastResponse,
-  TMDBMovieResponse,
-} from "entry/features/movie/interfaces/tmdb.interface";
+import { TMDBCastResponse } from "@/shared/interfaces/tmdb.interface";
+import { TMDBMovieResponse } from "entry/features/movie/interfaces/tmdb.interface";
 import { tmdbApi } from "entry/shared/lib/axios/axios";
 
 export const getMovieByIDFromTMDB = async (

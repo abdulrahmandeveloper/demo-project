@@ -28,7 +28,7 @@ const ListItemCard = <T extends ListTypes>({
 
       const genresList: string[] = [];
 
-      for (let i = 0; i < list.genres.length; i++) {
+      for (let i = 0; i < list.genres?.length; i++) {
         data.genres.map((contentGenre) => {
           if (list.genres.map((genre) => genre.id === contentGenre.id)) {
             genresList.push(contentGenre.name);

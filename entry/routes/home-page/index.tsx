@@ -2,6 +2,7 @@ import MediaCard from "entry/shared/components/card/media-card";
 import FeatureCard from "entry/shared/components/card/feature-card";
 import HeroSection from "@/shared/components/hero-section";
 import Collections from "entry/shared/components/collections";
+import Link from "next/link";
 
 const HomePage = () => {
   return (

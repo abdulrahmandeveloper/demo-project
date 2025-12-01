@@ -5,6 +5,7 @@ import { Eye } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AiFillHeart } from "react-icons/ai";
 import { TMDBMovieResponse } from "entry/features/movie/interfaces/tmdb.interface";
+import Link from "next/link";
 
 type MediaCardProps = {
   showOverlay?: boolean;
@@ -47,33 +48,37 @@ const MediaCard = ({
             key={movie.id}
             className="w-[10%] relative group border border-transparent overflow-hidden rounded-md transition-all duration-300 hover:border-[#00E054] hover:shadow-[0_0_10px_#00E054] hover:cursor-pointer "
           >
-            <img
-              src={`${
-                imgSource
-                  ? imgSource
-                  : `${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}${movie.poster_path}`
-              }`}
-              alt="poster"
-              className="w-full h-full "
-            />
+            <Link href={`/movies/${movie.id}`}>
+              <img
+                src={`${
+                  imgSource
+                    ? imgSource
+                    : `${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}${movie.poster_path}`
+                }`}
+                alt="poster"
+                className="w-full h-full "
+              />
+            </Link>
 
             {showOverlay && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="flex flex-col items-center gap-1 bg-black/60 rounded-lg px-3 py-2">
-                  <div className="flex items-center gap-1 text-green-400 text-3xl">
-                    <Eye className="size-14" />
-                  </div>
-                  <div className="flex items-center gap-1 text-green-400 text-3xl">
-                    {movie.vote_count}
-                  </div>
-                  <div className="flex items-center gap-1 text-green-400 text-3xl">
-                    <AiFillHeart className="size-14" />
-                  </div>
-                  <div className="flex items-center gap-1 text-green-400 text-3xl">
-                    {movie.popularity}
+              <Link href={`/movies/${movie.id}`}>
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="flex flex-col items-center gap-1 bg-black/60 rounded-lg px-3 py-2">
+                    <div className="flex items-center gap-1 text-green-400 text-3xl">
+                      <Eye className="size-14" />
+                    </div>
+                    <div className="flex items-center gap-1 text-green-400 text-3xl">
+                      {movie.vote_count}
+                    </div>
+                    <div className="flex items-center gap-1 text-green-400 text-3xl">
+                      <AiFillHeart className="size-14" />
+                    </div>
+                    <div className="flex items-center gap-1 text-green-400 text-3xl">
+                      {movie.popularity}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             )}
           </div>
         );

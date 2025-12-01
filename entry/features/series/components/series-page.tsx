@@ -1,8 +1,12 @@
 "use client";
 
-import { Genres } from "@/shared/interfaces/tmdb.interface";
+import CastCard from "@/shared/components/card/cast-card";
+import { Genres, TMDBCastResponse } from "@/shared/interfaces/tmdb.interface";
 import { TMDBSeriesResponse } from "entry/features/series/interfaces/tmdb.interface";
-import { getSeriesVideosID } from "entry/features/series/services/tmdb.service";
+import {
+  getSeriesCastFromTmdb,
+  getSeriesVideosID,
+} from "entry/features/series/services/tmdb.service";
 import Navbar from "entry/shared/components/navigation/navbar";
 import { navbarLinks } from "entry/shared/constants/navbar-links.constants";
 import { getSeriesByIDFromTMDB } from "entry/shared/services/tmdb/tmdb.series.service";
@@ -17,16 +21,21 @@ const SeriesPage = () => {
   const [seriesTrailerUrl, setSeriesTrailerUrl] = useState<
     string | string[] | null
   >(null);
-
+  const [casts, setCasts] = useState<TMDBCastResponse[] | []>([]);
   const params = useParams();
 
   const seriesId = Number(params.seriesId);
 
+  const seriesLanguage = DetectOriginalCounryName(series.original_language);
+
   useEffect(() => {
     const fetchMovie = async () => {
       const data = await getSeriesByIDFromTMDB(seriesId);
-
+      const castsData = await getSeriesCastFromTmdb(seriesId);
       if (!data) return;
+      if (castsData) {
+        setCasts(castsData);
+      } else setCasts([]);
 
       setSeries(data);
     };
@@ -95,10 +104,11 @@ const SeriesPage = () => {
                   </div>
                   <div className="text-xl opacity-85 gap-1 grid">
                     <p className="">From: {series.origin_country}</p>
-                    <p className="">
-                      Language:{" "}
-                      {DetectOriginalCounryName(series.original_language)}
-                    </p>
+                    {seriesLanguage ? (
+                      <p className="text-xl opacity-85 gap-1 grid">
+                        Language: {seriesLanguage}
+                      </p>
+                    ) : null}
                   </div>
                   <p className="text-xl opacity-70 my-8">
                     Aired in: {series.first_air_date}
@@ -115,6 +125,21 @@ const SeriesPage = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+        <div className="m-20 w-3/4">
+          <p className="text-xl font-bold mb-4">Cast: </p>
+          <div className="flex gap-5">
+            {casts.map((cast, key) => (
+              <div className="" key={key}>
+                <CastCard
+                  name={cast.name}
+                  playedAs={cast.character}
+                  profilePath={cast.profile_path}
+                  className={"flex flex-col items-center"}
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>

@@ -1,9 +1,8 @@
 "use client";
 
-import {
-  TMDBCastResponse,
-  TMDBMovieResponse,
-} from "entry/features/movie/interfaces/tmdb.interface";
+import CastCard from "@/shared/components/card/cast-card";
+import { TMDBCastResponse } from "@/shared/interfaces/tmdb.interface";
+import { TMDBMovieResponse } from "entry/features/movie/interfaces/tmdb.interface";
 import { getMoviesVideosID } from "entry/features/movie/services/tmdb.service";
 import Navbar from "entry/shared/components/navigation/navbar";
 import { navbarLinks } from "entry/shared/constants/navbar-links.constants";
@@ -28,6 +27,8 @@ const MoviePage = () => {
 
   const movieId = Number(params.movieId);
 
+  const movieLanguage = DetectOriginalCounryName(movie.original_language);
+
   useEffect(() => {
     const fetchMovie = async () => {
       const data = await getMovieByIDFromTMDB(movieId);
@@ -35,6 +36,7 @@ const MoviePage = () => {
 
       if (!data) return;
       if (!casts) return;
+      console.log(data);
 
       setMovie(data);
       setCasts(casts);
@@ -104,10 +106,15 @@ const MoviePage = () => {
                   </div>
                   <div className="text-xl opacity-85 gap-1 grid">
                     <p className="">
-                      Language:{" "}
-                      {DetectOriginalCounryName(movie.original_language)}
+                      From: {movie.origin_country?.map((country) => country)}
                     </p>
+                    {movieLanguage ? (
+                      <p className="text-xl opacity-85 gap-1 grid">
+                        Language: {movieLanguage}
+                      </p>
+                    ) : null}
                   </div>
+
                   <p className="text-xl opacity-70 my-8">
                     Release year: {movie.release_date}
                   </p>
@@ -128,11 +135,21 @@ const MoviePage = () => {
         </div>
       </div>
       <div className="">
-        <p className="">
-          {casts?.map((cast, key) => (
-            <div key={key}>{cast.character}</div>
-          ))}
-        </p>
+        <div className="m-20 w-2/3">
+          <p className="text-lg font-bold mb-4">Cast:</p>
+          <div className=" flex gap-5 ">
+            {casts?.map((cast, key) => (
+              <div key={key} className="">
+                <CastCard
+                  name={cast.name}
+                  playedAs={cast.character}
+                  profilePath={cast.profile_path}
+                  className={"h-full flex flex-col  items-center"}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -56,6 +56,7 @@ export interface TMDBCommonMediaDataResponse {
   genres: Genres[];
   homepage: string;
   original_language: string;
+  origin_country: string[];
   overview: string;
   popularity: number;
   poster_path: string;
@@ -141,4 +142,38 @@ export interface TMDBCommonContetResponse {
 
   // Type discriminator (optional but useful)
   media_type?: "movie" | "tv";
+}
+
+export interface TMDBCreditResponse {
+  adult: boolean;
+  gender: number;
+  id: number;
+  known_for_department: string;
+  name: string;
+  original_name: string;
+  popularity: number;
+  profile_path: string;
+  credit_id: string;
+  departmen: string;
+  order: number;
+}
+
+export interface TMDBCreditMediaResponse {
+  id: number;
+  cast: TMDBCastResponse;
+}
+
+export interface TMDBCastResponse {
+  adult: boolean;
+  gender: number;
+  id: number;
+  known_for_department: string;
+  name: string;
+  original_name: string;
+  popularity: number;
+  profile_path: string;
+  cast_id: 7;
+  character: string;
+  credit_id: string;
+  order: number;
 }
