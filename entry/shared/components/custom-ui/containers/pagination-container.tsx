@@ -20,6 +20,9 @@ const PaginationContainer = ({
   currentPage,
   setCurrentPage,
 }: PaginationContainerProps) => {
+  //checking wether total pages exeding 500 or not. because of tmdb limitations
+  pages = pages > 500 ? 500 : pages;
+
   const handleNextPageClick = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ) => {
