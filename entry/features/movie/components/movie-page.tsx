@@ -36,7 +36,6 @@ const MoviePage = () => {
 
       if (!data) return;
       if (!casts) return;
-      console.log(data);
 
       setMovie(data);
       setCasts(casts);

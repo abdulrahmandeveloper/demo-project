@@ -54,6 +54,8 @@ export interface TMDBCommonMediaDataResponse {
   adult: boolean;
   backdrop_path: string;
   genres: Genres[];
+  genre_ids: number[];
+
   homepage: string;
   original_language: string;
   origin_country: string[];

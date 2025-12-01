@@ -33,8 +33,6 @@ const MoviesList = () => {
     fetchMovies();
   }, [currentPage, refetchContent, hasFiltersSelected]);
 
-  const handleMovieClick = () => {};
-
   return (
     <div className="w-3/4 mx-auto">
       <Navbar
