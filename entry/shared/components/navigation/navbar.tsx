@@ -55,13 +55,16 @@ const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
     <div className="grid grid-cols-3 bg-transparent/5 hover:backdrop-blur-md transition-all duration-300 ease-in-out shadow-sm h-16">
       <div className="flex items-center justify-center">
         {" "}
-        <Image
-          src={logoPath}
-          alt="logo"
-          className="rounded-3xl "
-          width={50}
-          height={50}
-        />
+        <Link href={"/"}>
+          {" "}
+          <Image
+            src={logoPath}
+            alt="logo"
+            className="rounded-3xl "
+            width={50}
+            height={50}
+          />
+        </Link>
       </div>
       <div
         className={`   flex  gap-28 items-center justify-center  ${className}`}

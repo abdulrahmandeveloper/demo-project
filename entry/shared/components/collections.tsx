@@ -13,6 +13,7 @@ import {
   TooltipTrigger,
 } from "entry/shared/components/ui/tooltip";
 import Image from "next/image";
+import Link from "next/link";
 
 const ShowCollectionPartsPoster = ({ parts }: { parts: CollectionParts[] }) => {
   if (!Array.isArray(parts) || parts.length === 0) {
@@ -34,10 +35,13 @@ const ShowCollectionPartsPoster = ({ parts }: { parts: CollectionParts[] }) => {
               <div className="hover:w-28">
                 <Tooltip>
                   <TooltipTrigger>
-                    <PosterCard
-                      src={part.poster_path}
-                      className="w-28 h-44 rounded-md shadow-lg  hover:cursor-pointer"
-                    />
+                    <Link href={`/movies/${part.id}`}>
+                      {" "}
+                      <PosterCard
+                        src={part.poster_path}
+                        className="w-28 h-44 rounded-md shadow-lg  hover:cursor-pointer"
+                      />
+                    </Link>
                   </TooltipTrigger>
                   <TooltipContent>
                     <h2 className="text-lg">{part.title}</h2>
