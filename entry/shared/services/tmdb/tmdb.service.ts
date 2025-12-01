@@ -24,13 +24,13 @@ export const getCollectionFromTMDB = async (): Promise<
   const collectionsData: CollectionRespose[] = [];
 
   for (let i = 0; i < collectionsID.length; i++) {
-    const res = await tmdbApi.get(
+    const response = await tmdbApi.get(
       `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/collection/${collectionsID[i]}`
     );
-    if (!res) {
+    if (!response) {
       return null;
     }
-    const data = res.data;
+    const data = response.data;
 
     collectionsData.push(data);
   }
@@ -98,9 +98,9 @@ export const GetSlideShowVidoes = async (
 
 // genres
 export const getGenresFromTmdb = async (): Promise<GenresResponse> => {
-  const res = await tmdbApi.get("/genre/tv/list");
+  const response = await tmdbApi.get("/genre/tv/list");
 
-  const data: GenresResponse = res.data;
+  const data: GenresResponse = response.data;
 
   return data;
 };

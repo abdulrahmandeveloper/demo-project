@@ -9,14 +9,14 @@ export const getPopularMoviesPosters = async (
   limitNumber: number
 ): Promise<TMDBMovieResponse[] | []> => {
   try {
-    const res = await tmdbApi.get(
+    const response = await tmdbApi.get(
       `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/movie/popular?page=1`
     );
 
-    if (!res) {
+    if (!response) {
       return [];
     }
-    const filteredMovies: TMDBMovieResponse[] = res.data.results.slice(
+    const filteredMovies: TMDBMovieResponse[] = response.data.results.slice(
       0,
       limitNumber
     );
@@ -31,10 +31,10 @@ export const getPopularMoviesPosters = async (
 export const getMovieSearchResultsFromTMDB = async (
   query: string
 ): Promise<TMDBMediaResponse<TMDBMovieResponse>> => {
-  const res = await tmdbApi.get(
+  const response = await tmdbApi.get(
     `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/search/movie?query=${query}`
   );
-  const data: TMDBMediaResponse<TMDBMovieResponse> = res.data;
+  const data: TMDBMediaResponse<TMDBMovieResponse> = response.data;
 
   return data;
 };
@@ -43,11 +43,11 @@ export const getMovieRecommendationsFromTMDB = async (
   movieID: number,
   pages: number
 ): Promise<TMDBMediaResponse<TMDBMovieResponse>> => {
-  const res = tmdbApi.get(
+  const response = tmdbApi.get(
     `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/movie/${movieID}/recommendations?page=${pages}`
   );
 
-  const data: TMDBMediaResponse<TMDBMovieResponse> = (await res).data;
+  const data: TMDBMediaResponse<TMDBMovieResponse> = (await response).data;
 
   return data;
 };
@@ -56,13 +56,13 @@ export const getMoviesVideosID = async (
   movieIDs: number | number[]
 ): Promise<string | string[]> => {
   if (typeof movieIDs === "object") {
-    const res = await Promise.allSettled(
+    const response = await Promise.allSettled(
       movieIDs.map((id) =>
         tmdbApi.get(`/movie/${id}/videos`).then((videos) => videos.data.results)
       )
     );
 
-    const successfulResponses = res.filter(
+    const successfulResponses = response.filter(
       (
         result
       ): result is PromiseFulfilledResult<TMDBVideoReferenceResponse[]> =>
@@ -83,9 +83,9 @@ export const getMoviesVideosID = async (
 
     return trailerKeys;
   } else {
-    const res = await tmdbApi.get(`/movie/${movieIDs}/videos`);
+    const response = await tmdbApi.get(`/movie/${movieIDs}/videos`);
 
-    const data: string = res.data.results
+    const data: string = response.data.results
       .filter(
         (item: TMDBVideoReferenceResponse) =>
           item.site === "YouTube" && item.type === "Trailer"
@@ -102,11 +102,11 @@ export const getMoviesVideosID = async (
 export const getMoviesListFromTmdb = async (
   page: number = 1
 ): Promise<TMDBMediaResponse<TMDBMovieResponse>> => {
-  const res = await tmdbApi.get(
+  const response = await tmdbApi.get(
     `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/movie/top_rated?page=${page}&language=en-US`
   );
 
-  const data = res.data;
+  const data = response.data;
 
   return data;
 };
@@ -115,11 +115,11 @@ export const getMoviesDiscoveryFromTmdb = async (
   queries: string,
   page: number = 1
 ): Promise<TMDBMediaResponse<TMDBMovieResponse>> => {
-  const res = await tmdbApi.get(
+  const response = await tmdbApi.get(
     `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/discover/movie?page=${page}&${queries}`
   );
 
-  const data = res.data;
+  const data = response.data;
 
   return data;
 };

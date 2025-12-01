@@ -1,7 +1,6 @@
 import { tmdbApi } from "entry/shared/lib/axios/axios";
 import {
   TMDBCastResponse,
-  TMDBCreditMediaResponse,
   TMDBMediaResponse,
   TMDBVideoReferenceResponse,
 } from "entry/shared/interfaces/tmdb.interface";
