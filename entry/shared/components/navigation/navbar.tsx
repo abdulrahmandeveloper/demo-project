@@ -52,7 +52,7 @@ const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
 
   useEffect(() => {});
   return (
-    <div className="grid grid-cols-3 bg-transparent/5 hover:backdrop-blur-md transition-all duration-300 ease-in-out shadow-sm h-16">
+    <div className="grid grid-cols-3 bg-transparent/95 backdrop-blur-xs hover:backdrop-blur-lg transition-all duration-300  shadow-sm h-16">
       <div className="flex items-center justify-center">
         {" "}
         <Link href={"/"}>
@@ -60,7 +60,7 @@ const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
           <Image
             src={logoPath}
             alt="logo"
-            className="rounded-3xl "
+            className="rounded-2xl h-10 w-10"
             width={50}
             height={50}
           />
@@ -72,7 +72,7 @@ const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
         <div className="flex gap-5 items-center  w-[550]  justify-between">
           {links.map((link) => (
             <Link
-              className="text-white opacity-50 hover:opacity-100 font-bold "
+              className="text-white opacity-50 hover:opacity-100 font-bold cursor-pointer"
               key={link.name}
               href={link.path}
             >
