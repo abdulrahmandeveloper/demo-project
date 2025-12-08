@@ -12,7 +12,7 @@ import { getSeriesDiscoveryFromTMDB } from "entry/shared/services/tmdb/tmdb.seri
 import { Button } from "entry/shared/components/ui/button";
 import SearchComponent from "@/shared/components/search/search";
 import { getSeriesSearchResultsFromTMDB } from "entry/features/series/services/tmdb.service";
-import { TMDBMediaResponse } from "entry/shared/interfaces/tmdb.interface";
+import { TMDBMediaResponse } from "@/shared/interfaces/tmdb/tmdb.interface";
 import { TMDBSeriesResponse } from "entry/features/series/interfaces/tmdb.interface";
 import { getMoviesDiscoveryFromTmdb } from "entry/features/movie/services/tmdb.service";
 import {

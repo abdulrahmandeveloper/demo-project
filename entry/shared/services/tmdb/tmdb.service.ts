@@ -1,7 +1,7 @@
 import {
   CollectionRespose,
   GenresResponse,
-} from "entry/shared/interfaces/tmdb.interface";
+} from "@/shared/interfaces/tmdb/tmdb.interface";
 import { collectionsID } from "entry/shared/constants/collections.constants";
 import {
   getMovieRecommendationsFromTMDB,

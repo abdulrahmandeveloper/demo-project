@@ -1,7 +1,10 @@
 "use client";
 
 import CastCard from "@/shared/components/card/cast-card";
-import { Genres, TMDBCastResponse } from "@/shared/interfaces/tmdb.interface";
+import {
+  Genres,
+  TMDBCastResponse,
+} from "@/shared/interfaces/tmdb/tmdb.interface";
 import { TMDBSeriesResponse } from "entry/features/series/interfaces/tmdb.interface";
 import {
   getSeriesCastFromTmdb,

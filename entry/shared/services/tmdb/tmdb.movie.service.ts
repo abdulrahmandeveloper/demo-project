@@ -1,4 +1,7 @@
-import { TMDBCastResponse } from "@/shared/interfaces/tmdb.interface";
+import {
+  KeywordsResponse,
+  TMDBCastResponse,
+} from "@/shared/interfaces/tmdb/tmdb.interface";
 import { TMDBMovieResponse } from "entry/features/movie/interfaces/tmdb.interface";
 import { tmdbApi } from "entry/shared/lib/axios/axios";
 
@@ -27,4 +30,11 @@ export const getMovieByIdCredits = async (
   }
 
   return data;
+};
+
+export const getMovieByIdKeywordsFromTMDB = async (
+  movieId: number
+): Promise<KeywordsResponse> => {
+  const response = await tmdbApi.get(`/movie/${movieId}/keywords`);
+  return response.data;
 };

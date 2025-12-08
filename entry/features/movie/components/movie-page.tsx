@@ -1,7 +1,8 @@
 "use client";
 
 import CastCard from "@/shared/components/card/cast-card";
-import { TMDBCastResponse } from "@/shared/interfaces/tmdb.interface";
+import KeywordsCard from "@/shared/components/card/keywords-card";
+import { Keywords, TMDBCastResponse } from "@/shared/interfaces/tmdb.interface";
 import { TMDBMovieResponse } from "entry/features/movie/interfaces/tmdb.interface";
 import { getMoviesVideosID } from "entry/features/movie/services/tmdb.service";
 import Navbar from "entry/shared/components/navigation/navbar";
@@ -9,6 +10,7 @@ import { navbarLinks } from "entry/shared/constants/navbar-links.constants";
 import {
   getMovieByIdCredits,
   getMovieByIDFromTMDB,
+  getMovieByIdKeywordsFromTMDB,
 } from "entry/shared/services/tmdb/tmdb.movie.service";
 import { DetectOriginalCounryName } from "entry/shared/utils/language-selector";
 import { useParams } from "next/navigation";
@@ -22,6 +24,8 @@ const MoviePage = () => {
     string | string[] | null
   >(null);
   const [casts, setCasts] = useState<TMDBCastResponse[] | null>();
+  const [keywords, setKeywords] = useState<Keywords[]>();
+  console.log(keywords);
 
   const params = useParams();
 
@@ -33,12 +37,13 @@ const MoviePage = () => {
     const fetchMovie = async () => {
       const data = await getMovieByIDFromTMDB(movieId);
       const casts = await getMovieByIdCredits(movieId);
+      const keywords = await getMovieByIdKeywordsFromTMDB(movieId);
 
       if (!data) return;
-      if (!casts) return;
 
       setMovie(data);
       setCasts(casts);
+      setKeywords(keywords.keywords);
     };
 
     fetchMovie();
@@ -55,29 +60,36 @@ const MoviePage = () => {
   }, [movieId]);
 
   return (
-    <div className="">
-      <div className="">
-        <Navbar
-          logoPath={"/images/istar-logo.png"}
-          links={navbarLinks}
-          search={true}
-        />
-      </div>
-      <div className="dark:text-white text-5xl ">
-        <div className="h-[50vh] ">
+    <div className="w-full">
+      <Navbar
+        logoPath={"/images/istar-logo.png"}
+        links={navbarLinks}
+        search={true}
+      />
+      <div className="dark:text-white text-5xl">
+        <div className="min-h-1 h-[65vh] ">
           <img
             src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${movie.backdrop_path}`}
             alt={movie.title}
             className="absolute top-0 -z-50 opacity-75 h-[30vh] w-full object-cover object-center "
           />
           <div className="flex h-[55vh] mt-28 ">
-            <img
-              src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${movie.poster_path}`}
-              alt={movie.title}
-              className=" h-full ml-10 rounded-lg shadow-lg    top-0"
-            />
+            <div className=" flex flex-col w-3/7 items-center justify-center">
+              <img
+                src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${movie.poster_path}`}
+                alt={movie.title}
+                className="w-7/8 mx-auto rounded-lg "
+              />
+              <div className="flex flex-wrap w-full gap-2 justify-center my-2">
+                {keywords?.slice(0, 9).map((keyword, index) => (
+                  <div key={index} className="text-sm opacity-70 text-center">
+                    <KeywordsCard text={keyword.name} />
+                  </div>
+                ))}
+              </div>
+            </div>
             <div className="flex   ">
-              <div className="justify-center flex flex-col ml-10 mb-4/5 w-full ">
+              <div className="justify-center flex flex-col mb-4/5 w-full ">
                 <div className=" h-[30vh] ">
                   <div className="flex items-center gap-2 mb-5">
                     {" "}
@@ -133,23 +145,22 @@ const MoviePage = () => {
           </div>
         </div>
       </div>
-      <div className="">
-        <div className="m-20 w-2/3">
-          <p className="text-lg font-bold mb-4">Cast:</p>
-          <div className=" flex gap-5 ">
-            {casts?.map((cast, key) => (
-              <div key={key} className="">
-                <CastCard
-                  name={cast.name}
-                  playedAs={cast.character}
-                  profilePath={cast.profile_path}
-                  className={"h-full flex flex-col  items-center"}
-                />
-              </div>
-            ))}
-          </div>
+      <div className="ml-20 w-1/2 mb-4 mt-2">
+        <p className="text-lg font-bold mb-4">Cast:</p>
+        <div className=" flex gap-5 overflow-x-auto whitespace-nowrap scrollbar-none">
+          {casts?.map((cast, key) => (
+            <div key={key} className="">
+              <CastCard
+                name={cast.name}
+                playedAs={cast.character}
+                profilePath={cast.profile_path}
+                className={"h-full flex flex-col  items-center"}
+              />
+            </div>
+          ))}
         </div>
       </div>
+      <div className=""></div>
     </div>
   );
 };

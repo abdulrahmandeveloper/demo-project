@@ -1,7 +1,7 @@
 import {
   CollectionRespose,
   TMDBCommonMediaDataResponse,
-} from "entry/shared/interfaces/tmdb.interface";
+} from "@/shared/interfaces/tmdb/tmdb.interface";
 
 export interface TMDBMovieResponse extends TMDBCommonMediaDataResponse {
   media_type: "movie";

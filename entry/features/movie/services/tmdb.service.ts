@@ -3,7 +3,7 @@ import { TMDBMovieResponse } from "entry/features/movie/interfaces/tmdb.interfac
 import {
   TMDBMediaResponse,
   TMDBVideoReferenceResponse,
-} from "entry/shared/interfaces/tmdb.interface";
+} from "@/shared/interfaces/tmdb/tmdb.interface";
 
 export const getPopularMoviesPosters = async (
   limitNumber: number

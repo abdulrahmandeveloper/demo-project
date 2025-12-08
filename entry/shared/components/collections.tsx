@@ -5,7 +5,7 @@ import { getCollectionFromTMDB } from "entry/shared/services/tmdb/tmdb.service";
 import {
   CollectionParts,
   CollectionRespose,
-} from "entry/shared/interfaces/tmdb.interface";
+} from "@/shared/interfaces/tmdb/tmdb.interface";
 import PosterCard from "entry/shared/components/card/poster-card";
 import {
   Tooltip,

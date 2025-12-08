@@ -3,7 +3,7 @@ import {
   TMDBCastResponse,
   TMDBMediaResponse,
   TMDBVideoReferenceResponse,
-} from "entry/shared/interfaces/tmdb.interface";
+} from "@/shared/interfaces/tmdb/tmdb.interface";
 import { TMDBSeriesResponse } from "../interfaces/tmdb.interface";
 
 export const getSeriesSearchResultsFromTMDB = async (
