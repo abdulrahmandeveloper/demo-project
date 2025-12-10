@@ -6,7 +6,7 @@ const PosterCard = ({ src, className }: PosterCardProps) => {
       <img
         src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}${src}`}
         alt="image"
-        className={`${className} rounded-lg p-20`}
+        className={`${className} rounded-lg `}
       />
     </div>
   );

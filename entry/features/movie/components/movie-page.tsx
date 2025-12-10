@@ -2,12 +2,25 @@
 
 import CastCard from "@/shared/components/card/cast-card";
 import KeywordsCard from "@/shared/components/card/keywords-card";
+import PosterCard from "@/shared/components/card/poster-card";
+import ReviewCard from "@/shared/components/card/review-card";
+import VideoProviderCard from "@/shared/components/card/video-provider-card";
+import TooltipContainer from "@/shared/components/custom-ui/containers/tooltip-container";
+import { Button } from "@/shared/components/ui/button";
+import VideoPlayer from "@/shared/components/video-player";
 import {
   Keywords,
   TMDBCastResponse,
 } from "@/shared/interfaces/tmdb/tmdb.interface";
-import { TMDBMovieResponse } from "entry/features/movie/interfaces/tmdb.interface";
-import { getMoviesVideosID } from "entry/features/movie/services/tmdb.service";
+import {
+  TMDBMovieResponse,
+  TMDBMOvieReviewsResponse,
+} from "entry/features/movie/interfaces/tmdb.interface";
+import {
+  GetSimilarMoviesById,
+  getMovieReviewsByIdFromTmdb,
+  getMoviesVideosID,
+} from "entry/features/movie/services/tmdb.service";
 import Navbar from "entry/shared/components/navigation/navbar";
 import { navbarLinks } from "entry/shared/constants/navbar-links.constants";
 import {
@@ -16,6 +29,7 @@ import {
   getMovieByIdKeywordsFromTMDB,
 } from "entry/shared/services/tmdb/tmdb.movie.service";
 import { DetectOriginalCounryName } from "entry/shared/utils/language-selector";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -28,7 +42,13 @@ const MoviePage = () => {
   >(null);
   const [casts, setCasts] = useState<TMDBCastResponse[] | null>();
   const [keywords, setKeywords] = useState<Keywords[]>();
-  console.log(keywords);
+  const [similarMovies, setSimilarMovies] = useState<TMDBMovieResponse[]>([]);
+  const [reviews, setReviews] = useState<TMDBMOvieReviewsResponse[]>([]);
+  console.log(similarMovies);
+
+  const displayedKeywords = keywords
+    ?.slice(0, 4)
+    .map((keyword) => keyword.name);
 
   const params = useParams();
 
@@ -41,12 +61,16 @@ const MoviePage = () => {
       const data = await getMovieByIDFromTMDB(movieId);
       const casts = await getMovieByIdCredits(movieId);
       const keywords = await getMovieByIdKeywordsFromTMDB(movieId);
+      const similarMovies = await GetSimilarMoviesById(movieId);
+      const reviews = await getMovieReviewsByIdFromTmdb(movieId);
 
       if (!data) return;
 
       setMovie(data);
       setCasts(casts);
       setKeywords(keywords.keywords);
+      setSimilarMovies(similarMovies);
+      setReviews(reviews);
     };
 
     fetchMovie();
@@ -76,22 +100,37 @@ const MoviePage = () => {
             alt={movie.title}
             className="absolute top-0 -z-50 opacity-75 h-[30vh] w-full object-cover object-center "
           />
-          <div className="flex h-[55vh] mt-28 ">
+          <div className="flex h-[65vh] mt-28 ">
             <div className=" flex flex-col w-3/7 items-center justify-center">
               <img
                 src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${movie.poster_path}`}
                 alt={movie.title}
                 className="w-7/8 mx-auto rounded-lg "
               />
-              <div className="flex flex-wrap w-full gap-2 justify-center my-2">
-                {keywords?.slice(0, 9).map((keyword, index) => (
-                  <div key={index} className="text-sm opacity-70 text-center">
-                    <KeywordsCard text={keyword.name} />
-                  </div>
-                ))}
+              <div className="flex flex-row flex-wrap w-3/4 gap-2 items-center m-4 text-sm opacity-70 text-center">
+                <KeywordsCard text={displayedKeywords as string[]} />
+                <TooltipContainer
+                  content={
+                    keywords
+                      ?.slice(4)
+                      .map((item) => item.name) as unknown as string
+                  }
+                  className={
+                    "flex  w-1/4 gap-3 text-center flex-wrap justify-center dark:bg-black dark:text-white "
+                  }
+                  trigger={
+                    <Button
+                      size={"sm"}
+                      className=" p-0 m-0 border-0 hover:text-black  text-white!"
+                      variant={"ghost"}
+                    >
+                      More...
+                    </Button>
+                  }
+                />
               </div>
             </div>
-            <div className="flex   ">
+            <div className="flex">
               <div className="justify-center flex flex-col mb-4/5 w-full ">
                 <div className=" h-[30vh] ">
                   <div className="flex items-center gap-2 mb-5">
@@ -148,22 +187,70 @@ const MoviePage = () => {
           </div>
         </div>
       </div>
-      <div className="ml-20 w-1/2 mb-4 mt-2">
+      <div className="ml-20 w-1/2 my-20">
         <p className="text-lg font-bold mb-4">Cast:</p>
-        <div className=" flex gap-5 overflow-x-auto whitespace-nowrap scrollbar-none">
+        <div className=" flex gap-5 overflow-x-auto whitespace-nowrap  scrollbar-none">
           {casts?.map((cast, key) => (
-            <div key={key} className="">
+            <div key={key} className="text-center">
               <CastCard
                 name={cast.name}
                 playedAs={cast.character}
                 profilePath={cast.profile_path}
-                className={"h-full flex flex-col  items-center"}
+                className={"h-full flex flex-col  items-center "}
               />
             </div>
           ))}
         </div>
       </div>
-      <div className=""></div>
+      <div className="h-[18vh] flex items-center justify-center">
+        <h1 className="font-bold text-4xl text-center">{movie.tagline}</h1>
+      </div>
+      <div className="w-9/10 flex flex-col justify-center my-5 rounded-lg mx-auto">
+        <VideoPlayer
+          containerClassName={
+            "lg:w-[1024px] lg:h-[576px] mx-auto aspect-video overflow-hidden bg-neutral-900 flex justify-center items-center"
+          }
+        />
+        <VideoProviderCard />
+      </div>
+      <div className="flex flex-col w-9/10 mx-auto my-5">
+        <h1 className="font-medium text-2xl mb-4">Reviews</h1>
+        {reviews.length > 0 ? (
+          <ReviewCard
+            review={reviews}
+            className={"flex gap-5 w-full flex-wrap "}
+          />
+        ) : (
+          <p>No reviews to show!</p>
+        )}
+      </div>
+      <div className="w-4/5 mx-auto my-2">
+        {" "}
+        <h1 className="font-medium text-2xl my-4">Similar movies: </h1>
+        <div className="flex flex-nowrap gap-3 overflow-x-auto w-full">
+          {" "}
+          {similarMovies.map((movie: TMDBMovieResponse, index) => (
+            <div
+              key={index}
+              className="min-w-[200px] max-w-[300px]  min-h-[300px]"
+            >
+              <Link href={`/movies/${movie.id}`}>
+                {" "}
+                <PosterCard
+                  src={`${movie.poster_path}`}
+                  className="rounded-lg  w-[200px] h-[300px]"
+                />
+              </Link>
+              <h1 className="flex text-center justify-center opacity-70">
+                {movie.title}
+              </h1>
+              <p className="justify-center flex opacity-45">
+                {movie.release_date + " | " + movie.vote_average}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

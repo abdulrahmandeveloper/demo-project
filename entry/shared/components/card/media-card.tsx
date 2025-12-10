@@ -52,7 +52,7 @@ const MediaCard = ({
               <img
                 src={`${
                   imgSource
-                    ? imgSource
+                    ? `${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}${imgSource}`
                     : `${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}${movie.poster_path}`
                 }`}
                 alt="poster"
