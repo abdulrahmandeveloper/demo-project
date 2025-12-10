@@ -5,7 +5,7 @@ import { getCollectionFromTMDB } from "entry/shared/services/tmdb/tmdb.service";
 import {
   CollectionParts,
   CollectionRespose,
-} from "entry/shared/interfaces/tmdb.interface";
+} from "@/shared/interfaces/tmdb/tmdb.interface";
 import PosterCard from "entry/shared/components/card/poster-card";
 import {
   Tooltip,
@@ -15,7 +15,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 
-const ShowCollectionPartsPoster = ({ parts }: { parts: CollectionParts[] }) => {
+const CollectionPartsPoster = ({ parts }: { parts: CollectionParts[] }) => {
   if (!Array.isArray(parts) || parts.length === 0) {
     return <p>No Parts Posters to show</p>;
   }
@@ -102,7 +102,7 @@ const Collections = () => {
 
               <div className="w-[70%]">
                 <div className="flex-1 flex justify-end overflow-hidden py-6 relative">
-                  <ShowCollectionPartsPoster parts={collection.parts} />
+                  <CollectionPartsPoster parts={collection.parts} />
                 </div>
               </div>
             </div>

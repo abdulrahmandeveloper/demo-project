@@ -1,9 +1,11 @@
 import {
-  EpisodeResponse,
-  SeasonResponse,
   TMDBCommonMediaDataResponse,
   TMDBMediaResponse,
-} from "entry/shared/interfaces/tmdb.interface";
+} from "@/shared/interfaces/tmdb/tmdb.interface";
+import {
+  EpisodeResponse,
+  SeasonResponse,
+} from "@/shared/interfaces/tmdb/tmdb.series.interface";
 
 export interface ProfileInfoResponse {
   id: number;

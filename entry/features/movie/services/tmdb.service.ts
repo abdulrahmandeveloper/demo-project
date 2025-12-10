@@ -1,9 +1,12 @@
 import { tmdbApi } from "entry/shared/lib/axios/axios";
-import { TMDBMovieResponse } from "entry/features/movie/interfaces/tmdb.interface";
+import {
+  TMDBMovieResponse,
+  TMDBMOvieReviewsResponse,
+} from "entry/features/movie/interfaces/tmdb.interface";
 import {
   TMDBMediaResponse,
   TMDBVideoReferenceResponse,
-} from "entry/shared/interfaces/tmdb.interface";
+} from "@/shared/interfaces/tmdb/tmdb.interface";
 
 export const getPopularMoviesPosters = async (
   limitNumber: number
@@ -121,5 +124,21 @@ export const getMoviesDiscoveryFromTmdb = async (
 
   const data = response.data;
 
+  return data;
+};
+
+export const GetSimilarMoviesById = async (
+  movieId: number
+): Promise<TMDBMovieResponse[]> => {
+  const response = await tmdbApi.get(`/movie/${movieId}/similar`);
+  const data = response.data.results;
+  return data;
+};
+
+export const getMovieReviewsByIdFromTmdb = async (
+  movieId: number
+): Promise<TMDBMOvieReviewsResponse[]> => {
+  const response = await tmdbApi.get(`/movie/${movieId}/reviews`);
+  const data = response.data.results;
   return data;
 };
