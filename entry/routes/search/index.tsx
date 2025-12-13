@@ -1,12 +1,37 @@
 "use client";
 
+import { TMDBMovieResponse } from "@/features/movie/interfaces/tmdb.interface";
+import { getMovieSearchResultsFromTMDB } from "@/features/movie/services/tmdb.service";
+import { TMDBSeriesResponse } from "@/features/series/interfaces/tmdb.interface";
+import { getSeriesSearchResultsFromTMDB } from "@/features/series/services/tmdb.service";
 import Navbar from "@/shared/components/navigation/navbar";
+import SearchComponent from "@/shared/components/search/search";
 import { navbarLinks } from "@/shared/constants/navbar-links.constants";
 import { useSearchQueryData } from "@/shared/stores/searchQueryStore";
+import { useEffect, useState } from "react";
 
 const SearchPage = () => {
   const query = useSearchQueryData((query) => query.query);
   console.log(query);
+  const [movieList, setMovieList] = useState<TMDBMovieResponse[]>([]);
+  const [seriesList, setSeriesList] = useState<TMDBSeriesResponse[]>([]);
+  console.log(movieList);
+  console.log(seriesList);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const movieListData = await getMovieSearchResultsFromTMDB(query);
+      const seriesListData = await getSeriesSearchResultsFromTMDB(query);
+
+      if (movieListData) {
+        setMovieList(movieListData.results);
+      }
+      if (seriesListData) {
+        setSeriesList(seriesListData.results);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <div>
@@ -23,3 +48,4 @@ const SearchPage = () => {
 };
 
 export default SearchPage;
+// <SearchComponent />
