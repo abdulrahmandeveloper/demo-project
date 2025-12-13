@@ -1,19 +1,29 @@
 "use client";
 
 import CastCard from "@/shared/components/card/cast-card";
+import PosterCard from "@/shared/components/card/poster-card";
+import ReviewCard from "@/shared/components/card/review-card";
+import VideoProviderCard from "@/shared/components/card/video-provider-card";
+import VideoPlayer from "@/shared/components/video-player";
 import {
   Genres,
   TMDBCastResponse,
+  TMDBReviewsResponse,
 } from "@/shared/interfaces/tmdb/tmdb.interface";
 import { TMDBSeriesResponse } from "entry/features/series/interfaces/tmdb.interface";
 import {
+  getMovieReviewsByIdFromTmdb,
   getSeriesCastFromTmdb,
+  getSeriesReviewsByIdFromTmdb,
   getSeriesVideosID,
+  GetSimilarMoviesById,
+  GetSimilarSeriesById,
 } from "entry/features/series/services/tmdb.service";
 import Navbar from "entry/shared/components/navigation/navbar";
 import { navbarLinks } from "entry/shared/constants/navbar-links.constants";
 import { getSeriesByIDFromTMDB } from "entry/shared/services/tmdb/tmdb.series.service";
 import { DetectOriginalCounryName } from "entry/shared/utils/language-selector";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -25,6 +35,9 @@ const SeriesPage = () => {
     string | string[] | null
   >(null);
   const [casts, setCasts] = useState<TMDBCastResponse[] | []>([]);
+  const [similarSeries, setSimilarSeries] = useState<TMDBSeriesResponse[]>([]);
+  const [reviews, setReviews] = useState<TMDBReviewsResponse[]>([]);
+
   const params = useParams();
 
   const seriesId = Number(params.seriesId);
@@ -35,12 +48,17 @@ const SeriesPage = () => {
     const fetchMovie = async () => {
       const data = await getSeriesByIDFromTMDB(seriesId);
       const castsData = await getSeriesCastFromTmdb(seriesId);
+      const similarSeriesData = await GetSimilarSeriesById(seriesId);
+      const reviewsData = await getSeriesReviewsByIdFromTmdb(seriesId);
+
       if (!data) return;
       if (castsData) {
         setCasts(castsData);
       } else setCasts([]);
 
       setSeries(data);
+      setSimilarSeries(similarSeriesData);
+      setReviews(reviewsData);
     };
 
     fetchMovie();
@@ -141,6 +159,60 @@ const SeriesPage = () => {
                   profilePath={cast.profile_path}
                   className={"flex flex-col items-center"}
                 />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="h-[18vh] flex items-center justify-center">
+          <h1 className="font-bold text-4xl text-center">{series.tagline}</h1>
+        </div>
+        <div className="w-9/10 flex flex-col justify-center my-5 rounded-lg mx-auto">
+          <VideoPlayer
+            containerClassName={
+              "lg:w-[1024px] lg:h-[576px] mx-auto aspect-video overflow-hidden bg-neutral-900 flex justify-center items-center"
+            }
+          />
+          <VideoProviderCard className="text-sm" />
+        </div>
+        <div className="flex flex-col w-9/10 mx-auto my-8">
+          <h1 className="font-medium text-2xl mb-5">Reviews</h1>
+          <div className="flex w-full overflow-x-auto gap-4">
+            {" "}
+            {reviews.length > 0 ? (
+              reviews.map((review, key) => (
+                <div key={key}>
+                  {" "}
+                  <ReviewCard
+                    review={review}
+                    className={"flex gap-5 w-full  min-w-[150px]"}
+                  />
+                </div>
+              ))
+            ) : (
+              <p>No reviews to show!</p>
+            )}
+          </div>
+        </div>
+        <div className="w-4/5 mx-auto my-2">
+          {" "}
+          <h1 className="font-medium text-2xl my-4">Similar Series: </h1>
+          <div className="flex flex-nowrap gap-3 overflow-x-auto w-full">
+            {" "}
+            {similarSeries.map((series: TMDBSeriesResponse, index) => (
+              <div key={index} className="min-w-[200px] max-w-[300px]  ">
+                <Link href={`/series/${series.id}`}>
+                  {" "}
+                  <PosterCard
+                    src={`${series.poster_path}`}
+                    className="rounded-lg  w-[200px] h-[300px] text-sm"
+                  />
+                </Link>
+                <h1 className="flex text-center justify-center opacity-70 text-sm mt-2">
+                  {series.name}
+                </h1>
+                <p className="justify-center flex opacity-45 text-sm">
+                  {series.first_air_date + " | " + series.vote_average}
+                </p>
               </div>
             ))}
           </div>

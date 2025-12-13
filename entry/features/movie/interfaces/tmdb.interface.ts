@@ -15,20 +15,3 @@ export interface TMDBMovieResponse extends TMDBCommonMediaDataResponse {
   imdb_id: string;
   video: boolean;
 }
-
-export interface AuthorDetails {
-  name: string;
-  username: string;
-  avatar_path: string;
-  rating: string;
-}
-
-export interface TMDBMOvieReviewsResponse {
-  author: "futuretv";
-  author_details: AuthorDetails;
-  content: string;
-  created_at: string;
-  id: string;
-  updated_at: string;
-  url: string;
-}

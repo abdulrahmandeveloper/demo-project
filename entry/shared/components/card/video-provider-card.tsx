@@ -1,7 +1,7 @@
 import React from "react";
 
-const VideoProviderCard = () => {
-  return <div>VideoProviderCard</div>;
+const VideoProviderCard = ({ className }: { className?: string }) => {
+  return <div className={`${className}`}>VideoProviderCard</div>;
 };
 
 export default VideoProviderCard;

@@ -44,7 +44,7 @@ const MoviePage = () => {
   const [keywords, setKeywords] = useState<Keywords[]>();
   const [similarMovies, setSimilarMovies] = useState<TMDBMovieResponse[]>([]);
   const [reviews, setReviews] = useState<TMDBMOvieReviewsResponse[]>([]);
-  console.log(similarMovies);
+  console.log(reviews);
 
   const displayedKeywords = keywords
     ?.slice(0, 4)
@@ -213,16 +213,24 @@ const MoviePage = () => {
         />
         <VideoProviderCard />
       </div>
-      <div className="flex flex-col w-9/10 mx-auto my-5">
-        <h1 className="font-medium text-2xl mb-4">Reviews</h1>
-        {reviews.length > 0 ? (
-          <ReviewCard
-            review={reviews}
-            className={"flex gap-5 w-full flex-wrap "}
-          />
-        ) : (
-          <p>No reviews to show!</p>
-        )}
+      <div className="flex flex-col w-9/10 mx-auto my-8">
+        <h1 className="font-medium text-2xl mb-5">Reviews</h1>
+        <div className="flex w-full overflow-x-auto gap-4">
+          {" "}
+          {reviews.length > 0 ? (
+            reviews.map((review, key) => (
+              <div key={key}>
+                {" "}
+                <ReviewCard
+                  review={review}
+                  className={"flex gap-5 w-full  min-w-[150px]"}
+                />
+              </div>
+            ))
+          ) : (
+            <p>No reviews to show!</p>
+          )}
+        </div>
       </div>
       <div className="w-4/5 mx-auto my-2">
         {" "}
@@ -241,7 +249,7 @@ const MoviePage = () => {
                   className="rounded-lg  w-[200px] h-[300px]"
                 />
               </Link>
-              <h1 className="flex text-center justify-center opacity-70">
+              <h1 className="flex text-center justify-center opacity-70 mt-2">
                 {movie.title}
               </h1>
               <p className="justify-center flex opacity-45">

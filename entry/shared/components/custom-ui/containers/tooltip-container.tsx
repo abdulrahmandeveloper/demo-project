@@ -11,8 +11,6 @@ const TooltipContainer = ({
   content,
   className,
 }: TooltipContainerProps) => {
-  console.log("content: ", content);
-
   return (
     <div className={``}>
       <Tooltip>

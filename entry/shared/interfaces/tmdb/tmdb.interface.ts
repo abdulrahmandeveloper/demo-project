@@ -169,3 +169,20 @@ export interface KeywordsResponse {
   id: number;
   keywords: Keywords[];
 }
+
+export interface AuthorDetails {
+  name: string;
+  username: string;
+  avatar_path: string;
+  rating: string;
+}
+
+export interface TMDBReviewsResponse {
+  author: string;
+  author_details: AuthorDetails;
+  content: string;
+  created_at: string;
+  id: string;
+  updated_at: string;
+  url: string;
+}

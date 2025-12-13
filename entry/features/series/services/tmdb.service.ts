@@ -2,6 +2,7 @@ import { tmdbApi } from "entry/shared/lib/axios/axios";
 import {
   TMDBCastResponse,
   TMDBMediaResponse,
+  TMDBReviewsResponse,
   TMDBVideoReferenceResponse,
 } from "@/shared/interfaces/tmdb/tmdb.interface";
 import { TMDBSeriesResponse } from "../interfaces/tmdb.interface";
@@ -93,5 +94,21 @@ export const getSeriesCastFromTmdb = async (
       (person: TMDBCastResponse) => person.known_for_department === "Acting"
     )
     .slice(0, 9);
+  return data;
+};
+
+export const GetSimilarSeriesById = async (
+  seriesId: number
+): Promise<TMDBSeriesResponse[]> => {
+  const response = await tmdbApi.get(`/tv/${seriesId}/similar`);
+  const data = response.data.results;
+  return data;
+};
+
+export const getSeriesReviewsByIdFromTmdb = async (
+  seriesId: number
+): Promise<TMDBReviewsResponse[]> => {
+  const response = await tmdbApi.get(`/tv/${seriesId}/reviews`);
+  const data = response.data.results;
   return data;
 };

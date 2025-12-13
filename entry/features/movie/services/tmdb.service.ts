@@ -1,10 +1,8 @@
 import { tmdbApi } from "entry/shared/lib/axios/axios";
-import {
-  TMDBMovieResponse,
-  TMDBMOvieReviewsResponse,
-} from "entry/features/movie/interfaces/tmdb.interface";
+import { TMDBMovieResponse } from "entry/features/movie/interfaces/tmdb.interface";
 import {
   TMDBMediaResponse,
+  TMDBReviewsResponse,
   TMDBVideoReferenceResponse,
 } from "@/shared/interfaces/tmdb/tmdb.interface";
 
@@ -137,7 +135,7 @@ export const GetSimilarMoviesById = async (
 
 export const getMovieReviewsByIdFromTmdb = async (
   movieId: number
-): Promise<TMDBMOvieReviewsResponse[]> => {
+): Promise<TMDBReviewsResponse[]> => {
   const response = await tmdbApi.get(`/movie/${movieId}/reviews`);
   const data = response.data.results;
   return data;
