@@ -87,7 +87,6 @@ const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
               hasResults={hasResults}
               open={open}
               setOpen={setOpen}
-              onSearchInput={handleSearchInput}
               mediaType="any"
             />
           )}

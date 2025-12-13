@@ -1,3 +1,5 @@
+"use client";
+
 import { Input } from "entry/shared/components/ui/input";
 import { Button } from "entry/shared/components/ui/button";
 import PosterCard from "entry/shared/components/card/poster-card";
@@ -10,6 +12,8 @@ import { Search } from "lucide-react";
 import { QueryResultsResponseData } from "@/shared/interfaces/search.interface";
 import { Dispatch, SetStateAction } from "react";
 import Link from "next/link";
+import { useSearchQueryData } from "@/shared/stores/searchQueryStore";
+import { useRouter } from "next/navigation";
 
 type TMDBSearchResults = QueryResultsResponseData;
 
@@ -19,21 +23,36 @@ type SearchComponentProps = {
   hasResults: boolean;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  onSearchInput: (inputValue: string) => void;
   mediaType: "movie" | "tv" | "any";
 };
 
 const SearchComponent = ({
-  query,
   searchResult,
   hasResults,
   open,
   setOpen,
-  onSearchInput,
   mediaType,
 }: SearchComponentProps) => {
   //destructuring results
   const { movies, series } = searchResult;
+  //taking query using zustand
+  const query = useSearchQueryData((state) => state.query);
+  const setQuery = useSearchQueryData((state) => state.setQuery);
+
+  const router = useRouter();
+
+  const handleQueryChange = (e: any) => {
+    if (e.key === "Enter" && query.trim()) {
+      router.push(`/search`);
+      setOpen(false);
+    }
+  };
+
+  const handleClick = () => {
+    if (!query.trim()) return;
+    router.push(`/search`);
+    setOpen(false);
+  };
 
   return (
     <div className="relative ">
@@ -44,12 +63,15 @@ const SearchComponent = ({
               type="text"
               aria-label="Search"
               className=" w-25 focus-within:w-40 transition-all duration-300 ease-in-out shadow-sm origin-right ml-auto border-none bg-white dark:bg-white dark:text-black"
-              onChange={(e) => onSearchInput(e.target.value)}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               onFocus={() => setOpen(true)}
+              onKeyDown={handleQueryChange}
             />
             <Button
               size={"icon"}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none w-4 h-4 bg-transparent cursor-pointer"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500  w-4 h-4 bg-transparent cursor-pointer"
+              onClick={handleClick}
             >
               <Link href={"/search"} className="cursor-pointer">
                 {" "}

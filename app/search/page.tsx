@@ -1,20 +1,12 @@
-import Navbar from "@/shared/components/navigation/navbar";
-import { navbarLinks } from "@/shared/constants/navbar-links.constants";
+import SearchPage from "@/routes/search";
 import React from "react";
 
-const Search = () => {
+const page = () => {
   return (
     <div>
-      <Navbar
-        logoPath={"/images/istar-logo.png"}
-        links={navbarLinks}
-        search={false}
-      />
-      <div className="">
-        <h1 className="">Search Results</h1>
-      </div>
+      <SearchPage />
     </div>
   );
 };
 
-export default Search;
+export default page;

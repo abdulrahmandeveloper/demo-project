@@ -43,7 +43,6 @@ const MoviePage = () => {
   const [keywords, setKeywords] = useState<Keywords[]>();
   const [similarMovies, setSimilarMovies] = useState<TMDBMovieResponse[]>([]);
   const [reviews, setReviews] = useState<TMDBReviewsResponse[]>([]);
-  console.log(similarMovies);
 
   const displayedKeywords = keywords
     ?.slice(0, 4)
@@ -54,8 +53,6 @@ const MoviePage = () => {
   const movieId = Number(params.movieId);
 
   const movieLanguage = DetectOriginalCounryName(movie.original_language);
-
-  console.log(movie);
 
   useEffect(() => {
     const fetchMovie = async () => {

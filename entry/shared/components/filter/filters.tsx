@@ -188,7 +188,6 @@ const Filters = <T extends TMDBMovieResponse | TMDBSeriesResponse>({
             hasResults={searchHasResults}
             open={searchOpenModal}
             setOpen={setSearchOpenModal}
-            onSearchInput={handleSeachInput}
             mediaType={mediaType}
           />
         </div>

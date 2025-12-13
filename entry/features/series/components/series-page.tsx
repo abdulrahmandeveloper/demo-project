@@ -44,7 +44,6 @@ const SeriesPage = () => {
   const seriesId = Number(params.seriesId);
 
   const seriesLanguage = DetectOriginalCounryName(series.original_language);
-  console.log(series);
 
   useEffect(() => {
     const fetchMovie = async () => {
