@@ -21,7 +21,7 @@ const ReviewCard = ({ review, className }: ReviewCardProps) => {
 
   const avatar = review.author_details.avatar_path
     ? `${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${review.author_details.avatar_path}`
-    : "/images/avatar-placeholder.png"; // fallback avatar
+    : "/images/avatar-placeholder.png";
 
   useEffect(() => {
     if (contentRef.current) {
@@ -34,7 +34,6 @@ const ReviewCard = ({ review, className }: ReviewCardProps) => {
     <div
       className={`bg-zinc-900 border border-yellow-400 rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-200 min-w-[300px] max-w-[380px] flex flex-col gap-3 ${className}`}
     >
-      {/* Author Info */}
       <div className="flex items-center gap-3">
         <div className="relative w-12 h-12 rounded-full overflow-hidden border border-yellow-400">
           <Image
@@ -55,7 +54,6 @@ const ReviewCard = ({ review, className }: ReviewCardProps) => {
         </div>
       </div>
 
-      {/* Review Content (Clamped) */}
       <p
         ref={contentRef}
         className="text-sm text-gray-300 line-clamp-4 leading-relaxed h-[95px]"

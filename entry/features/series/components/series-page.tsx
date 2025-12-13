@@ -5,6 +5,7 @@ import PosterCard from "@/shared/components/card/poster-card";
 import ReviewCard from "@/shared/components/card/review-card";
 import VideoProviderCard from "@/shared/components/card/video-provider-card";
 import VideoPlayer from "@/shared/components/video-player";
+import { countryNameCodes } from "@/shared/constants/tmdb.constants";
 import {
   Genres,
   TMDBCastResponse,
@@ -43,6 +44,7 @@ const SeriesPage = () => {
   const seriesId = Number(params.seriesId);
 
   const seriesLanguage = DetectOriginalCounryName(series.original_language);
+  console.log(series);
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -124,7 +126,12 @@ const SeriesPage = () => {
                     ))}
                   </div>
                   <div className="text-xl opacity-85 gap-1 grid">
-                    <p className="">From: {series.origin_country}</p>
+                    <p className="">
+                      From:{" "}
+                      {series.origin_country?.map(
+                        (code) => countryNameCodes[code] ?? code
+                      )}
+                    </p>
                     {seriesLanguage ? (
                       <p className="text-xl opacity-85 gap-1 grid">
                         Language: {seriesLanguage}

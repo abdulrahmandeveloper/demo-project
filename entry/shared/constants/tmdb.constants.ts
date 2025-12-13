@@ -27,3 +27,28 @@ export const tmdbRating = [
   { value: "8", name: "8+ " },
   { value: "9", name: "9+ " },
 ];
+
+export const countryNameCodes: Record<string, string> = {
+  US: "United States of America",
+  GB: "United Kingdom",
+  FR: "France",
+  DE: "Germany",
+  IT: "Italy",
+  ES: "Spain",
+  JP: "Japan",
+  KR: "South Korea",
+  CN: "China",
+  CA: "Canada",
+  AU: "Australia",
+  RU: "Russia",
+  TR: "Turkey",
+  IR: "Iran",
+  IQ: "Iraq",
+  SA: "Saudi Arabia",
+  AE: "United Arab Emirates",
+  EG: "Egypt",
+  BR: "Brazil",
+  AR: "Argentina",
+  MX: "Mexico",
+  IN: "India",
+};

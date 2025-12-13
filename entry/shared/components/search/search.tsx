@@ -9,6 +9,7 @@ import {
 import { Search } from "lucide-react";
 import { QueryResultsResponseData } from "@/shared/interfaces/search.interface";
 import { Dispatch, SetStateAction } from "react";
+import Link from "next/link";
 
 type TMDBSearchResults = QueryResultsResponseData;
 
@@ -48,9 +49,15 @@ const SearchComponent = ({
             />
             <Button
               size={"icon"}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none w-4 h-4 bg-transparent hover:cursor-pointer"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none w-4 h-4 bg-transparent cursor-pointer"
             >
-              <Search aria-hidden="true" className="text-black" />
+              <Link href={"/search"} className="cursor-pointer">
+                {" "}
+                <Search
+                  aria-hidden="true"
+                  className="text-black cursor-pointer"
+                />
+              </Link>
             </Button>
           </div>
         </PopoverTrigger>
@@ -83,17 +90,20 @@ const SearchComponent = ({
               movies.length > 0 && (
                 <>
                   <h4 className="text-sm font-semibold mb-1">Movies</h4>
-                  {movies.slice(0, 10).map((movie) => (
-                    <div
-                      key={movie.id}
-                      className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded cursor-pointer"
-                    >
-                      <PosterCard
-                        src={movie.poster_path}
-                        className="w-8 h-12"
-                      ></PosterCard>
-                      <p className="text-sm">{movie.title}</p>
-                    </div>
+                  {movies.slice(0, 10).map((movie, key) => (
+                    <Link href={`/movies/${movie.id}`} key={key}>
+                      <div
+                        key={movie.id}
+                        className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded cursor-pointer dark:hover:bg-gray-800"
+                      >
+                        {" "}
+                        <PosterCard
+                          src={movie.poster_path}
+                          className="w-8 h-12"
+                        ></PosterCard>
+                        <p className="text-sm">{movie.title}</p>
+                      </div>
+                    </Link>
                   ))}
                 </>
               )}
@@ -104,17 +114,20 @@ const SearchComponent = ({
               series?.length > 0 && (
                 <>
                   <h4 className="text-sm font-semibold mt-2 mb-1">Series</h4>
-                  {series.slice(0, 10).map((series) => (
-                    <div
-                      key={series.id}
-                      className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded cursor-pointer dark:hover:bg-gray-800"
-                    >
-                      <PosterCard
-                        src={series.poster_path}
-                        className="w-8 h-12 "
-                      ></PosterCard>
-                      <p className="text-sm">{series.name}</p>
-                    </div>
+                  {series.slice(0, 10).map((series, key) => (
+                    <Link href={`/series/${series.id}`} key={key}>
+                      <div
+                        key={series.id}
+                        className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded cursor-pointer dark:hover:bg-gray-800"
+                      >
+                        {" "}
+                        <PosterCard
+                          src={series.poster_path}
+                          className="w-8 h-12 "
+                        ></PosterCard>
+                        <p className="text-sm ">{series.name}</p>
+                      </div>
+                    </Link>
                   ))}
                 </>
               )}

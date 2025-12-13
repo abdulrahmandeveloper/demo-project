@@ -8,14 +8,13 @@ import VideoProviderCard from "@/shared/components/card/video-provider-card";
 import TooltipContainer from "@/shared/components/custom-ui/containers/tooltip-container";
 import { Button } from "@/shared/components/ui/button";
 import VideoPlayer from "@/shared/components/video-player";
+import { countryNameCodes } from "@/shared/constants/tmdb.constants";
 import {
   Keywords,
   TMDBCastResponse,
+  TMDBReviewsResponse,
 } from "@/shared/interfaces/tmdb/tmdb.interface";
-import {
-  TMDBMovieResponse,
-  TMDBMOvieReviewsResponse,
-} from "entry/features/movie/interfaces/tmdb.interface";
+import { TMDBMovieResponse } from "entry/features/movie/interfaces/tmdb.interface";
 import {
   GetSimilarMoviesById,
   getMovieReviewsByIdFromTmdb,
@@ -43,8 +42,8 @@ const MoviePage = () => {
   const [casts, setCasts] = useState<TMDBCastResponse[] | null>();
   const [keywords, setKeywords] = useState<Keywords[]>();
   const [similarMovies, setSimilarMovies] = useState<TMDBMovieResponse[]>([]);
-  const [reviews, setReviews] = useState<TMDBMOvieReviewsResponse[]>([]);
-  console.log(reviews);
+  const [reviews, setReviews] = useState<TMDBReviewsResponse[]>([]);
+  console.log(similarMovies);
 
   const displayedKeywords = keywords
     ?.slice(0, 4)
@@ -55,6 +54,8 @@ const MoviePage = () => {
   const movieId = Number(params.movieId);
 
   const movieLanguage = DetectOriginalCounryName(movie.original_language);
+
+  console.log(movie);
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -159,7 +160,10 @@ const MoviePage = () => {
                   </div>
                   <div className="text-xl opacity-85 gap-1 grid">
                     <p className="">
-                      From: {movie.origin_country?.map((country) => country)}
+                      From:{" "}
+                      {movie.origin_country?.map(
+                        (code) => countryNameCodes[code] ?? code
+                      )}
                     </p>
                     {movieLanguage ? (
                       <p className="text-xl opacity-85 gap-1 grid">
@@ -232,33 +236,35 @@ const MoviePage = () => {
           )}
         </div>
       </div>
-      <div className="w-4/5 mx-auto my-2">
-        {" "}
-        <h1 className="font-medium text-2xl my-4">Similar movies: </h1>
-        <div className="flex flex-nowrap gap-3 overflow-x-auto w-full">
+      {similarMovies.length > 0 && (
+        <div className="w-4/5 mx-auto my-2">
           {" "}
-          {similarMovies.map((movie: TMDBMovieResponse, index) => (
-            <div
-              key={index}
-              className="min-w-[200px] max-w-[300px]  min-h-[300px]"
-            >
-              <Link href={`/movies/${movie.id}`}>
-                {" "}
-                <PosterCard
-                  src={`${movie.poster_path}`}
-                  className="rounded-lg  w-[200px] h-[300px]"
-                />
-              </Link>
-              <h1 className="flex text-center justify-center opacity-70 mt-2">
-                {movie.title}
-              </h1>
-              <p className="justify-center flex opacity-45">
-                {movie.release_date + " | " + movie.vote_average}
-              </p>
-            </div>
-          ))}
+          <h1 className="font-medium text-2xl my-4">Similar movies: </h1>
+          <div className="flex flex-nowrap gap-3 overflow-x-auto w-full">
+            {" "}
+            {similarMovies.map((movie: TMDBMovieResponse, index) => (
+              <div
+                key={index}
+                className="min-w-[200px] max-w-[300px]  min-h-[300px]"
+              >
+                <Link href={`/movies/${movie.id}`}>
+                  {" "}
+                  <PosterCard
+                    src={`${movie.poster_path}`}
+                    className="rounded-lg  w-[200px] h-[300px]"
+                  />
+                </Link>
+                <h1 className="flex text-center justify-center opacity-70 mt-2">
+                  {movie.title}
+                </h1>
+                <p className="justify-center flex opacity-45">
+                  {movie.release_date + " | " + movie.vote_average}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
