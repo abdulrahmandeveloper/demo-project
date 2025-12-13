@@ -1,15 +1,34 @@
-import { TMDBMOvieReviewsResponse } from "@/features/movie/interfaces/tmdb.interface";
 import Image from "next/image";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
+import { Button } from "../ui/button";
+import { TMDBReviewsResponse } from "@/shared/interfaces/tmdb/tmdb.interface";
+import { useEffect, useRef, useState } from "react";
 
 type ReviewCardProps = {
-  review: TMDBMOvieReviewsResponse;
+  review: TMDBReviewsResponse;
   className?: string;
 };
 
 const ReviewCard = ({ review, className }: ReviewCardProps) => {
+  const [isOverflowing, setIsOverflowing] = useState<boolean>(false);
+  const contentRef = useRef<HTMLParagraphElement>(null);
+
   const avatar = review.author_details.avatar_path
     ? `${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${review.author_details.avatar_path}`
     : "/images/avatar-placeholder.png"; // fallback avatar
+
+  useEffect(() => {
+    if (contentRef.current) {
+      const element = contentRef.current;
+      setIsOverflowing(element.scrollHeight > element.clientHeight);
+    }
+  }, [review.content]);
 
   return (
     <div
@@ -37,14 +56,37 @@ const ReviewCard = ({ review, className }: ReviewCardProps) => {
       </div>
 
       {/* Review Content (Clamped) */}
-      <p className="text-sm text-gray-300 line-clamp-4 leading-relaxed h-[95px]">
+      <p
+        ref={contentRef}
+        className="text-sm text-gray-300 line-clamp-4 leading-relaxed h-[95px]"
+      >
         {review.content}
       </p>
 
-      {/* Read More Button */}
-      <button className="text-yellow-400 text-sm underline hover:text-yellow-300 transition">
-        Read more
-      </button>
+      {isOverflowing && (
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button
+              variant="link"
+              className="text-yellow-400 text-sm hover:text-yellow-300 transition cursor-pointer"
+            >
+              Read more
+            </Button>
+          </DialogTrigger>
+
+          <DialogContent className="bg-zinc-900 border border-yellow-400 max-w-2xl">
+            <DialogHeader>
+              <DialogTitle className="text-yellow-400">
+                {review.author}
+              </DialogTitle>
+            </DialogHeader>
+
+            <div className="text-gray-300 whitespace-pre-line leading-relaxed max-h-[70vh] overflow-y-auto">
+              {review.content}
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };
