@@ -57,7 +57,7 @@ const MoviesList = () => {
             />
           </div>
         </div>
-        <div className="grid grid-cols-5 w-19/20 mx-auto gap-3 py-5">
+        <div className="grid grid-cols-5  mx-auto gap-3 py-5 px-1">
           {" "}
           {list.map((movie) => {
             return (

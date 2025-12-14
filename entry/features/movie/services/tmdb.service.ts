@@ -32,10 +32,14 @@ export const getPopularMoviesPosters = async (
 export const getMovieSearchResultsFromTMDB = async (
   query: string
 ): Promise<TMDBMediaResponse<TMDBMovieResponse>> => {
+  console.log("query: ", query);
+
   const response = await tmdbApi.get(
     `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/search/movie?query=${query}`
   );
   const data: TMDBMediaResponse<TMDBMovieResponse> = response.data;
+
+  console.log("getMovieSearchResultsFromTMDB: ", data);
 
   return data;
 };
