@@ -13,11 +13,9 @@ import {
 } from "@/shared/interfaces/tmdb/tmdb.interface";
 import { TMDBSeriesResponse } from "entry/features/series/interfaces/tmdb.interface";
 import {
-  getMovieReviewsByIdFromTmdb,
   getSeriesCastFromTmdb,
   getSeriesReviewsByIdFromTmdb,
   getSeriesVideosID,
-  GetSimilarMoviesById,
   GetSimilarSeriesById,
 } from "entry/features/series/services/tmdb.service";
 import Navbar from "entry/shared/components/navigation/navbar";

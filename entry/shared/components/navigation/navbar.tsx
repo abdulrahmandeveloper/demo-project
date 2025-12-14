@@ -9,10 +9,11 @@ import { useEffect, useState } from "react";
 import { getSearchResultFromTMDB } from "entry/shared/services/tmdb/tmdb.service";
 import SearchComponent from "@/shared/components/search/search";
 import { QueryResultsResponseData } from "@/shared/interfaces/search.interface";
+import { NavbarLinks } from "@/shared/interfaces/navigation.interface";
 
 type NavbarProps = {
   logoPath: string;
-  links: { name: string; path: string }[];
+  links: NavbarLinks[];
   search: boolean;
   className?: string;
 };
@@ -70,15 +71,21 @@ const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
         className={`   flex  gap-28 items-center justify-center  ${className}`}
       >
         <div className="flex gap-5 items-center  w-[550]  justify-between">
-          {links.map((link) => (
-            <Link
-              className="text-white opacity-50 hover:opacity-100 font-bold cursor-pointer"
-              key={link.name}
-              href={link.path}
-            >
-              {link.name}
-            </Link>
-          ))}
+          {links.map((link, key) => {
+            if ("element" in link) {
+              return <div key={key}>{link.element}</div>;
+            }
+
+            return (
+              <Link
+                key={link.name}
+                href={link.path}
+                className="text-white opacity-50 hover:opacity-100 font-bold cursor-pointer"
+              >
+                {link.name}
+              </Link>
+            );
+          })}
 
           {search && (
             <SearchComponent

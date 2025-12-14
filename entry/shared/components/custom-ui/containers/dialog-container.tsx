@@ -9,7 +9,7 @@ import {
 import { Button } from "../../ui/button";
 
 type DialogContainerProps = {
-  conent: any;
+  content: any;
 };
 const DialogContainer = ({ content }: DialogContainerProps) => {
   return (

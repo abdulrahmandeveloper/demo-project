@@ -1,33 +1,67 @@
+"use client";
+
 import Link from "next/link";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "../components/ui/select";
-import { discoverLinks } from "../constants/navbar-links.constants";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../components/ui/dropdown-menu";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+type NavbarListLinksProps = {
+  placeHolder: string;
+  label: string;
+  items: { value: string; content: string }[];
+};
+export const NavbarListLinks = ({
+  placeHolder,
+  label,
+  items,
+}: NavbarListLinksProps) => {
+  const router = useRouter();
+  const [open, setOpen] = useState<boolean>(false);
 
-export const NavbarListLinks = () => {
+  const handlePageLinks = (value: string) => {
+    router.push(value);
+  };
+
   return (
-    <Select>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder={`Discover`} />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-          <SelectLabel>Fruits</SelectLabel>
-          {discoverLinks.map((link, key) => (
-            <div key={key}>
-              <Link href={`${link.path}`}>
-                <SelectItem value={link.path}>{link.name}</SelectItem>
-              </Link>
-            </div>
-          ))}
-        </SelectGroup>
-      </SelectContent>
-    </Select>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
+      <DropdownMenuTrigger
+        asChild
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)}
+        className="bg-transparent border-none text-white opacity-50 cursor-pointer shadow-none font-bold "
+      >
+        <Link href="/discover" className="cursor-pointer">
+          {placeHolder}
+        </Link>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)}
+      >
+        {label && (
+          <>
+            <DropdownMenuLabel className="text-sm opacity-50 ">
+              {label}
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+          </>
+        )}
+        {items.map((item) => (
+          <DropdownMenuItem
+            key={item.value}
+            onClick={() => handlePageLinks(item.value)}
+            className="cursor-pointer"
+          >
+            {item.content}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };

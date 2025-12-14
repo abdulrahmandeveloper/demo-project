@@ -11,6 +11,8 @@ const TooltipContainer = ({
   content,
   className,
 }: TooltipContainerProps) => {
+  const contentIsArray = Array.isArray(content);
+
   return (
     <div className={``}>
       <Tooltip>
@@ -21,9 +23,13 @@ const TooltipContainer = ({
           align="center"
           sideOffset={8}
         >
-          {content?.map((Item: string, index: number) => (
-            <div key={index}>{Item}</div>
-          ))}
+          {contentIsArray ? (
+            content?.map((Item: string, index: number) => (
+              <div key={index}>{Item}</div>
+            ))
+          ) : (
+            <div>{content}</div>
+          )}
         </TooltipContent>
       </Tooltip>
     </div>

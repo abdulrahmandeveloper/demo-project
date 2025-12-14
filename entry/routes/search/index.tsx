@@ -12,11 +12,8 @@ import { useEffect, useState } from "react";
 
 const SearchPage = () => {
   const query = useSearchQueryData((query) => query.query);
-  console.log(query);
   const [movieList, setMovieList] = useState<TMDBMovieResponse[]>([]);
   const [seriesList, setSeriesList] = useState<TMDBSeriesResponse[]>([]);
-  console.log(movieList);
-  console.log(seriesList);
 
   useEffect(() => {
     const fetchData = async () => {

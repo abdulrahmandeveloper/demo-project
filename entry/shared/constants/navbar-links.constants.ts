@@ -1,15 +1,25 @@
+import React from "react";
+import { NavbarLinks } from "../interfaces/navigation.interface";
 import { NavbarListLinks } from "../utils/navbar-links-selection";
 
-export const navbarLinks = [
-  { name: "Series", path: "/series" },
-  { name: "Movies", path: "/movies" },
-  { name: "News ", path: "/news" },
-  { name: "Discover", path: "/", elemet: "NavbarListLinks" },
-  { name: "Journal", path: "/journal" },
+export const discoverLinks = [
+  { value: "/peoples", content: "People" },
+  { value: "/companies", content: "Companies" },
+  { value: "/cinemas", content: "Cinemas" },
 ];
 
-export const discoverLinks = [
-  { name: "People", path: "/people" },
-  { name: "Companies", path: "/companies" },
-  { name: "Cinemas", path: "cinemas" },
+export const navbarLinks: NavbarLinks[] = [
+  { name: "Series", path: "/series" },
+  { name: "Movies", path: "/movies" },
+  { name: "Search", path: "/search" },
+  { name: "News ", path: "/news" },
+  {
+    element: React.createElement(NavbarListLinks, {
+      placeHolder: "Discover",
+      label: "Pages",
+      items: discoverLinks,
+    }),
+    path: "/discover",
+  },
+  { name: "Journal", path: "/journal" },
 ];

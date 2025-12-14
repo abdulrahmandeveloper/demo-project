@@ -1,4 +1,4 @@
-import Dashboard from "@/routes/dashboard";
+import Dashboard from "@/routes/admin-dashboard";
 import React from "react";
 
 const page = () => {
