@@ -234,7 +234,7 @@ const MoviePage = () => {
         </div>
       </div>
       {similarMovies.length > 0 && (
-        <div className="w-4/5 mx-auto my-2">
+        <div className="w-4/5 mx-auto my-2 py-2">
           {" "}
           <h1 className="font-medium text-2xl my-4">Similar movies: </h1>
           <div className="flex flex-nowrap gap-3 overflow-x-auto w-full">

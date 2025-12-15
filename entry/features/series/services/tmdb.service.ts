@@ -8,10 +8,11 @@ import {
 import { TMDBSeriesResponse } from "../interfaces/tmdb.interface";
 
 export const getSeriesSearchResultsFromTMDB = async (
-  query: string
+  query: string,
+  page: number
 ): Promise<TMDBMediaResponse<TMDBSeriesResponse>> => {
   const response = await tmdbApi.get(
-    `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/search/tv?query=${query}`
+    `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/search/tv?query=${query}&page=${page}`
   );
   const data: TMDBMediaResponse<TMDBSeriesResponse> = response.data;
   return data;

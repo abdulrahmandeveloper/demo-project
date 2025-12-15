@@ -35,7 +35,7 @@ type FiltersProps<T extends TMDBMovieResponse | TMDBSeriesResponse> = {
     currentPage: number;
     setRefetchContent: Dispatch<SetStateAction<boolean>>;
     setHasFiltersSelected: Dispatch<SetStateAction<boolean>>;
-    mediaType: "movie" | "tv";
+    mediaType: "movie" | "series";
   };
 };
 

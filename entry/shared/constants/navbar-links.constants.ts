@@ -13,6 +13,8 @@ export const navbarLinks: NavbarLinks[] = [
   { name: "Movies", path: "/movies" },
   { name: "Search", path: "/search" },
   { name: "News ", path: "/news" },
+  { name: "Journal", path: "/journal" },
+
   {
     element: React.createElement(NavbarListLinks, {
       placeHolder: "Discover",
@@ -21,5 +23,4 @@ export const navbarLinks: NavbarLinks[] = [
     }),
     path: "/discover",
   },
-  { name: "Journal", path: "/journal" },
 ];
