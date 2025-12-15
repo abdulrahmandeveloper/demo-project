@@ -33,14 +33,10 @@ export const getMovieSearchResultsFromTMDB = async (
   query: string,
   page: number
 ): Promise<TMDBMediaResponse<TMDBMovieResponse>> => {
-  console.log("query: ", query);
-
   const response = await tmdbApi.get(
     `${process.env.NEXT_PUBLIC_TMDB_BASE_URL}/search/movie?query=${query}&page=${page}`
   );
   const data: TMDBMediaResponse<TMDBMovieResponse> = response.data;
-
-  console.log("getMovieSearchResultsFromTMDB: ", data);
 
   return data;
 };

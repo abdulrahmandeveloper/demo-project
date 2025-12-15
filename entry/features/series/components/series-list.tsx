@@ -57,7 +57,7 @@ const SeriesList = () => {
                     currentPage,
                     setRefetchContent,
                     setHasFiltersSelected,
-                    mediaType: "tv",
+                    mediaType: "series",
                   }}
                 />
               </div>

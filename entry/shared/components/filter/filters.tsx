@@ -36,6 +36,7 @@ type FiltersProps<T extends TMDBMovieResponse | TMDBSeriesResponse> = {
     setRefetchContent: Dispatch<SetStateAction<boolean>>;
     setHasFiltersSelected: Dispatch<SetStateAction<boolean>>;
     mediaType: "movie" | "series";
+    searchInput?: boolean;
   };
 };
 
@@ -67,11 +68,12 @@ const Filters = <T extends TMDBMovieResponse | TMDBSeriesResponse>({
     setRefetchContent,
     setHasFiltersSelected,
     mediaType,
+    searchInput,
   } = references;
 
   // determinig values objects
   const selectionOptions =
-    mediaType === "tv"
+    mediaType === "series"
       ? {
           tmdbCountryCodes: tmdbCountryCodes,
           tmdbRating: tmdbRating,
@@ -117,7 +119,7 @@ const Filters = <T extends TMDBMovieResponse | TMDBSeriesResponse>({
       } else {
         setHasFiltersSelected(true);
         let data;
-        if (mediaType === "tv") {
+        if (mediaType === "series") {
           data = await getSeriesDiscoveryFromTMDB(queries, currentPage);
         } else if (mediaType === "movie") {
           data = await getMoviesDiscoveryFromTmdb(queries, currentPage);
@@ -127,7 +129,7 @@ const Filters = <T extends TMDBMovieResponse | TMDBSeriesResponse>({
 
         if (mediaType === "movie") {
           setList(data.results as TMDBMovieResponse[] as T[]);
-        } else if (mediaType === "tv") {
+        } else if (mediaType === "series") {
           setList(data.results as TMDBSeriesResponse[] as T[]);
         }
 
@@ -178,19 +180,21 @@ const Filters = <T extends TMDBMovieResponse | TMDBSeriesResponse>({
   return (
     <div className="">
       <div className="gap-5 flex mx-auto object-cover">
-        <div className="">
-          <SearchComponent
-            query={searchQuery}
-            searchResult={{
-              series: searchResults?.results as TMDBSeriesResponse[] | [],
-              movies: searchResults?.results as TMDBMovieResponse[] | [],
-            }}
-            hasResults={searchHasResults}
-            open={searchOpenModal}
-            setOpen={setSearchOpenModal}
-            mediaType={mediaType}
-          />
-        </div>
+        {searchInput && (
+          <div className="">
+            <SearchComponent
+              query={searchQuery}
+              searchResult={{
+                series: searchResults?.results as TMDBSeriesResponse[] | [],
+                movies: searchResults?.results as TMDBMovieResponse[] | [],
+              }}
+              hasResults={searchHasResults}
+              open={searchOpenModal}
+              setOpen={setSearchOpenModal}
+              mediaType={mediaType}
+            />
+          </div>
+        )}
         {queries.length > 1 && (
           <Button className="cursor-pointer" onClick={handleRemoveFilters}>
             Remove filters

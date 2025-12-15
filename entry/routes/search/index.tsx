@@ -35,29 +35,22 @@ const SearchPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [hasFiltersSelected, setHasFiltersSelected] = useState<boolean>(false);
 
-  console.log("movieList: ", movieList);
-  console.log("seriesList: ", seriesList);
-  console.log("inputValue: ", inputValue);
-  console.log("searchValue: ", searchValue);
-  console.log("currentPage: ", currentPage);
-
   useEffect(() => {
     if (query.trim()) {
       setInputValue(query);
       setSearchValue(query);
       setIsSearching(true);
     }
-  }, [query]);
+  }, []);
 
   useEffect(() => {
+    if (hasFiltersSelected) return;
     const fetchSearchResults = async () => {
       if (!searchValue) {
         setIsSearching(false);
         return;
       }
       setLoading(true);
-
-      console.log("after query logic,media type: ", mediaType);
 
       try {
         if (mediaType === "movie") {
@@ -96,7 +89,7 @@ const SearchPage = () => {
     };
 
     fetchSearchResults();
-  }, [mediaType, currentPage, searchValue]);
+  }, [mediaType, currentPage, searchValue, hasFiltersSelected]);
 
   const handleSearchClick = () => {
     if (!inputValue.trim()) {
@@ -124,7 +117,7 @@ const SearchPage = () => {
   };
 
   const resultsList = mediaType === "movie" ? movieList : seriesList;
-
+  const filterPropsList = mediaType === "movie" ? setMovieList : setSeriesList;
   return (
     <div>
       <Navbar
@@ -133,7 +126,7 @@ const SearchPage = () => {
         search={false}
       />
       <div className="w-3/4 mx-auto my-10">
-        <div className="w-9/10 mx-auto my-6  flex flex-col">
+        <div className="w-9/10 mx-auto my-6  flex flex-col gap-5">
           <div className="flex">
             {/**
              * input field for searching anything
@@ -160,17 +153,18 @@ const SearchPage = () => {
             />
           </div>
           <div className="">
-            {/*<Filters
+            <Filters
               references={{
-                setList: resultsList,
+                setList: filterPropsList,
                 setPages: setPages,
                 setCurrentPage: setCurrentPage,
                 currentPage: currentPage,
-                setRefetchContent: ,
-                setHasFiltersSelected: ,
+                setRefetchContent: setIsSearching,
+                setHasFiltersSelected: setHasFiltersSelected,
                 mediaType: mediaType,
+                searchInput: false,
               }}
-            />*/}
+            />
           </div>
         </div>
         <div className="">
