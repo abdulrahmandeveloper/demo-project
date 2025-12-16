@@ -161,6 +161,7 @@ const Filters = <T extends TMDBMovieResponse | TMDBSeriesResponse>({
     setHasFiltersSelected(false);
   };
 
+  //deprecated
   const handleSeachInput = async (value: string) => {
     if (!value) return;
     setSearchQuery(value);
