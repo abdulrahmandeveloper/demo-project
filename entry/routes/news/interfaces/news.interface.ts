@@ -13,3 +13,10 @@ export interface NewsResponse {
   publishedAt: string;
   content: string;
 }
+
+export interface NewsFilters {
+  publisher: string;
+  boxOffice: string;
+  country?: string;
+  date: string;
+}

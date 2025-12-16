@@ -23,7 +23,7 @@ type SearchComponentProps = {
   hasResults: boolean;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-  mediaType: "movie" | "tv" | "any";
+  mediaType: "movie" | "series" | "any";
 };
 
 const SearchComponent = ({

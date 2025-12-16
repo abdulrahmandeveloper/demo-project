@@ -1,14 +1,31 @@
+import { NewsFilters } from "@/routes/news/interfaces/news.interface";
 import { newsApi } from "../lib/axios/axios";
 
 export const getNewsHeadlineFromNewsApi = async (
   category: string,
-  searchQuery: string
+  searchQuery: string,
+  filters?: NewsFilters
 ) => {
+  const params: Record<string, string> = {
+    category: category,
+    q: searchQuery,
+  };
+
+  if (filters) {
+    if (filters.publisher) {
+      params.sources = filters.publisher;
+    } else if (filters.country) {
+      params.country = filters.country;
+    } else if (filters.boxOffice) {
+      params.q = `${filters.boxOffice}`;
+    } else if (filters.date) {
+      params.from = new Date(filters.date).toISOString();
+    }
+  }
+  console.log("params: ", params);
+
   const response = await newsApi.get(`/top-headlines`, {
-    params: {
-      category: category,
-      q: searchQuery,
-    },
+    params,
   });
 
   return response.data.articles;
@@ -16,15 +33,28 @@ export const getNewsHeadlineFromNewsApi = async (
 
 export const getEveryNewsFromNewsApi = async (
   searchQuery: string,
-  sort?: string
+  sort?: string,
+  filters?: NewsFilters
 ) => {
+  const params: Record<string, string> = {
+    q: searchQuery,
+    sortBy: sort,
+  };
+
+  if (filters) {
+    if (filters.publisher) {
+      params.sources = filters.publisher;
+    } else if (filters.boxOffice) {
+      params.q = `${filters.boxOffice}`;
+    } else if (filters.date) {
+      params.from = new Date(filters.date).toISOString();
+    }
+  }
+  console.log("params: ", params);
+
   const response = await newsApi.get(`/everything`, {
-    params: {
-      q: searchQuery,
-      sortBy: sort,
-    },
+    params,
   });
-  console.log(response);
 
   return response.data.articles;
 };

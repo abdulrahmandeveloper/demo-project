@@ -8,9 +8,11 @@ import {
   getNewsHeadlineFromNewsApi,
 } from "@/shared/services/news.service";
 import React, { useEffect, useState } from "react";
-import { NewsResponse } from "./interfaces/news.interface";
+import { NewsFilters, NewsResponse } from "./interfaces/news.interface";
 import { SelectSeparator } from "@/shared/components/ui/select";
 import NewsCardSkeleton from "./components/news-card-skeleton";
+import FilterSelection from "@/shared/components/custom-ui/containers/filter-selection-container";
+import NewsFilter from "./components/news-filter";
 
 const NewsPage = () => {
   const [headlineNews, setHeadlineNews] = useState<NewsResponse[]>([]);
@@ -19,25 +21,46 @@ const NewsPage = () => {
   const [trendingNews, setTrendingNews] = useState<NewsResponse[]>([]);
   const [latestNews, setLatesNews] = useState<NewsResponse[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [headlinesFilters, setHeadlinesFilters] = useState<NewsFilters>({
+    publisher: "",
+    boxOffice: "",
+    country: "",
+    date: "",
+  });
+  const [trendingFilters, setTrendingFilters] = useState<NewsFilters>({
+    publisher: "",
+    boxOffice: "",
+    country: "",
+    date: "",
+  });
+  const [latestFilters, setLatestFilters] = useState<NewsFilters>({
+    publisher: "",
+    boxOffice: "",
+    country: "",
+    date: "",
+  });
 
-  console.log(trendingNews);
+  console.log(headlinesFilters);
 
   useEffect(() => {
     const fetchNews = async () => {
       setLoading(true);
       const headlinesData = await getNewsHeadlineFromNewsApi(
         "entertainment",
-        "movie"
+        "movie",
+        headlinesFilters
       );
       const moviesNewsData = await getEveryNewsFromNewsApi("movie");
       const seriesNewsData = await getEveryNewsFromNewsApi("tv");
       const trendingNewsData = await getEveryNewsFromNewsApi(
         "cinema",
-        "popularity"
+        "popularity",
+        trendingFilters
       );
       const latestNewsData = await getEveryNewsFromNewsApi(
         "cinema",
-        "publishedAt"
+        "publishedAt",
+        latestFilters
       );
 
       if (headlinesData) {
@@ -59,7 +82,7 @@ const NewsPage = () => {
     };
 
     fetchNews();
-  }, []);
+  }, [headlinesFilters, latestFilters, trendingFilters]);
   return (
     <div className="w-9/10 mx-auto">
       <Navbar
@@ -71,7 +94,12 @@ const NewsPage = () => {
         Explore The Cinema
       </h1>
       <div>
-        <h1 className="font-bold text-xl my-1">Breaking News!</h1>
+        <NewsFilter
+          placeHolder="Breaking News!"
+          value={headlinesFilters}
+          setterValue={setHeadlinesFilters}
+        />
+
         <div className="flex gap-5 w-4/5 mx-auto my-5">
           {" "}
           {loading
@@ -159,7 +187,12 @@ const NewsPage = () => {
       </div>
       <SelectSeparator className="my-4" />
       <div className="">
-        <h1 className="font-bold text-xl my-1">Trending</h1>
+        <NewsFilter
+          placeHolder="Trending"
+          excludeFilter="Country"
+          value={trendingFilters}
+          setterValue={setTrendingFilters}
+        />
         <div className="flex gap-5 w-4/5 mx-auto my-5 overflow-x-auto">
           {" "}
           {loading
@@ -188,7 +221,13 @@ const NewsPage = () => {
       </div>
       <SelectSeparator className="my-4" />
       <div className="">
-        <h1 className="font-bold text-xl my-1">Latest From Cinema</h1>
+        <NewsFilter
+          placeHolder="Latest From The Cinema"
+          excludeFilter="Country"
+          value={latestFilters}
+          setterValue={setLatestFilters}
+        />
+
         <div className="flex gap-5 w-4/5 mx-auto my-5 overflow-x-auto">
           {" "}
           {loading
