@@ -8,6 +8,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui/card";
+import { createSlug } from "@/shared/utils/create-slug";
+import { geterateId } from "@/shared/utils/generate-id";
 import { cn } from "@/shared/utils/utils";
 import {
   BadgeCheckIcon,
@@ -17,6 +19,7 @@ import {
   Share2Icon,
 } from "lucide-react";
 import Link from "next/link";
+import { stringify } from "querystring";
 import React, { useState } from "react";
 
 type NewsCardProps = {
@@ -43,6 +46,9 @@ const NewsCard = ({
   containerClassName,
 }: NewsCardProps) => {
   const [saved, setSaved] = useState<boolean>(false);
+
+  const hashedTitle = createSlug(title);
+  const generatedId = geterateId(id.toString());
 
   const handleSaveClick = () => {
     setSaved(!saved);
@@ -73,7 +79,7 @@ const NewsCard = ({
           <EclipseIcon className="" />
         </Button>
       </CardHeader>
-      <Link href={`/news/${id}`} className="flex-1  ">
+      <Link href={`/news/${hashedTitle}-${generatedId}`} className="flex-1  ">
         <CardContent className="space-y-4  text-sm">
           <img
             src={imagUrl}

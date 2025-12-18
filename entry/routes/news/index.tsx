@@ -48,19 +48,32 @@ const NewsPage = () => {
       const headlinesData = await getNewsHeadlineFromNewsApi(
         "entertainment",
         "movie",
-        headlinesFilters
+        headlinesFilters,
+        3
       );
-      const moviesNewsData = await getEveryNewsFromNewsApi("movie");
-      const seriesNewsData = await getEveryNewsFromNewsApi("tv");
+      const moviesNewsData = await getEveryNewsFromNewsApi(
+        "movie",
+        "publishedAt",
+        headlinesFilters,
+        10
+      );
+      const seriesNewsData = await getEveryNewsFromNewsApi(
+        "tv",
+        "publishedAt",
+        headlinesFilters,
+        10
+      );
       const trendingNewsData = await getEveryNewsFromNewsApi(
         "cinema",
         "popularity",
-        trendingFilters
+        trendingFilters,
+        20
       );
       const latestNewsData = await getEveryNewsFromNewsApi(
         "cinema",
         "publishedAt",
-        latestFilters
+        latestFilters,
+        20
       );
 
       if (headlinesData) {

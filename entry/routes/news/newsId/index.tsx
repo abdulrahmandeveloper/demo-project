@@ -2,16 +2,22 @@
 
 import Navbar from "@/shared/components/navigation/navbar";
 import { navbarLinks } from "@/shared/constants/navbar-links.constants";
-import { useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-const NewsIdPage = () => {
-  const searchParams = useSearchParams();
-  const articleLink = searchParams.get("url");
+const NewsIdPage = ({ slug }: { slug: string }) => {
   const [article, setArticle] = useState();
   const [loading, setLoading] = useState();
 
-  useEffect(() => {}, []);
+  const title = slug.split("-");
+  const id = slug.split("-").pop();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      //const articleData = await
+    };
+
+    fetchData();
+  }, []);
   return (
     <div>
       <Navbar

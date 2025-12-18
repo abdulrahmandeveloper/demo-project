@@ -4,11 +4,13 @@ import { newsApi } from "../lib/axios/axios";
 export const getNewsHeadlineFromNewsApi = async (
   category: string,
   searchQuery: string,
-  filters?: NewsFilters
+  filters?: NewsFilters,
+  responseSize?: number
 ) => {
   const params: Record<string, string> = {
     category: category,
     q: searchQuery,
+    pageSize: responseSize ? responseSize.toString() : "",
   };
 
   if (filters) {
@@ -34,11 +36,13 @@ export const getNewsHeadlineFromNewsApi = async (
 export const getEveryNewsFromNewsApi = async (
   searchQuery: string,
   sort?: string,
-  filters?: NewsFilters
+  filters?: NewsFilters,
+  responseSize?: number
 ) => {
   const params: Record<string, string> = {
     q: searchQuery,
     sortBy: sort,
+    pageSize: responseSize ? responseSize.toString() : "",
   };
 
   if (filters) {
