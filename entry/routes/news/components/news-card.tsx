@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui/card";
-import { createSlug } from "@/shared/utils/create-slug";
+import { createSlug, encodeUrl } from "@/shared/utils/handle-slug";
 import { geterateId } from "@/shared/utils/generate-id";
 import { cn } from "@/shared/utils/utils";
 import {
@@ -47,7 +47,9 @@ const NewsCard = ({
 }: NewsCardProps) => {
   const [saved, setSaved] = useState<boolean>(false);
 
-  const hashedTitle = createSlug(title);
+  const hashedTitle = encodeUrl(title);
+  console.log("hashedTitle: ", hashedTitle);
+
   const generatedId = geterateId(id.toString());
 
   const handleSaveClick = () => {
