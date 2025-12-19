@@ -3,7 +3,8 @@ import { QueryResultsResponseData } from "../interfaces/search.interface";
 import { getSearchResultFromTMDB } from "../services/tmdb/tmdb.service";
 
 export const useSearch = () => {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState<string>("");
+  const [delayedSearchQuery, setDelayedSearchQuery] = useState<string>("");
   const [results, setResults] = useState<QueryResultsResponseData>({
     movies: [],
     series: [],
@@ -12,9 +13,18 @@ export const useSearch = () => {
   console.log(results);
 
   useEffect(() => {
+    if (!query) return;
+    const timer = setTimeout(() => {
+      setDelayedSearchQuery(query);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [query]);
+
+  useEffect(() => {
+    if (!delayedSearchQuery) return;
+
     const handleSearchData = async () => {
-      //setQuery(query);
-      const data = await getSearchResultFromTMDB(query);
+      const data = await getSearchResultFromTMDB(delayedSearchQuery);
 
       if (!data) {
         return null;
@@ -23,7 +33,7 @@ export const useSearch = () => {
       return data;
     };
     handleSearchData();
-  }, [query]);
+  }, [delayedSearchQuery]);
 
   const handleSearchInput = (value: string) => {
     if (!value) {

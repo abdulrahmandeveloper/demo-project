@@ -43,7 +43,7 @@ const SearchComponent = ({
 
   const router = useRouter();
 
-  const handleInputKeyChange = (e: any) => {
+  const handleInputKeyChange = (e) => {
     if (e.key === "Enter" && query.trim()) {
       router.push(`/search`);
       setOpen(false);
