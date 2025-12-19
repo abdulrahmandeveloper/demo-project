@@ -19,6 +19,7 @@ type TMDBSearchResults = QueryResultsResponseData;
 
 type SearchComponentProps = {
   query: string;
+  handleSearchInput: (value: string) => void;
   searchResult: TMDBSearchResults;
   hasResults: boolean;
   open: boolean;
@@ -28,6 +29,7 @@ type SearchComponentProps = {
 
 const SearchComponent = ({
   searchResult,
+  handleSearchInput,
   hasResults,
   open,
   setOpen,
@@ -41,11 +43,16 @@ const SearchComponent = ({
 
   const router = useRouter();
 
-  const handleQueryChange = (e: any) => {
+  const handleInputKeyChange = (e: any) => {
     if (e.key === "Enter" && query.trim()) {
       router.push(`/search`);
       setOpen(false);
     }
+  };
+
+  const handleInputValueChange = (value: string) => {
+    setQuery(value);
+    handleSearchInput(value);
   };
 
   const handleClick = () => {
@@ -64,9 +71,9 @@ const SearchComponent = ({
               aria-label="Search"
               className=" w-25 focus-within:w-40 transition-all duration-300 ease-in-out shadow-sm origin-right ml-auto border-none bg-white dark:bg-white dark:text-black"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(e) => handleInputValueChange(e.target.value)}
               onFocus={() => setOpen(true)}
-              onKeyDown={handleQueryChange}
+              onKeyDown={handleInputKeyChange}
             />
             <Button
               size={"icon"}
