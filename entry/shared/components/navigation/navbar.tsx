@@ -25,6 +25,7 @@ const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
     series: [],
   });
   const [open, setOpen] = useState<boolean>(false);
+  console.log(results);
 
   const handleSearchData = async () => {
     const data = await getSearchResultFromTMDB(query);
@@ -52,6 +53,7 @@ const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
   );
 
   useEffect(() => {});
+
   return (
     <div className="grid grid-cols-3 bg-transparent/95 backdrop-blur-xs hover:backdrop-blur-lg transition-all duration-300  shadow-sm h-16">
       <div className="flex items-center justify-center">

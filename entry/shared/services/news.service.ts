@@ -44,7 +44,6 @@ export const getEveryNewsFromNewsApi = async (
   const params: Record<string, string> = {
     q: searchQuery,
     sortBy: sort,
-    pageSize: responseSize ? responseSize.toString() : "",
   };
 
   if (filters) {
@@ -55,6 +54,10 @@ export const getEveryNewsFromNewsApi = async (
     } else if (filters.date) {
       params.from = new Date(filters.date).toISOString();
     }
+  }
+
+  if (responseSize) {
+    params.pageSize = responseSize ? responseSize.toString() : "";
   }
   //console.log("params: ", params);
 
