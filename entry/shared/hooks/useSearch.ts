@@ -12,17 +12,12 @@ export const useSearch = () => {
     series: [],
   });
   const [open, setOpen] = useState<boolean>(false);
-  console.log(results);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!query) {
-      setResults({
-        movies: [],
-        series: [],
-      });
-      return;
-    }
+    if (!query) return;
     const timer = setTimeout(() => {
+      setLoading(true);
       setDelayedSearchQuery(query);
     }, 800);
     return () => clearTimeout(timer);
@@ -38,6 +33,7 @@ export const useSearch = () => {
         return null;
       }
       setResults(data);
+      setLoading(false);
       return data;
     };
     handleSearchData();
@@ -64,11 +60,7 @@ export const useSearch = () => {
     open,
     setOpen,
     handleSearchInput,
+    loading,
     hasResults,
   };
 };
-
-/**
- *   const query = useSearchQueryData((state) => state.query);
-   const setQuery = useSearchQueryData((state) => state.setQuery);
- */

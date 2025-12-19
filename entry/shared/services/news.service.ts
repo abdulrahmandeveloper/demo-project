@@ -24,7 +24,6 @@ export const getNewsHeadlineFromNewsApi = async (
       params.from = new Date(filters.date).toISOString();
     }
   }
-  console.log("params: ", params);
 
   const response = await newsApi.get(`/top-headlines`, {
     params,
@@ -39,8 +38,6 @@ export const getEveryNewsFromNewsApi = async (
   filters?: NewsFilters,
   responseSize?: number
 ) => {
-  console.log("searchQuery: ", searchQuery);
-
   const params: Record<string, string> = {
     q: searchQuery,
     sortBy: sort,
@@ -59,7 +56,6 @@ export const getEveryNewsFromNewsApi = async (
   if (responseSize) {
     params.pageSize = responseSize ? responseSize.toString() : "";
   }
-  //console.log("params: ", params);
 
   const response = await newsApi.get(`/everything`, {
     params,

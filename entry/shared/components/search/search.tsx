@@ -12,15 +12,17 @@ import { Search } from "lucide-react";
 import { QueryResultsResponseData } from "@/shared/interfaces/search.interface";
 import { Dispatch, SetStateAction } from "react";
 import Link from "next/link";
-import { useSearchQueryData } from "@/shared/stores/searchQueryStore";
 import { useRouter } from "next/navigation";
+import { Spinner } from "../ui/spinner";
+import { Separator } from "../ui/separator";
 
 type TMDBSearchResults = QueryResultsResponseData;
 
 type SearchComponentProps = {
   query: string;
-  setQuery: Dispatch<SetStateAction<string>>;
+  setQuery: (queryValue: string) => void;
   handleSearchInput: (value: string) => void;
+  loading: boolean;
   searchResult: TMDBSearchResults;
   hasResults: boolean;
   open: boolean;
@@ -33,6 +35,7 @@ const SearchComponent = ({
   setQuery,
   searchResult,
   handleSearchInput,
+  loading,
   hasResults,
   open,
   setOpen,
@@ -61,6 +64,22 @@ const SearchComponent = ({
     router.push(`/search`);
     setOpen(false);
   };
+
+  const isShowingMovieResults: boolean =
+    (mediaType === "movie" || mediaType === "any") &&
+    movies &&
+    movies.length > 0 &&
+    loading === false
+      ? true
+      : false;
+
+  const isShowingSeriesResults: boolean =
+    (mediaType === "series" || mediaType === "any") &&
+    series &&
+    series?.length > 0 &&
+    loading === false
+      ? true
+      : false;
 
   return (
     <div className="relative ">
@@ -107,60 +126,65 @@ const SearchComponent = ({
             }`}
             sideOffset={8}
           >
-            {!query ||
-              (!hasResults && (
-                <p className="text-sm text-center text-gray-500">
-                  No results found
-                </p>
-              ))}
+            {!hasResults && (
+              <p className="text-sm text-center text-gray-500">
+                {loading ? null : "No results found"}
+              </p>
+            )}
+
+            {loading && (
+              <div className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded cursor-pointer dark:hover:bg-gray-800">
+                <Spinner />{" "}
+                <p className="text-sm opacity-70">Loading Matched Results...</p>
+              </div>
+            )}
 
             {/* Movies */}
-            {(mediaType === "movie" || mediaType === "any") &&
-              movies &&
-              movies.length > 0 && (
-                <>
-                  <h4 className="text-sm font-semibold mb-1">Movies</h4>
-                  {movies.slice(0, 10).map((movie, key) => (
-                    <Link href={`/movies/${movie.id}`} key={key}>
-                      <div
-                        key={movie.id}
-                        className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded cursor-pointer dark:hover:bg-gray-800"
-                      >
-                        {" "}
-                        <PosterCard
-                          src={movie.poster_path}
-                          className="w-8 h-12"
-                        ></PosterCard>
-                        <p className="text-sm">{movie.title}</p>
-                      </div>
-                    </Link>
-                  ))}
-                </>
-              )}
+            {isShowingMovieResults && (
+              <>
+                <h4 className="text-sm font-semibold mb-1">Movies</h4>{" "}
+                <Separator />
+                {movies?.slice(0, 10).map((movie, key) => (
+                  <Link href={`/movies/${movie.id}`} key={key}>
+                    <div
+                      key={movie.id}
+                      className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded cursor-pointer dark:hover:bg-gray-800"
+                    >
+                      {" "}
+                      <PosterCard
+                        src={movie.poster_path}
+                        className="w-8 h-12"
+                      ></PosterCard>
+                      <p className="text-sm">{movie.title}</p>
+                    </div>
+                  </Link>
+                ))}
+              </>
+            )}
 
             {/* Series */}
-            {(mediaType === "tv" || mediaType === "any") &&
-              series &&
-              series?.length > 0 && (
-                <>
-                  <h4 className="text-sm font-semibold mt-2 mb-1">Series</h4>
-                  {series.slice(0, 10).map((series, key) => (
-                    <Link href={`/series/${series.id}`} key={key}>
-                      <div
-                        key={series.id}
-                        className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded cursor-pointer dark:hover:bg-gray-800"
-                      >
-                        {" "}
-                        <PosterCard
-                          src={series.poster_path}
-                          className="w-8 h-12 "
-                        ></PosterCard>
-                        <p className="text-sm ">{series.name}</p>
-                      </div>
-                    </Link>
-                  ))}
-                </>
-              )}
+            {isShowingSeriesResults && (
+              <>
+                <h4 className="text-sm font-semibold mt-2 mb-1">Series</h4>
+                <Separator />
+
+                {series?.slice(0, 10).map((series, key) => (
+                  <Link href={`/series/${series.id}`} key={key}>
+                    <div
+                      key={series.id}
+                      className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded cursor-pointer dark:hover:bg-gray-800"
+                    >
+                      {" "}
+                      <PosterCard
+                        src={series.poster_path}
+                        className="w-8 h-12 "
+                      ></PosterCard>
+                      <p className="text-sm ">{series.name}</p>
+                    </div>
+                  </Link>
+                ))}
+              </>
+            )}
           </PopoverContent>
         ) : null}
       </Popover>
@@ -169,5 +193,3 @@ const SearchComponent = ({
 };
 
 export default SearchComponent;
-
-/* series?  .series*/

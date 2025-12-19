@@ -9,8 +9,6 @@ const NewsIdPage = ({ slug }: { slug: string }) => {
   const [article, setArticle] = useState();
   const [loading, setLoading] = useState<boolean>(false);
 
-  console.log("slug: ", slug);
-
   //const title = slug.split("-");
   //const id = slug.split("-").pop();
 
@@ -27,7 +25,6 @@ const NewsIdPage = ({ slug }: { slug: string }) => {
 
     fetchData();
   }, [slug]);
-  console.log("article: ", article);
 
   return (
     <div>

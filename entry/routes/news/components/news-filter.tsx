@@ -20,8 +20,6 @@ const NewsFilter = ({
   value,
   setterValue,
 }: NewsFilterProps) => {
-  console.log("value from NewsFilter: ", value, " for : ", placeHolder);
-
   return (
     <div className="flex justify-between">
       <h1 className="font-bold text-xl my-1">{placeHolder}</h1>

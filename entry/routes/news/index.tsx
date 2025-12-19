@@ -40,8 +40,6 @@ const NewsPage = () => {
     date: "",
   });
 
-  console.log(headlinesFilters);
-
   useEffect(() => {
     const fetchNews = async () => {
       setLoading(true);

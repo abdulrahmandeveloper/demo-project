@@ -24,6 +24,7 @@ const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
     open,
     setOpen,
     handleSearchInput,
+    loading,
     hasResults,
   } = useSearch();
 
@@ -68,6 +69,7 @@ const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
               setQuery={setQuery}
               searchResult={results}
               handleSearchInput={handleSearchInput}
+              loading={loading}
               hasResults={hasResults}
               open={open}
               setOpen={setOpen}

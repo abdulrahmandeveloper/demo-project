@@ -48,7 +48,6 @@ const NewsCard = ({
   const [saved, setSaved] = useState<boolean>(false);
 
   const hashedTitle = encodeUrl(title);
-  console.log("hashedTitle: ", hashedTitle);
 
   const generatedId = geterateId(id.toString());
 
