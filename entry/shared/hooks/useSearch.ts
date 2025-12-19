@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { QueryResultsResponseData } from "../interfaces/search.interface";
 import { getSearchResultFromTMDB } from "../services/tmdb/tmdb.service";
+import { useSearchQueryData } from "../stores/searchQueryStore";
 
 export const useSearch = () => {
-  const [query, setQuery] = useState<string>("");
+  const query = useSearchQueryData((state) => state.query);
+  const setQuery = useSearchQueryData((state) => state.setQuery);
   const [delayedSearchQuery, setDelayedSearchQuery] = useState<string>("");
   const [results, setResults] = useState<QueryResultsResponseData>({
     movies: [],
@@ -13,7 +15,13 @@ export const useSearch = () => {
   console.log(results);
 
   useEffect(() => {
-    if (!query) return;
+    if (!query) {
+      setResults({
+        movies: [],
+        series: [],
+      });
+      return;
+    }
     const timer = setTimeout(() => {
       setDelayedSearchQuery(query);
     }, 800);
@@ -49,5 +57,18 @@ export const useSearch = () => {
       (results.series && results.series.length > 0)
   );
 
-  return { query, results, open, setOpen, handleSearchInput, hasResults };
+  return {
+    query,
+    setQuery,
+    results,
+    open,
+    setOpen,
+    handleSearchInput,
+    hasResults,
+  };
 };
+
+/**
+ *   const query = useSearchQueryData((state) => state.query);
+   const setQuery = useSearchQueryData((state) => state.setQuery);
+ */

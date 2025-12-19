@@ -19,6 +19,7 @@ type TMDBSearchResults = QueryResultsResponseData;
 
 type SearchComponentProps = {
   query: string;
+  setQuery: Dispatch<SetStateAction<string>>;
   handleSearchInput: (value: string) => void;
   searchResult: TMDBSearchResults;
   hasResults: boolean;
@@ -28,6 +29,8 @@ type SearchComponentProps = {
 };
 
 const SearchComponent = ({
+  query,
+  setQuery,
   searchResult,
   handleSearchInput,
   hasResults,
@@ -38,8 +41,6 @@ const SearchComponent = ({
   //destructuring results
   const { movies, series } = searchResult;
   //taking query using zustand
-  const query = useSearchQueryData((state) => state.query);
-  const setQuery = useSearchQueryData((state) => state.setQuery);
 
   const router = useRouter();
 

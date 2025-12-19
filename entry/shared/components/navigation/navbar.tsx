@@ -17,8 +17,15 @@ type NavbarProps = {
 };
 
 const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
-  const { query, results, open, setOpen, handleSearchInput, hasResults } =
-    useSearch();
+  const {
+    query,
+    setQuery,
+    results,
+    open,
+    setOpen,
+    handleSearchInput,
+    hasResults,
+  } = useSearch();
 
   return (
     <div className="grid grid-cols-3 bg-transparent/95 backdrop-blur-xs hover:backdrop-blur-lg transition-all duration-300  shadow-sm h-16">
@@ -58,6 +65,7 @@ const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
           {search && (
             <SearchComponent
               query={query}
+              setQuery={setQuery}
               searchResult={results}
               handleSearchInput={handleSearchInput}
               hasResults={hasResults}
