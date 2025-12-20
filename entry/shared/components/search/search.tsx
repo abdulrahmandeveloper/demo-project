@@ -15,6 +15,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Spinner } from "../ui/spinner";
 import { Separator } from "../ui/separator";
+import { toast } from "sonner";
 
 type TMDBSearchResults = QueryResultsResponseData;
 
@@ -43,8 +44,6 @@ const SearchComponent = ({
 }: SearchComponentProps) => {
   //destructuring results
   const { movies, series } = searchResult;
-  //taking query using zustand
-  console.log(query.length > 0);
 
   const router = useRouter();
 
@@ -61,7 +60,11 @@ const SearchComponent = ({
   };
 
   const handleClick = () => {
-    if (!query.trim()) return;
+    if (!query.trim()) {
+      toast.error("Error!", { description: "Please write a query to search" });
+      return;
+    }
+
     router.push(`/search`);
     setOpen(false);
   };
@@ -86,28 +89,26 @@ const SearchComponent = ({
     <div className="relative ">
       <Popover open={open}>
         <PopoverTrigger asChild>
-          <div className="flex relative">
+          <div
+            className="flex relative"
+            onFocus={() => setOpen(true)}
+            onKeyDown={handleInputKeyChange}
+          >
             <Input
               type="text"
               aria-label="Search"
               className=" w-25 focus-within:w-40 transition-all duration-300 ease-in-out shadow-sm origin-right ml-auto border-none bg-white dark:bg-white dark:text-black"
               value={query}
               onChange={(e) => handleInputValueChange(e.target.value)}
-              onFocus={() => setOpen(true)}
-              onKeyDown={handleInputKeyChange}
             />
             <Button
-              size={"icon"}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500  w-4 h-4 bg-transparent cursor-pointer"
+              className="absolute right-0.5  top-1/2 -translate-y-1/2 text-gray-500    cursor-pointer bg-transparent hover:bg-transparent"
               onClick={handleClick}
             >
-              <Link href={"/search"} className="cursor-pointer">
-                {" "}
-                <Search
-                  aria-hidden="true"
-                  className="text-black cursor-pointer"
-                />
-              </Link>
+              <Search
+                aria-hidden="true"
+                className="text-black cursor-pointer size-5"
+              />
             </Button>
           </div>
         </PopoverTrigger>
@@ -126,6 +127,7 @@ const SearchComponent = ({
               query && open ? "opacity-100 visible" : "opacity-0 invisible"
             }`}
             sideOffset={8}
+            onOpenAutoFocus={(e) => e.preventDefault()}
           >
             {!hasResults && (
               <p className="text-sm text-center text-gray-500">
