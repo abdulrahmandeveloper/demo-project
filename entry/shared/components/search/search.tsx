@@ -104,6 +104,7 @@ const SearchComponent = ({
             <Button
               className="absolute right-0.5  top-1/2 -translate-y-1/2 text-gray-500    cursor-pointer bg-transparent hover:bg-transparent"
               onClick={handleClick}
+              onMouseDown={(e) => e.preventDefault()}
             >
               <Search
                 aria-hidden="true"
