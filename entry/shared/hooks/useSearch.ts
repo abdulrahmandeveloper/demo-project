@@ -15,12 +15,17 @@ export const useSearch = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!query) return;
-    const timer = setTimeout(() => {
+    const setTimer = () => {
+      if (!query) return;
       setLoading(true);
-      setDelayedSearchQuery(query);
-    }, 800);
-    return () => clearTimeout(timer);
+
+      const timer = setTimeout(() => {
+        setDelayedSearchQuery(query);
+      }, 800);
+      return () => clearTimeout(timer);
+    };
+
+    setTimer();
   }, [query]);
 
   useEffect(() => {

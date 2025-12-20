@@ -44,6 +44,7 @@ const SearchComponent = ({
   //destructuring results
   const { movies, series } = searchResult;
   //taking query using zustand
+  console.log(query.length > 0);
 
   const router = useRouter();
 
