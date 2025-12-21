@@ -4,6 +4,7 @@ import {
   BOX_OFFICE_FILTERS,
   COUNTRY_FILTERS,
   DATE_FILTERS,
+  NEWS_LANGUAGE_FILTERS,
   PUBLISHER_FILTERS,
 } from "../constants/news.constants";
 import { NewsFilters } from "../interfaces/news.interface";
@@ -25,18 +26,25 @@ const NewsFilter = ({
       <h1 className="font-bold text-xl my-1">{placeHolder}</h1>
       <div className="flex gap-4">
         <FilterSelection
+          placeHolder={"Language"}
+          values={NEWS_LANGUAGE_FILTERS}
+          value={value.language}
+          setValues={setterValue}
+          containerClassName="lg:w-[150px]"
+        />
+        <FilterSelection
           placeHolder={"Publisher"}
           values={PUBLISHER_FILTERS}
           value={value.publisher}
           setValues={setterValue}
-          containerClassName="w-[200px]"
+          containerClassName="lg:w-[150px]"
         />
         <FilterSelection
           placeHolder={"Box Office"}
           values={BOX_OFFICE_FILTERS}
           value={value.boxOffice}
           setValues={setterValue}
-          containerClassName="w-[200px]"
+          containerClassName="lg:w-[150px]"
         />
         {excludeFilter === "Country" ? null : (
           <FilterSelection
@@ -44,7 +52,7 @@ const NewsFilter = ({
             values={COUNTRY_FILTERS}
             value={value.country}
             setValues={setterValue}
-            containerClassName="w-[200px]"
+            containerClassName="lg:w-[150px]"
           />
         )}
         <FilterSelection
@@ -52,7 +60,7 @@ const NewsFilter = ({
           values={DATE_FILTERS}
           value={value.date}
           setValues={setterValue}
-          containerClassName="w-[200px]"
+          containerClassName="lg:w-[150px]"
         />
       </div>
     </div>

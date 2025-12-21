@@ -22,18 +22,21 @@ const NewsPage = () => {
   const [latestNews, setLatesNews] = useState<NewsResponse[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [headlinesFilters, setHeadlinesFilters] = useState<NewsFilters>({
+    language: "",
     publisher: "",
     boxOffice: "",
     country: "",
     date: "",
   });
   const [trendingFilters, setTrendingFilters] = useState<NewsFilters>({
+    language: "",
     publisher: "",
     boxOffice: "",
     country: "",
     date: "",
   });
   const [latestFilters, setLatestFilters] = useState<NewsFilters>({
+    language: "",
     publisher: "",
     boxOffice: "",
     country: "",
@@ -46,32 +49,37 @@ const NewsPage = () => {
       const headlinesData = await getNewsHeadlineFromNewsApi(
         "entertainment",
         "movie",
-        headlinesFilters,
-        3
+        3,
+        "en",
+        headlinesFilters
       );
       const moviesNewsData = await getEveryNewsFromNewsApi(
         "movie",
+        10,
+        "en",
         "publishedAt",
-        headlinesFilters,
-        10
+        headlinesFilters
       );
       const seriesNewsData = await getEveryNewsFromNewsApi(
         "tv",
+        10,
+        "en",
         "publishedAt",
-        headlinesFilters,
-        10
+        headlinesFilters
       );
       const trendingNewsData = await getEveryNewsFromNewsApi(
         "cinema",
+        20,
+        "en",
         "popularity",
-        trendingFilters,
-        20
+        trendingFilters
       );
       const latestNewsData = await getEveryNewsFromNewsApi(
         "cinema",
+        20,
+        "en",
         "publishedAt",
-        latestFilters,
-        20
+        latestFilters
       );
 
       if (headlinesData) {

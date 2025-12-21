@@ -15,8 +15,11 @@ export interface NewsResponse {
 }
 
 export interface NewsFilters {
+  language: string;
   publisher: string;
   boxOffice: string;
   country?: string;
   date: string;
 }
+
+export type SortOptions = "relevancy" | "popularity" | "publishedAt";

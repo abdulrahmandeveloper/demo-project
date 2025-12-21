@@ -33,3 +33,20 @@ export const DATE_FILTERS = [
   { name: "This Month", value: "30d" },
   { name: "This Year", value: "365d" },
 ];
+
+export const NEWS_LANGUAGE_FILTERS = [
+  { value: "ar", name: "Arabic" },
+  { value: "de", name: "German" },
+  { value: "en", name: "English" },
+  { value: "es", name: "Spanish" },
+  { value: "fr", name: "French" },
+  { value: "he", name: "Hebrew" },
+  { value: "it", name: "Italian" },
+  { value: "nl", name: "Dutch" },
+  { value: "no", name: "Norwegian" },
+  { value: "pt", name: "Portuguese" },
+  { value: "ru", name: "Russian" },
+  { value: "sv", name: "Swedish" },
+  { value: "ud", name: "Urdu" },
+  { value: "zh", name: "Chinese" },
+];

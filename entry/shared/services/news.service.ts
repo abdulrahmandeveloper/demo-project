@@ -1,15 +1,20 @@
-import { NewsFilters } from "@/routes/news/interfaces/news.interface";
+import {
+  NewsFilters,
+  SortOptions,
+} from "@/routes/news/interfaces/news.interface";
 import { newsApi } from "../lib/axios/axios";
 
 export const getNewsHeadlineFromNewsApi = async (
   category: string,
   searchQuery: string,
-  filters?: NewsFilters,
-  responseSize?: number
+  responseSize?: number,
+  language: string = "en",
+  filters?: NewsFilters
 ) => {
   const params: Record<string, string> = {
     category: category,
     q: searchQuery,
+    language: language,
     pageSize: responseSize ? responseSize.toString() : "",
   };
 
@@ -34,14 +39,16 @@ export const getNewsHeadlineFromNewsApi = async (
 
 export const getEveryNewsFromNewsApi = async (
   searchQuery: string,
-  sort?: string,
-  filters?: NewsFilters,
-  responseSize?: number
+  responseSize?: number,
+  language: string = "en",
+  sort?: SortOptions,
+  filters?: NewsFilters
 ) => {
   console.log("searchQuery: ", searchQuery);
 
   const params: Record<string, string> = {
     q: searchQuery,
+    language: language,
     sortBy: sort,
   };
 
