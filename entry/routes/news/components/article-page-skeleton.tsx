@@ -14,11 +14,12 @@ const ArticlePageSkeleton = () => {
             <Skeleton className="w-3/4  h-6" />
             <Skeleton className="w-1/2  h-6" />
           </div>
-          <Skeleton className="w-full aspect-[1.91:1] overflow-hidden my-4 h-96 flex">
+          <div className="flex justify-center items-center">
             {" "}
-          </Skeleton>
+            <Skeleton className="w-3/4  aspect-[1.91:1] overflow-hidden my-4 lg:h-[70vh] " />
+          </div>
         </div>
-        <div className="flex gap-5 w-full my-4">
+        <div className="flex gap-5 w-4/5 mx-auto my-4">
           <Skeleton className="w-20 h-5" />
         </div>
         <Separator />

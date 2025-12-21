@@ -37,6 +37,8 @@ const NewsIdPage = ({ slug }: { slug: string }) => {
       const articleData = await getEveryNewsFromNewsApi(slug, 1, "en");
       if (articleData) {
         setArticle(articleData[0]);
+      } else {
+        setLoading(false);
       }
       setLoading(false);
     };
@@ -52,7 +54,7 @@ const NewsIdPage = ({ slug }: { slug: string }) => {
         search={true}
       />{" "}
       {loading ? <ArticlePageSkeleton /> : null}
-      {loading && (
+      {loading ?? (
         <div className="w-9/10 mx-auto">
           <div className="">
             <h1 className="font-bold text-4xl text-center w-3/4 mx-auto my-6">
@@ -101,7 +103,7 @@ const NewsIdPage = ({ slug }: { slug: string }) => {
               </Button>
             </div>
           </div>
-          <div className="">
+          <div className="my-4">
             <h1 className="font-semibold text-lg">Comments</h1>
           </div>
         </div>

@@ -107,7 +107,7 @@ const NewsPage = () => {
       <Navbar
         logoPath={"/images/istar-logo.png"}
         links={navbarLinks}
-        search={false}
+        search={true}
       />
       <h1 className="flex items-center justify-center text-4xl font-extrabold my-5">
         Explore The Cinema
