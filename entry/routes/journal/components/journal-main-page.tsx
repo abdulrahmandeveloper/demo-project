@@ -9,8 +9,12 @@ const JournalMainPage = () => {
         links={navbarLinks}
         search={true}
       />
+
       <div className="">
         <h1>Reviews</h1>
+      </div>
+      <div className="">
+        <h1>Stories</h1>
       </div>
       <div className="">
         <h1 className="">Articles</h1>
