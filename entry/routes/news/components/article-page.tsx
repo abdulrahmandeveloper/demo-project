@@ -1,14 +1,13 @@
 "use client";
 
-import Navbar from "@/shared/components/navigation/navbar";
 import { BsFillShareFill } from "react-icons/bs";
-import { navbarLinks } from "@/shared/constants/navbar-links.constants";
+
 import { getEveryNewsFromNewsApi } from "@/shared/services/news.service";
 import { useEffect, useState } from "react";
 import { NewsResponse } from "../interfaces/news.interface";
 import { Separator } from "@/shared/components/ui/separator";
 import { ExternalLinkIcon, List, ListChecksIcon, ThumbsUp } from "lucide-react";
-import ArticlePageSkeleton from "../components/article-page-skeleton";
+import ArticlePageSkeleton from "./skeleton/article-page-skeleton";
 import { Button } from "@/shared/components/ui/button";
 
 const NewsIdPage = ({ slug }: { slug: string }) => {
@@ -48,11 +47,6 @@ const NewsIdPage = ({ slug }: { slug: string }) => {
 
   return (
     <div>
-      <Navbar
-        logoPath={"/images/istar-logo.png"}
-        links={navbarLinks}
-        search={true}
-      />{" "}
       {loading ? <ArticlePageSkeleton /> : null}
       {loading ?? (
         <div className="w-9/10 mx-auto">

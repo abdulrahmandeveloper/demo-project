@@ -18,8 +18,7 @@ import {
   getSeriesVideosID,
   GetSimilarSeriesById,
 } from "entry/features/series/services/tmdb.service";
-import Navbar from "entry/shared/components/navigation/navbar";
-import { navbarLinks } from "entry/shared/constants/navbar-links.constants";
+
 import { getSeriesByIDFromTMDB } from "entry/shared/services/tmdb/tmdb.series.service";
 import { DetectOriginalCounryName } from "entry/shared/utils/language-selector";
 import Link from "next/link";
@@ -75,13 +74,7 @@ const SeriesPage = () => {
 
   return (
     <div className="">
-      <div className="">
-        <Navbar
-          logoPath={"/images/istar-logo.png"}
-          links={navbarLinks}
-          search={true}
-        />
-      </div>
+      <div className=""></div>
       <div className="dark:text-white text-5xl ">
         <div className="h-[50vh] ">
           <img

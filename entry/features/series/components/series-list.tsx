@@ -3,9 +3,7 @@
 import { getSeriesListFromTmdb } from "entry/features/series/services/tmdb.service";
 import ListItemCard from "entry/shared/components/card/list-item-card";
 import Filters from "@/shared/components/filter/filters";
-import Navbar from "entry/shared/components/navigation/navbar";
 import Pagination from "entry/shared/components/custom-ui/containers/pagination-container";
-import { navbarLinks } from "entry/shared/constants/navbar-links.constants";
 import { useEffect, useState } from "react";
 import { TMDBSeriesResponse } from "../interfaces/tmdb.interface";
 import Link from "next/link";
@@ -36,11 +34,6 @@ const SeriesList = () => {
 
   return (
     <div className="">
-      <Navbar
-        logoPath={"/images/istar-logo.png"}
-        links={navbarLinks}
-        search={false}
-      />
       <div className="p-8">
         <div className="w-3/4 mx-auto ">
           <div className="flex ">

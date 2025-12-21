@@ -11,11 +11,9 @@ import ListItemCard from "@/shared/components/card/list-item-card";
 import DropdownContainer from "@/shared/components/custom-ui/containers/dropdown-container";
 import PaginationContainer from "@/shared/components/custom-ui/containers/pagination-container";
 import Filters from "@/shared/components/filter/filters";
-import Navbar from "@/shared/components/navigation/navbar";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Spinner } from "@/shared/components/ui/spinner";
-import { navbarLinks } from "@/shared/constants/navbar-links.constants";
 import { getSeriesDiscoveryFromTMDB } from "@/shared/services/tmdb/tmdb.series.service";
 import { useSearchQueryData } from "@/shared/stores/searchQueryStore";
 import Link from "next/link";
@@ -120,11 +118,6 @@ const SearchPage = () => {
   const filterPropsList = mediaType === "movie" ? setMovieList : setSeriesList;
   return (
     <div>
-      <Navbar
-        logoPath={"/images/istar-logo.png"}
-        links={navbarLinks}
-        search={false}
-      />
       <div className="w-3/4 mx-auto my-10">
         <div className="w-9/10 mx-auto my-6  flex flex-col gap-5">
           <div className="flex">

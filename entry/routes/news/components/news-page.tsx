@@ -1,18 +1,16 @@
 "use client";
 
 import NewsCard from "@/routes/news/components/news-card";
-import Navbar from "@/shared/components/navigation/navbar";
-import { navbarLinks } from "@/shared/constants/navbar-links.constants";
+
 import {
   getEveryNewsFromNewsApi,
   getNewsHeadlineFromNewsApi,
 } from "@/shared/services/news.service";
 import React, { useEffect, useState } from "react";
-import { NewsFilters, NewsResponse } from "./interfaces/news.interface";
+import { NewsFilters, NewsResponse } from "../interfaces/news.interface";
 import { SelectSeparator } from "@/shared/components/ui/select";
-import NewsCardSkeleton from "./components/news-card-skeleton";
-import FilterSelection from "@/shared/components/custom-ui/containers/filter-selection-container";
-import NewsFilter from "./components/news-filter";
+import NewsCardSkeleton from "./skeleton/news-card-skeleton";
+import NewsFilter from "./news-filter";
 
 const NewsPage = () => {
   const [headlineNews, setHeadlineNews] = useState<NewsResponse[]>([]);
@@ -104,11 +102,6 @@ const NewsPage = () => {
   }, [headlinesFilters, latestFilters, trendingFilters]);
   return (
     <div className="w-9/10 mx-auto">
-      <Navbar
-        logoPath={"/images/istar-logo.png"}
-        links={navbarLinks}
-        search={true}
-      />
       <h1 className="flex items-center justify-center text-4xl font-extrabold my-5">
         Explore The Cinema
       </h1>

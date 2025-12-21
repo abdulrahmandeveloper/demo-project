@@ -20,8 +20,7 @@ import {
   getMovieReviewsByIdFromTmdb,
   getMoviesVideosID,
 } from "entry/features/movie/services/tmdb.service";
-import Navbar from "entry/shared/components/navigation/navbar";
-import { navbarLinks } from "entry/shared/constants/navbar-links.constants";
+
 import {
   getMovieByIdCredits,
   getMovieByIDFromTMDB,
@@ -86,11 +85,6 @@ const MoviePage = () => {
 
   return (
     <div className="w-full">
-      <Navbar
-        logoPath={"/images/istar-logo.png"}
-        links={navbarLinks}
-        search={true}
-      />
       <div className="dark:text-white text-5xl">
         <div className="min-h-1 h-[65vh] ">
           <img

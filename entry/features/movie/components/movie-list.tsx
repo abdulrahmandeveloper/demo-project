@@ -1,8 +1,7 @@
 "use client";
 
 import { TMDBMovieResponse } from "entry/features/movie/interfaces/tmdb.interface";
-import Navbar from "entry/shared/components/navigation/navbar";
-import { navbarLinks } from "entry/shared/constants/navbar-links.constants";
+
 import React, { useEffect, useState } from "react";
 import { getMoviesListFromTmdb } from "../services/tmdb.service";
 import ListItemCard from "entry/shared/components/card/list-item-card";
@@ -35,11 +34,6 @@ const MoviesList = () => {
 
   return (
     <div className="w-3/4 mx-auto">
-      <Navbar
-        logoPath={"/images/istar-logo.png"}
-        links={navbarLinks}
-        search={false}
-      />
       <div className="p-8">
         <div className="flex  gap-28 items-center my-2 mr-auto">
           <h1 className="font-bold text-2xl">Discover Top Movies</h1>
