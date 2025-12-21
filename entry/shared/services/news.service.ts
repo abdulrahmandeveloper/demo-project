@@ -38,6 +38,8 @@ export const getEveryNewsFromNewsApi = async (
   filters?: NewsFilters,
   responseSize?: number
 ) => {
+  console.log("searchQuery: ", searchQuery);
+
   const params: Record<string, string> = {
     q: searchQuery,
     sortBy: sort,
@@ -57,9 +59,14 @@ export const getEveryNewsFromNewsApi = async (
     params.pageSize = responseSize ? responseSize.toString() : "";
   }
 
+  console.log("params: ", params);
+
   const response = await newsApi.get(`/everything`, {
     params,
   });
 
-  return response.data.articles;
+  const data = response.data;
+  console.log("service data: ", data);
+
+  return data.articles;
 };

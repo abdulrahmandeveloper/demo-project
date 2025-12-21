@@ -150,7 +150,7 @@ const NewsPage = () => {
                     containerClassName="max-w-md min-h-[400px]  max-h-[600px]"
                   />
                 ))
-              : movieNews?.map((news: NewsResponse, index) => (
+              : movieNews.map((news: NewsResponse, index) => (
                   <div key={index} className="">
                     <NewsCard
                       id={news.source.id ?? news.title}

@@ -47,13 +47,10 @@ const NewsCard = ({
 }: NewsCardProps) => {
   const [saved, setSaved] = useState<boolean>(false);
 
-  const hashedTitle = encodeUrl(title);
-
-  const generatedId = geterateId(id.toString());
-
   const handleSaveClick = () => {
     setSaved(!saved);
   };
+
   return (
     <Card className={`${containerClassName}  flex-col`}>
       <CardHeader className="flex items-center justify-between gap-4">
@@ -80,7 +77,7 @@ const NewsCard = ({
           <EclipseIcon className="" />
         </Button>
       </CardHeader>
-      <Link href={`/news/${hashedTitle}-${generatedId}`} className="flex-1  ">
+      <Link href={`/news/${title}`} className="flex-1  ">
         <CardContent className="space-y-4  text-sm">
           <img
             src={imagUrl}

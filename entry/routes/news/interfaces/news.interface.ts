@@ -1,5 +1,5 @@
 export interface SourceResponse {
-  id: number;
+  id: number | null;
   name: string;
 }
 

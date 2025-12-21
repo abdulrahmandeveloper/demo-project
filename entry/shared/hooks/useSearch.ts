@@ -18,7 +18,6 @@ export const useSearch = () => {
     if (!query) return;
 
     const timer = setTimeout(() => {
-      console.log("inside timer");
       setLoading(true);
 
       setDelayedSearchQuery(query);
