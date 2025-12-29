@@ -7,7 +7,7 @@ import "react-icons";
 import { ModeToggle } from "entry/shared/utils/theme/theme-toggler";
 import SearchComponent from "@/shared/components/search/search";
 import { NavbarLinks } from "@/shared/interfaces/navigation.interface";
-import { useSearch } from "@/shared/hooks/useSearch";
+import { useNavSearch } from "@/shared/hooks/use-nav-search";
 
 type NavbarProps = {
   logoPath: string;
@@ -26,7 +26,7 @@ const Navbar = ({ logoPath, links, search, className }: NavbarProps) => {
     handleSearchInput,
     loading,
     hasResults,
-  } = useSearch();
+  } = useNavSearch();
 
   return (
     <div className="grid grid-cols-3 bg-transparent/95 backdrop-blur-xs hover:backdrop-blur-lg transition-all duration-300  shadow-sm h-16">

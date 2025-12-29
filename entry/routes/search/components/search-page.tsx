@@ -1,10 +1,7 @@
 "use client";
 
 import { TMDBMovieResponse } from "@/features/movie/interfaces/tmdb.interface";
-import {
-  getMoviesDiscoveryFromTmdb,
-  getMovieSearchResultsFromTMDB,
-} from "@/features/movie/services/tmdb.service";
+import { getMovieSearchResultsFromTMDB } from "@/features/movie/services/tmdb.service";
 import { TMDBSeriesResponse } from "@/features/series/interfaces/tmdb.interface";
 import { getSeriesSearchResultsFromTMDB } from "@/features/series/services/tmdb.service";
 import ListItemCard from "@/shared/components/card/list-item-card";
@@ -14,10 +11,9 @@ import Filters from "@/shared/components/filter/filters";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Spinner } from "@/shared/components/ui/spinner";
-import { getSeriesDiscoveryFromTMDB } from "@/shared/services/tmdb/tmdb.series.service";
 import { useSearchQueryData } from "@/shared/stores/searchQueryStore";
 import Link from "next/link";
-import { SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 const SearchPage = () => {

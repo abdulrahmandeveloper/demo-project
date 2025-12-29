@@ -2,16 +2,14 @@ import { useEffect, useState } from "react";
 import { QueryResultsResponseData } from "../interfaces/search.interface";
 import { getSearchResultFromTMDB } from "../services/tmdb/tmdb.service";
 import { useSearchQueryData } from "../stores/searchQueryStore";
-import { getPeopleSearchResultsFromTMDB } from "@/routes/peoples/services/people.service";
 
-export const useSearch = (contentType: "people" | "tv") => {
+export const useNavSearch = () => {
   const query = useSearchQueryData((state) => state.query);
   const setQuery = useSearchQueryData((state) => state.setQuery);
   const [delayedSearchQuery, setDelayedSearchQuery] = useState<string>("");
   const [results, setResults] = useState<QueryResultsResponseData>({
     movies: [],
     series: [],
-    people: [],
   });
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -31,26 +29,16 @@ export const useSearch = (contentType: "people" | "tv") => {
     if (!delayedSearchQuery) return;
 
     const handleSearchData = async () => {
-      if (contentType === "people") {
-        const data = await getPeopleSearchResultsFromTMDB(delayedSearchQuery);
+      const data = await getSearchResultFromTMDB(delayedSearchQuery);
 
-        if (!data) {
-          return null;
-        }
-        setResults({ people: data.results });
-        setLoading(false);
-        return data;
-      } else {
-        const data = await getSearchResultFromTMDB(delayedSearchQuery);
-
-        if (!data) {
-          return null;
-        }
-        setResults(data);
-        setLoading(false);
-        return data;
+      if (!data) {
+        return null;
       }
+      setResults(data);
+      setLoading(false);
+      return data;
     };
+
     handleSearchData();
   }, [delayedSearchQuery]);
 
@@ -65,8 +53,7 @@ export const useSearch = (contentType: "people" | "tv") => {
 
   const hasResults: boolean = Boolean(
     (results.movies && results.movies.length > 0) ||
-      (results.series && results.series.length > 0) ||
-      (results.people && results.people.length > 0)
+      (results.series && results.series.length > 0)
   );
 
   return {
