@@ -8,16 +8,11 @@ import {
   NATIONALITY_FILTERS,
 } from "../constants/tmdb.constants";
 import { Button } from "@/shared/components/ui/button";
+import { PeopleSarchQueryParameters } from "../interfaces/people.interface";
 
 type PeopleSearchFiltersProps = {
-  setQueryParameters: Dispatch<
-    SetStateAction<{ gender: number; department: string; nationality: string }>
-  >;
-  queryParameters: {
-    gender: number;
-    department: string;
-    nationality: string;
-  };
+  setQueryParameters: Dispatch<SetStateAction<PeopleSarchQueryParameters>>;
+  queryParameters: PeopleSarchQueryParameters;
   containerClassName?: string;
 };
 const PeopleSearchFilters = ({
@@ -25,7 +20,9 @@ const PeopleSearchFilters = ({
   setQueryParameters,
   containerClassName,
 }: PeopleSearchFiltersProps) => {
-  const [genderFilterValue, setGenderFilterValue] = useState<number>();
+  const [genderFilterValue, setGenderFilterValue] = useState<number | null>(
+    null
+  );
   const [nationalityFilterValue, setNationalityFilterValue] =
     useState<string>("");
   const [departmentFilterValue, setDepartmentFilterValue] =
@@ -38,13 +35,13 @@ const PeopleSearchFilters = ({
           setQueryParameters({
             nationality: nationalityFilterValue,
             department: departmentFilterValue,
-            gender: genderFilterValue,
+            gender: genderFilterValue ?? null,
           });
           break;
         case Boolean(queryParameters.department !== departmentFilterValue):
           setQueryParameters({
             nationality: nationalityFilterValue,
-            gender: genderFilterValue,
+            gender: genderFilterValue ?? null,
             department: departmentFilterValue,
           });
           break;
@@ -52,16 +49,34 @@ const PeopleSearchFilters = ({
           setQueryParameters({
             nationality: nationalityFilterValue,
             department: departmentFilterValue,
-            gender: genderFilterValue,
+            gender: genderFilterValue ?? null,
           });
           break;
       }
     };
     setValues();
   }, [departmentFilterValue, genderFilterValue, nationalityFilterValue]);
+
+  const handleRefreshClick = () => {
+    setQueryParameters({ gender: null, nationality: "", department: "" });
+    setGenderFilterValue(null);
+    setNationalityFilterValue("");
+    setDepartmentFilterValue("");
+  };
+
+  const showResetFilter: boolean = Boolean(
+    queryParameters.gender !== null ||
+      queryParameters.department.trim() ||
+      queryParameters.nationality.trim()
+  );
+
   return (
     <div className={`flex gap-4 ${containerClassName}`}>
-      <Button className="cursor-pointer">Reset filters</Button>
+      {showResetFilter && (
+        <Button className="cursor-pointer" onClick={handleRefreshClick}>
+          Reset filters
+        </Button>
+      )}
       <FilterSelection
         placeHolder={"Gender"}
         values={GENDER_FILTERS}

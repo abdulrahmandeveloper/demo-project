@@ -1,6 +1,7 @@
 import { tmdbApi } from "@/shared/lib/axios/axios";
 import {
   LatestPersonFromTMDBResponse,
+  PeopleSarchQueryParameters,
   TMDBPeopleResponse,
   TMDBPeopleTrendingResponse,
 } from "../interfaces/people.interface";
@@ -26,7 +27,7 @@ export const getLatestPersonFromTmdb =
 export const getPeopleSearchResultsFromTMDB = async (
   query: string,
   page?: number,
-  parameters?: { gender: number; department: string; nationality: string }
+  parameters?: PeopleSarchQueryParameters
 ): Promise<TMDBPeopleResponse> => {
   const response = await tmdbApi.get("/search/person", {
     params: {

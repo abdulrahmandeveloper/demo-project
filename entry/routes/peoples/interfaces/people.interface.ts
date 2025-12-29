@@ -69,3 +69,9 @@ export interface LatestPersonFromTMDBResponse {
   popularity: number;
   profile_path: string;
 }
+
+export interface PeopleSarchQueryParameters {
+  gender: number | null;
+  department: string;
+  nationality: string;
+}

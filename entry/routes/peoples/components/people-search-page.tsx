@@ -9,7 +9,10 @@ import { Separator } from "@/shared/components/ui/separator";
 import PersonInfoCard from "./person-info-card";
 import PaginationContainer from "@/shared/components/custom-ui/containers/pagination-container";
 import { getPeopleSearchResultsFromTMDB } from "../services/people.service";
-import { TMDBPeopleData } from "../interfaces/people.interface";
+import {
+  PeopleSarchQueryParameters,
+  TMDBPeopleData,
+} from "../interfaces/people.interface";
 import PeopleSearchPageSkeleton from "./skeletons/people-search-page-skeleton";
 
 const PeopleSearchPage = () => {
@@ -19,11 +22,12 @@ const PeopleSearchPage = () => {
   const [pages, setPages] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
-  const [queryParameters, setQueryParameters] = useState({
-    gender: 0,
-    department: "",
-    nationality: "",
-  });
+  const [queryParameters, setQueryParameters] =
+    useState<PeopleSarchQueryParameters>({
+      gender: 0,
+      department: "",
+      nationality: "",
+    });
 
   console.log("queryParameters: ", queryParameters);
 
@@ -68,7 +72,10 @@ const PeopleSearchPage = () => {
           value={query}
           onChange={(e) => handleSearchInput(e.target.value)}
         />
-        <Button className="cursor-pointer" onClick={handleSearchButtonClick}>
+        <Button
+          className={`${loading ? "cursor-not-allowed" : "cursor-pointer"} `}
+          onClick={handleSearchButtonClick}
+        >
           <FaSearch className="h-4 w-4" />
           {loading ? "Searching..." : "Search"}
         </Button>
