@@ -76,6 +76,7 @@ const PeoplesMainPage = () => {
                 role={person.known_for_department}
                 popular={person.popularity}
                 knownFor={person.known_for}
+                id={person.id}
               />
             </div>
           ))}
@@ -97,16 +98,17 @@ const PeoplesMainPage = () => {
       <div className="my-4">
         <h1 className={titlesClassNames}>People Of The Day</h1>
         <div className="grid grid-cols-6 gap-4">
-          {trendingrPeoples.slice(0, 11).map((item) => (
-            <div key={item.id}>
+          {trendingrPeoples.slice(0, 11).map((person) => (
+            <div key={person.id}>
               <PersonInfoCard
                 containerClassName={""}
-                personImage={item.profile_path}
-                name={item.name}
-                originalName={item.original_name}
-                gender={item.gender}
-                role={item.known_for_department}
-                popular={item.popularity}
+                personImage={person.profile_path}
+                name={person.name}
+                id={person.id}
+                originalName={person.original_name}
+                gender={person.gender}
+                role={person.known_for_department}
+                popular={person.popularity}
               />
             </div>
           ))}

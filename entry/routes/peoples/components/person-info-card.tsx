@@ -30,6 +30,7 @@ type PersonInfoCardProps = {
   containerClassName: string;
   personImage: string;
   name: string;
+  id: number;
   originalName: string;
   gender: number;
   role: string;
@@ -41,6 +42,7 @@ const PersonInfoCard = ({
   containerClassName,
   personImage,
   name,
+  id,
   originalName,
   gender,
   role,
@@ -70,7 +72,7 @@ const PersonInfoCard = ({
       <div className="flex flex-col   w-[200px]">
         <CardHeader className="">
           <Link
-            href={`/discover/peoples/${name}`}
+            href={`/discover/peoples/${id}`}
             className={`items-center  ${isHavingMedia ? "my-4" : "my-2"}`}
           >
             <div className="relative ">
@@ -89,7 +91,7 @@ const PersonInfoCard = ({
           </Link>
         </CardHeader>
         <Link
-          href={`/discover/peoples/${name}`}
+          href={`/discover/peoples/${id}`}
           className={`flex-1 ${isHavingMedia ? "my-4" : "my-2"}`}
         >
           <CardContent className="gap-1 flex flex-col">
@@ -200,7 +202,7 @@ const PersonInfoCard = ({
                 </>
               )}
               {knownFor.length > 6 && (
-                <Link href={`/people/${name}`}>
+                <Link href={`/discover/people/${id}`}>
                   View All {knownFor.length} credits
                 </Link>
               )}
