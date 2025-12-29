@@ -1,6 +1,5 @@
 "use client";
 
-import { useSearch } from "@/shared/hooks/useSearch";
 import PeopleSearchFilters from "./people-search-filters";
 import { useEffect, useState } from "react";
 import { Input } from "@/shared/components/ui/input";
@@ -19,7 +18,13 @@ const PeopleSearchPage = () => {
   const [pages, setPages] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
-  console.log(loading);
+  const [queryParameters, setQueryParameters] = useState({
+    gender: 0,
+    department: "",
+    nationality: "",
+  });
+
+  console.log("queryParameters: ", queryParameters);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,7 +32,8 @@ const PeopleSearchPage = () => {
       setLoading(true);
       const data = await getPeopleSearchResultsFromTMDB(
         queryContainer,
-        currentPage
+        currentPage,
+        queryParameters
       );
 
       if (!data) {
@@ -41,7 +47,7 @@ const PeopleSearchPage = () => {
     };
 
     fetchData();
-  }, [queryContainer, setQueryContainer, currentPage]);
+  }, [queryContainer, setQueryContainer, currentPage, queryParameters]);
 
   const hasResults: boolean = Boolean(results && results.length > 0);
 
@@ -66,7 +72,10 @@ const PeopleSearchPage = () => {
           {loading ? "Searching..." : "Search"}
         </Button>
         <div className="">
-          <PeopleSearchFilters />
+          <PeopleSearchFilters
+            queryParameters={queryParameters}
+            setQueryParameters={setQueryParameters}
+          />
         </div>{" "}
       </div>
       <Separator className="my-5" />

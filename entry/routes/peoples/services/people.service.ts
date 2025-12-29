@@ -25,12 +25,16 @@ export const getLatestPersonFromTmdb =
 
 export const getPeopleSearchResultsFromTMDB = async (
   query: string,
-  page?: number
+  page?: number,
+  parameters?: { gender: number; department: string; nationality: string }
 ): Promise<TMDBPeopleResponse> => {
   const response = await tmdbApi.get("/search/person", {
     params: {
       query: query,
       page: page,
+      gender: parameters?.gender,
+      known_for_department: parameters?.department,
+      nationality: parameters?.nationality,
     },
   });
   console.log(response.data.results);
