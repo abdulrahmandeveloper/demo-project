@@ -53,8 +53,6 @@ const PersonInfoCard = ({
     setSaved(!saved);
   };
 
-  console.log(knownFor);
-
   const personGender =
     gender === 1 ? "Female" : gender === 2 ? "Male" : "Unknown";
 

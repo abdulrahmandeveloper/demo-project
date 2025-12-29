@@ -22,3 +22,18 @@ export const getLatestPersonFromTmdb =
     const response = await tmdbApi.get("/person/latest");
     return response.data;
   };
+
+export const getPeopleSearchResultsFromTMDB = async (
+  query: string,
+  page: number
+) => {
+  const response = await tmdbApi.get("/search/person", {
+    params: {
+      query: query,
+      page: page,
+    },
+  });
+  console.log(response.data.results);
+
+  return response.data;
+};

@@ -33,6 +33,8 @@ export interface TMDBPeopleData {
 export interface TMDBPeopleResponse {
   page: number;
   results: TMDBPeopleData[];
+  total_pages?: number;
+  total_results?: number;
 }
 
 export interface TMDBTrendingPersonResponse {

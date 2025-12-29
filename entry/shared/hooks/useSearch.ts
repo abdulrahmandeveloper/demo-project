@@ -3,7 +3,7 @@ import { QueryResultsResponseData } from "../interfaces/search.interface";
 import { getSearchResultFromTMDB } from "../services/tmdb/tmdb.service";
 import { useSearchQueryData } from "../stores/searchQueryStore";
 
-export const useSearch = () => {
+export const useSearch = (contentType: "people" | "tv") => {
   const query = useSearchQueryData((state) => state.query);
   const setQuery = useSearchQueryData((state) => state.setQuery);
   const [delayedSearchQuery, setDelayedSearchQuery] = useState<string>("");

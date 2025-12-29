@@ -3,9 +3,9 @@ import { NavbarLinks } from "../interfaces/navigation.interface";
 import { NavbarListLinks } from "../utils/navbar-links-selection";
 
 export const discoverLinks = [
-  { value: "/peoples", content: "People" },
-  { value: "/companies", content: "Companies" },
-  { value: "/cinemas", content: "Cinemas" },
+  { value: "/discover/peoples", content: "People" },
+  { value: "/discover/companies", content: "Companies" },
+  { value: "/discover/cinemas", content: "Cinemas" },
 ];
 
 export const navbarLinks: NavbarLinks[] = [
