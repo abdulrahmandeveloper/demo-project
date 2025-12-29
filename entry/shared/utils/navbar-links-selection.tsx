@@ -11,6 +11,7 @@ import {
 } from "../components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Button } from "../components/ui/button";
 type NavbarListLinksProps = {
   placeHolder: string;
   label: string;
@@ -40,9 +41,12 @@ export const NavbarListLinks = ({
          * TODO
          * removing the Link elem which causes hydration to normal Button elem
          */}
-        <Link href="/discover" className="cursor-pointer">
+        <Button
+          onClick={() => router.push("/discover")}
+          className="cursor-pointer"
+        >
           {placeHolder}
-        </Link>
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         onMouseEnter={() => setOpen(true)}
