@@ -36,6 +36,10 @@ export const NavbarListLinks = ({
         onMouseLeave={() => setOpen(false)}
         className="bg-transparent border-none text-white opacity-50 cursor-pointer shadow-none font-bold "
       >
+        {/**
+         * TODO
+         * removing the Link elem which causes hydration to normal Button elem
+         */}
         <Link href="/discover" className="cursor-pointer">
           {placeHolder}
         </Link>

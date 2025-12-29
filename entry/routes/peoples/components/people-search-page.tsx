@@ -10,25 +10,48 @@ import { Separator } from "@/shared/components/ui/separator";
 import PersonInfoCard from "./person-info-card";
 import PaginationContainer from "@/shared/components/custom-ui/containers/pagination-container";
 import { getPeopleSearchResultsFromTMDB } from "../services/people.service";
+import { TMDBPeopleData } from "../interfaces/people.interface";
 
 const PeopleSearchPage = () => {
-  const { query, setQuery, results, handleSearchInput, loading, hasResults } =
-    useSearch("people");
+  const [queryContainer, setQueryContainer] = useState<string>("");
+  const [query, setQuery] = useState<string>("");
+  const [results, setResults] = useState<TMDBPeopleData[]>([]);
   const [pages, setPages] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(false);
+  console.log(loading);
 
   useEffect(() => {
-    const handlePaginationData = async () => {
-      const data = await getPeopleSearchResultsFromTMDB(query, currentPage);
+    const fetchData = async () => {
+      if (!queryContainer) return;
+      setLoading(true);
+      const data = await getPeopleSearchResultsFromTMDB(
+        queryContainer,
+        currentPage
+      );
+
       if (!data) {
         return null;
       }
-
+      setResults(data.results);
+      setPages(data.total_pages ?? 1);
+      setCurrentPage(data.page);
+      setLoading(false);
       return data;
     };
 
-    handlePaginationData();
-  }, []);
+    fetchData();
+  }, [queryContainer, setQueryContainer, currentPage]);
+
+  const hasResults: boolean = Boolean(results && results.length > 0);
+
+  const handleSearchInput = (value: string) => {
+    setQuery(value);
+  };
+
+  const handleSearchButtonClick = () => {
+    setQueryContainer(query);
+  };
 
   return (
     <div className=" w-9/10 mx-auto my-5">
@@ -36,11 +59,11 @@ const PeopleSearchPage = () => {
         <Input
           placeholder="Search for someone. ex Hans zim..."
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => handleSearchInput(e.target.value)}
         />
-        <Button className="cursor-pointer">
+        <Button className="cursor-pointer" onClick={handleSearchButtonClick}>
           <FaSearch className="h-4 w-4" />
-          Search
+          {loading ? "Searching..." : "Search"}
         </Button>
         <div className="">
           <PeopleSearchFilters />
@@ -49,13 +72,18 @@ const PeopleSearchPage = () => {
       <Separator className="my-5" />
 
       <div className="">
-        <h1 className="font-semibold text-2xl">Results</h1>
+        {hasResults && !loading && (
+          <h1 className="font-semibold text-2xl">Results</h1>
+        )}
         <div>
           {" "}
-          {loading && <>Loading</>}
-          {hasResults && results?.people?.results.length > 0 ? (
-            <div className="my-5 grid grid-cols-5 gap-4">
-              {results.people?.results.map((person) => (
+          {loading ? (
+            <p className="text-2xl font-semibold mx-auto h-[50vh] flex items-center justify-center">
+              Loading Search Results...
+            </p>
+          ) : hasResults && results?.length > 0 ? (
+            <div className="my-5 grid lg:grid-cols-6 gap-4 mx-auto">
+              {results?.map((person) => (
                 <div key={person.id}>
                   <PersonInfoCard
                     containerClassName={""}
@@ -75,7 +103,7 @@ const PeopleSearchPage = () => {
             </p>
           )}
         </div>
-        {hasResults && (
+        {hasResults && !loading && (
           <PaginationContainer
             pages={pages}
             currentPage={currentPage}
