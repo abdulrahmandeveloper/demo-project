@@ -14,6 +14,7 @@ import {
   TMDBPeopleData,
 } from "../interfaces/people.interface";
 import PeopleSearchPageSkeleton from "./skeletons/people-search-page-skeleton";
+import { toast } from "sonner";
 
 const PeopleSearchPage = () => {
   const [queryContainer, setQueryContainer] = useState<string>("");
@@ -61,7 +62,23 @@ const PeopleSearchPage = () => {
   };
 
   const handleSearchButtonClick = () => {
+    if (!query.trim()) {
+      toast.warning("Please Write Something Before Searching!");
+      return;
+    }
     setQueryContainer(query);
+  };
+
+  const ShowInfoImage = () => {
+    return queryContainer.trim() && !hasResults ? (
+      <p className="opacity-60 mx-auto h-[50vh] flex items-center justify-center">
+        No matching results for your search!
+      </p>
+    ) : (
+      <p className="text-2xl mx-auto h-[50vh] flex items-center justify-center">
+        Please Write Something to search
+      </p>
+    );
   };
 
   return (
@@ -99,7 +116,7 @@ const PeopleSearchPage = () => {
               {" "}
               <PeopleSearchPageSkeleton />
             </div>
-          ) : hasResults && results?.length > 0 ? (
+          ) : hasResults ? (
             <div className="my-5 grid lg:grid-cols-6 gap-4 mx-auto">
               {results?.map((person) => (
                 <div key={person.id}>
@@ -116,9 +133,7 @@ const PeopleSearchPage = () => {
               ))}
             </div>
           ) : (
-            <p className="opacity-60 mx-auto h-[50vh] flex items-center justify-center">
-              No matching results for your search!
-            </p>
+            <ShowInfoImage />
           )}
         </div>
         {hasResults && !loading && (
