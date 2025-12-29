@@ -10,6 +10,7 @@ import PersonInfoCard from "./person-info-card";
 import PaginationContainer from "@/shared/components/custom-ui/containers/pagination-container";
 import { getPeopleSearchResultsFromTMDB } from "../services/people.service";
 import { TMDBPeopleData } from "../interfaces/people.interface";
+import PeopleSearchPageSkeleton from "./skeletons/people-search-page-skeleton";
 
 const PeopleSearchPage = () => {
   const [queryContainer, setQueryContainer] = useState<string>("");
@@ -87,9 +88,10 @@ const PeopleSearchPage = () => {
         <div>
           {" "}
           {loading ? (
-            <p className="text-2xl font-semibold mx-auto h-[50vh] flex items-center justify-center">
-              Loading Search Results...
-            </p>
+            <div className=" mx-auto  ">
+              {" "}
+              <PeopleSearchPageSkeleton />
+            </div>
           ) : hasResults && results?.length > 0 ? (
             <div className="my-5 grid lg:grid-cols-6 gap-4 mx-auto">
               {results?.map((person) => (

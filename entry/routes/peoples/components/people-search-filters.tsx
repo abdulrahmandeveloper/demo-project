@@ -25,7 +25,7 @@ const PeopleSearchFilters = ({
   setQueryParameters,
   containerClassName,
 }: PeopleSearchFiltersProps) => {
-  const [genderFilterValue, setGenderFilterValue] = useState<number>(0);
+  const [genderFilterValue, setGenderFilterValue] = useState<number>();
   const [nationalityFilterValue, setNationalityFilterValue] =
     useState<string>("");
   const [departmentFilterValue, setDepartmentFilterValue] =
