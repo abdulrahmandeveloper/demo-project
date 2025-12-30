@@ -124,6 +124,7 @@ const PeopleSearchPage = () => {
                     containerClassName={""}
                     personImage={person.profile_path}
                     name={person.name}
+                    id={person.id}
                     originalName={person.original_name}
                     gender={person.gender}
                     role={person.known_for_department}

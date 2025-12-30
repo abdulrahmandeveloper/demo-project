@@ -1,9 +1,12 @@
 import { tmdbApi } from "@/shared/lib/axios/axios";
 import {
-  LatestPersonFromTMDBResponse,
+  PersonDataFromTMDBResponse,
   PeopleSarchQueryParameters,
   TMDBPeopleResponse,
   TMDBPeopleTrendingResponse,
+  PersonGalleryResponse,
+  PersonMovieCreditsResponse,
+  PersonTvCreditsResponse,
 } from "../interfaces/people.interface";
 
 export const getPopularPeopleFromTMDB =
@@ -19,7 +22,7 @@ export const getTrendingPeopleFromTMDB =
   };
 
 export const getLatestPersonFromTmdb =
-  async (): Promise<LatestPersonFromTMDBResponse> => {
+  async (): Promise<PersonDataFromTMDBResponse> => {
     const response = await tmdbApi.get("/person/latest");
     return response.data;
   };
@@ -39,6 +42,39 @@ export const getPeopleSearchResultsFromTMDB = async (
     },
   });
   console.log(response.data.results);
+
+  return response.data;
+};
+
+export const getPersonDetailsFromTMDB = async (
+  id: string
+): Promise<PersonDataFromTMDBResponse> => {
+  const response = await tmdbApi.get(`/person/${id}`);
+  console.log("server res: ", response);
+
+  return response.data;
+};
+
+export const getPersonMovieCreditsFromTMDB = async (
+  id: string
+): Promise<PersonMovieCreditsResponse> => {
+  const response = await tmdbApi.get(`/person/${id}/movie_credits`);
+
+  return response.data;
+};
+
+export const getPersonTvCreditsFromTMDB = async (
+  id: string
+): Promise<PersonTvCreditsResponse> => {
+  const response = await tmdbApi.get(`/person/${id}/tv_credits`);
+
+  return response.data;
+};
+
+export const getPersonGalleryFromTMDB = async (
+  id: string
+): Promise<PersonGalleryResponse> => {
+  const response = await tmdbApi.get(`/person/${id}/images`);
 
   return response.data;
 };

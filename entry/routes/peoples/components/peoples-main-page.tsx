@@ -7,7 +7,7 @@ import {
   getTrendingPeopleFromTMDB,
 } from "../services/people.service";
 import {
-  LatestPersonFromTMDBResponse,
+  PersonDataFromTMDBResponse,
   TMDBPeopleData,
   TMDBTrendingPersonResponse,
 } from "../interfaces/people.interface";
@@ -24,7 +24,7 @@ const PeoplesMainPage = () => {
     TMDBTrendingPersonResponse[]
   >([]);
   const [newestPerson, setNewestPerson] =
-    useState<LatestPersonFromTMDBResponse>();
+    useState<PersonDataFromTMDBResponse>();
   const [refreshNewestPerson, setRefreshNewestPerson] =
     useState<boolean>(false);
   useEffect(() => {

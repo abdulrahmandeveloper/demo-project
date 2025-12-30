@@ -1,14 +1,16 @@
-type PosterCardProps = { src: string; className?: string };
+import Link from "next/link";
 
-const PosterCard = ({ src, className }: PosterCardProps) => {
+type PosterCardProps = { src: string; linkPathTo?: string; className?: string };
+
+const PosterCard = ({ src, className, linkPathTo }: PosterCardProps) => {
   return (
-    <div>
+    <Link href={linkPathTo ?? "/homepage"}>
       <img
         src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}${src}`}
         alt="image"
         className={`${className} rounded-lg `}
       />
-    </div>
+    </Link>
   );
 };
 
