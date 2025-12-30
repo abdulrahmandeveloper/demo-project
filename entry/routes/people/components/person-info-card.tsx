@@ -72,7 +72,7 @@ const PersonInfoCard = ({
       <div className="flex flex-col   w-[200px]">
         <CardHeader className="">
           <Link
-            href={`/discover/peoples/${id}`}
+            href={`/discover/people/${id}`}
             className={`items-center  ${isHavingMedia ? "my-4" : "my-2"}`}
           >
             <div className="relative ">
