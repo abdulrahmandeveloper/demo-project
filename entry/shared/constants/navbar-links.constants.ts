@@ -3,7 +3,7 @@ import { NavbarLinks } from "../interfaces/navigation.interface";
 import { NavbarListLinks } from "../utils/navbar-links-selection";
 
 export const discoverLinks = [
-  { value: "/discover/peoples", content: "People" },
+  { value: "/discover/people", content: "People" },
   { value: "/discover/companies", content: "Companies" },
   { value: "/discover/cinemas", content: "Cinemas" },
 ];

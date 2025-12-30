@@ -1,4 +1,4 @@
-import PeopleSearchPage from "@/routes/peoples/components/people-search-page";
+import PeopleSearchPage from "@/routes/people/components/people-search-page";
 import Navbar from "@/shared/components/navigation/navbar";
 import { navbarLinks } from "@/shared/constants/navbar-links.constants";
 import React from "react";

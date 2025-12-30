@@ -149,14 +149,14 @@ const SeriesPage = () => {
           <p className="text-xl font-bold mb-4">Cast: </p>
           <div className="flex gap-5">
             {casts.map((cast, key) => (
-              <div className="" key={key}>
+              <Link href={`/discover/people/${cast.id}`} className="" key={key}>
                 <CastCard
                   name={cast.name}
                   playedAs={cast.character}
                   profilePath={cast.profile_path}
                   className={"flex flex-col items-center"}
                 />
-              </div>
+              </Link>
             ))}
           </div>
         </div>

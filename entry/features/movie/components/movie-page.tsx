@@ -186,14 +186,18 @@ const MoviePage = () => {
         <p className="text-lg font-bold mb-4">Cast:</p>
         <div className=" flex gap-5 overflow-x-auto whitespace-nowrap  scrollbar-none">
           {casts?.map((cast, key) => (
-            <div key={key} className="text-center">
+            <Link
+              href={`/discover/people/${cast.id}`}
+              key={key}
+              className="text-center"
+            >
               <CastCard
                 name={cast.name}
                 playedAs={cast.character}
                 profilePath={cast.profile_path}
                 className={"h-full flex flex-col  items-center "}
               />
-            </div>
+            </Link>
           ))}
         </div>
       </div>

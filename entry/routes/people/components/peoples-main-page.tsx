@@ -83,7 +83,7 @@ const PeoplesMainPage = () => {
           <div className="flex items-center ">
             <Button className="bg-transparent dark:text-white opacity-80 hover:bg-accent cursor-pointer hover:underline-offset-8">
               <Link
-                href={`/discover/peoples/search`}
+                href={`/discover/people/search`}
                 className="flex items-center"
               >
                 {" "}
