@@ -1,5 +1,5 @@
 import Link from "next/link";
-
+import Image from "next/image";
 type PosterCardProps = { src: string; linkPathTo?: string; className?: string };
 
 const PosterCard = ({ src, className, linkPathTo }: PosterCardProps) => {

@@ -15,8 +15,6 @@ import {
 import { Badge } from "@/shared/components/ui/badge";
 import { Separator } from "@/shared/components/ui/separator";
 import { Button } from "@/shared/components/ui/button";
-import ListItemCard from "@/shared/components/card/list-item-card";
-import MediaCard from "@/shared/components/card/media-card";
 import PosterCard from "@/shared/components/card/poster-card";
 
 type PersonPageProps = {
@@ -238,6 +236,7 @@ const PersonPage = ({ id }: PersonPageProps) => {
                     </div>
                   ))}
             </div>
+            <Button>Show More</Button>
           </div>
         </div>
         <Separator className="w-9/15 mx-auto" />
