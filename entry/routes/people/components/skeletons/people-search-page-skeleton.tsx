@@ -15,7 +15,10 @@ const PeopleSearchPageSkeleton = () => {
         <div className="my-5 grid lg:grid-cols-6 gap-4 mx-auto w-full">
           {Array.from({ length: 18 }).map((_, index) => (
             <div key={index}>
-              <PersonInfoCardSkeleton isHavingButtons={true} />
+              <PersonInfoCardSkeleton
+                isHavingButtons={true}
+                showingCreditsSidebar={false}
+              />
             </div>
           ))}
         </div>
