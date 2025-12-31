@@ -52,41 +52,41 @@ const NewsCard = ({
   };
 
   return (
-    <Card className={`${containerClassName}  flex-col`}>
-      <CardHeader className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          {" "}
-          <Avatar className="ring-1 ring-border">
-            <AvatarImage
-              src={imagUrl ? imagUrl : "/images/avatar-image.jpg"}
-              alt={authorName}
-            ></AvatarImage>
-          </Avatar>
-        </div>
-        <div className="flex flex-col gap-0.5">
+    <Card className={`${containerClassName}`}>
+      <CardHeader className="flex   gap-4">
+        {" "}
+        <Avatar className="ring-1 ring-border">
+          <AvatarImage
+            src={imagUrl ? imagUrl : "/images/avatar-image.jpg"}
+            alt={authorName}
+            className="object-cover"
+          ></AvatarImage>
+        </Avatar>
+        <div className="flex flex-col gap-0.5 w-full">
           <CardTitle className="line-clamp-2 text-sm">
             {title}{" "}
             <BadgeCheckIcon className="size-4 fill-sky-600 stroke-white" />
           </CardTitle>
-          <CardDescription className="text-xs">
-            {authorName ? `${authorName} .` : null}{" "}
+          <div className="flex  justify-between text-sm opacity-50">
+            <p className=" truncate w-2/4">
+              {authorName ? `${authorName} .` : null}{" "}
+            </p>
             {new Date(publishDate).toLocaleDateString()}
-          </CardDescription>
+          </div>
         </div>
-        <Button variant={"ghost"} size={"icon"}>
-          <EclipseIcon className="" />
-        </Button>
       </CardHeader>
       <Link href={`/news/${title}`} className="flex-1  ">
-        <CardContent className="space-y-4  text-sm">
+        <CardContent className="space-y-4  text-sm ">
           <img
             src={imagUrl}
             alt={title}
             className="aspect-video w-full rounded-lg object-cover"
           />
-          <div className="space-y-1">
-            <h2 className="text-muted-foreground line-clamp-3">{sourceName}</h2>
-            <p className="font-semibold leading-snug">{description}</p>
+          <div className="space-y-1 h-[125px]">
+            <h2 className="text-muted-foreground line-clamp-1">{sourceName}</h2>
+            <p className="font-semibold leading-snug line-clamp-5 ">
+              {description}
+            </p>
           </div>
         </CardContent>
       </Link>

@@ -17,6 +17,10 @@ import { Separator } from "@/shared/components/ui/separator";
 import { Button } from "@/shared/components/ui/button";
 import PosterCard from "@/shared/components/card/poster-card";
 import PersonPageSkeleton from "./skeletons/person-page-skeleton";
+import { getSearchNewsResultsFromTMDB } from "@/shared/services/news.service";
+import { NewsResponse } from "@/routes/news/interfaces/news.interface";
+import NewsCard from "@/routes/news/components/news-card";
+import { FaAlignRight, FaAngleRight } from "react-icons/fa";
 
 type PersonPageProps = {
   id: string;
@@ -35,8 +39,11 @@ const PersonPage = ({ id }: PersonPageProps) => {
     "movie"
   );
   const [loading, setLoading] = useState<boolean>(true);
+  const [personRelatedNews, setPersonRelatedNews] = useState<NewsResponse[]>(
+    []
+  );
 
-  console.log(imageGallery);
+  console.log(personRelatedNews);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,11 +64,23 @@ const PersonPage = ({ id }: PersonPageProps) => {
       if (galleryData) {
         setImageGallery(galleryData.profiles);
       }
+
       setLoading(false);
     };
     fetchData();
   }, [id]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const newsData = await getSearchNewsResultsFromTMDB(
+        personInformation?.name
+      );
+      if (newsData) {
+        setPersonRelatedNews(newsData.articles);
+      }
+    };
+    fetchData();
+  }, [personInformation]);
   const gender =
     personInformation?.gender === 1
       ? "Female"
@@ -76,6 +95,12 @@ const PersonPage = ({ id }: PersonPageProps) => {
   const handleSeriesButtonClick = () => {
     setSelectedCredit("series");
   };
+
+  const DoesHaveMoreMovieCredits: boolean = movieCredits?.cast.length > 15;
+  const DoesHaveMoreSeriesCredits: boolean = seriesCredits?.cast.length > 15;
+
+  const DoesHaveMoreGalleries: boolean = imageGallery.length > 6;
+  const DoesHaveMoreNews: boolean = personRelatedNews.length > 10;
   return (
     <div>
       {loading && <PersonPageSkeleton />}
@@ -246,8 +271,34 @@ const PersonPage = ({ id }: PersonPageProps) => {
             </div>
           </div>
           <Separator className="w-9/15 mx-auto" />
-          <div className="my-5">
-            <h1 className="">News And Stories</h1>
+          <div className="my-5 w">
+            <h1 className="my-5 font-bold font-sans mx-10 text-2xl">
+              News And Stories
+            </h1>
+            <div className="grid lg:grid-cols-5 w-9/10 mx-auto gap-5">
+              {personRelatedNews.slice(0, 10).map((article) => (
+                <div key={article.url} className="min-h-[200px]">
+                  <NewsCard
+                    id={article.source.id}
+                    sourceName={article.source.name}
+                    authorName={article.author}
+                    title={article.title}
+                    description={article.description}
+                    imagUrl={article.urlToImage}
+                    publishDate={article.publishedAt}
+                    url={article.url}
+                    containerClassName={""}
+                  />
+                </div>
+              ))}
+            </div>
+            <Button
+              className="mx-auto flex my-4 cursor-pointer"
+              variant={"outline"}
+              size={"lg"}
+            >
+              See more news <FaAngleRight className="flex flex-col my-auto " />
+            </Button>
           </div>
           <Separator className="w-9/15 mx-auto" />
           <div className="my-5">
@@ -259,7 +310,7 @@ const PersonPage = ({ id }: PersonPageProps) => {
               Gallery
             </h1>
             <div className="grid grid-cols-3 gap-1">
-              {imageGallery.map((image) => (
+              {imageGallery.slice(0, 6).map((image) => (
                 <div key={image.file_path}>
                   <img
                     src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${image.file_path}`}

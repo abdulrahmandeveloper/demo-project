@@ -1,5 +1,6 @@
 import {
   NewsFilters,
+  NewsSearchResultsResponse,
   SortOptions,
 } from "@/routes/news/interfaces/news.interface";
 import { newsApi } from "../lib/axios/axios";
@@ -76,4 +77,12 @@ export const getEveryNewsFromNewsApi = async (
   console.log("service data: ", data);
 
   return data.articles;
+};
+
+export const getSearchNewsResultsFromTMDB = async (
+  query: string
+): Promise<NewsSearchResultsResponse> => {
+  const response = await newsApi.get(`/everything?q=${query}`);
+  const data = response.data;
+  return data;
 };

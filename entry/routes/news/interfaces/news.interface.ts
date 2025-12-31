@@ -23,3 +23,9 @@ export interface NewsFilters {
 }
 
 export type SortOptions = "relevancy" | "popularity" | "publishedAt";
+
+export interface NewsSearchResultsResponse {
+  status: string;
+  totalResults: number;
+  articles: [NewsResponse];
+}
