@@ -27,3 +27,5 @@ export const getYoutubeTrailer = (data: {
 
   return videosUrl;
 };
+
+export const getYoutubeSearchResults = async () => {};

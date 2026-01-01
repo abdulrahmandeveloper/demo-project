@@ -36,9 +36,10 @@ import {
   BsFillArrowLeftSquareFill,
   BsFillArrowRightSquareFill,
 } from "react-icons/bs";
+import { useRouter } from "next/navigation";
 
 type PersonPageProps = {
-  id: string;
+  id: number;
 };
 
 const ValidDepartments: Record<string, string> = {
@@ -90,7 +91,16 @@ const PersonPage = ({ id }: PersonPageProps) => {
   const [departments, setDepartments] = useState<string[]>([]);
   const [selectedDepartment, setSelectedDepartment] = useState<string>("");
 
-  console.log(departments);
+  //for videos section
+  const [videos, setVideos] = useState();
+
+  const router = useRouter();
+
+  //useeffect for videos
+  useEffect(() => {
+    const fetchData = () => {};
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -426,7 +436,15 @@ const PersonPage = ({ id }: PersonPageProps) => {
                 )}
               </div>
               <div className="">
-                <Button variant={"secondary"} className="cursor-pointer">
+                <Button
+                  variant={"secondary"}
+                  className="cursor-pointer"
+                  onClick={() =>
+                    router.push(
+                      `/discover/people/${personInformation?.id}/details`
+                    )
+                  }
+                >
                   See All Details <BsArrowRightSquare />
                 </Button>
               </div>
@@ -461,14 +479,28 @@ const PersonPage = ({ id }: PersonPageProps) => {
               {selectedCredit === "movie"
                 ? role === "cast" &&
                   DoesHaveMoreMovieCredits && (
-                    <Button className="mx-auto flex mt-5">
+                    <Button
+                      className="mx-auto flex mt-5"
+                      onClick={() =>
+                        router.push(
+                          `/discover/people/${personInformation?.id}/details`
+                        )
+                      }
+                    >
                       Show More <FaArrowDown />
                     </Button>
                   )
                 : selectedCredit === "series" &&
                   role === "cast" &&
                   DoesHaveMoreSeriesCredits && (
-                    <Button className="mx-auto flex mt-5">
+                    <Button
+                      className="mx-auto flex mt-5"
+                      onClick={() =>
+                        router.push(
+                          `/discover/people/${personInformation?.id}/details`
+                        )
+                      }
+                    >
                       Show More <FaArrowDown />
                     </Button>
                   )}
@@ -508,8 +540,10 @@ const PersonPage = ({ id }: PersonPageProps) => {
             )}
           </div>
           <Separator className="w-9/15 mx-auto" />
-          <div className="my-5">
-            <h1 className="">Videos</h1>
+          <div className="my-5 flex">
+            <h1 className="flex mx-10 font-sans text-2xl font-semibold">
+              Videos And Contents
+            </h1>
           </div>
           <Separator className="w-9/15 mx-auto" />
           <div className="my-5 w-2/3 mx-auto flex gap-40">
@@ -577,47 +611,3 @@ function extractPersonCreditsDepartment(
 
   return departments;
 }
-
-/**
- * <div className="my-2 w-4/5 mx-auto grid grid-cols-2">
-          <div className="my-2">
-            <div className="flex ml-auto ">
-              <Button>Movies</Button>
-            </div>
-            <div className="my-2 w-2/3 mx-auto">
-              {" "}
-              <Separator />
-            </div>
-            <div className="grid lg:grid-cols-3">
-              {" "}
-              {movieCredits?.cast.map((credit) => (
-                <div key={credit.id}>
-                  <PosterCard
-                    src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${credit.poster_path}`}
-                    linkPathTo={`/movies/${credit.id}`}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="my-2">
-            <div className="flex mr-auto ">
-              <Button>Series</Button>
-            </div>{" "}
-            <div className="my-2 w-2/3 mx-auto">
-              {" "}
-              <Separator />
-            </div>{" "}
-            <div className="grid grid-cols-3">
-              {tvCredits?.cast.map((credit) => (
-                <div key={credit.id}>
-                  <PosterCard
-                    src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${credit.poster_path}`}
-                    linkPathTo={`/series/${credit.id}`}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
- */
