@@ -9,7 +9,11 @@ import {
 import {
   PersonDataFromTMDBResponse,
   PersonImageProfileResponse,
+  PersonMovieAsCastResponse,
+  PersonMovieAsCrewResponse,
   PersonMovieCreditsResponse,
+  PersonTVAsCastResponse,
+  PersonTVAsCrewResponse,
   PersonTvCreditsResponse,
 } from "../interfaces/people.interface";
 import { Badge } from "@/shared/components/ui/badge";
@@ -20,7 +24,18 @@ import PersonPageSkeleton from "./skeletons/person-page-skeleton";
 import { getSearchNewsResultsFromTMDB } from "@/shared/services/news.service";
 import { NewsResponse } from "@/routes/news/interfaces/news.interface";
 import NewsCard from "@/routes/news/components/news-card";
-import { FaAlignRight, FaAngleRight } from "react-icons/fa";
+import {
+  FaAlignRight,
+  FaAngleRight,
+  FaArrowDown,
+  FaArrowRight,
+} from "react-icons/fa";
+import {
+  BsArrowRightSquare,
+  BsArrowRightSquareFill,
+  BsFillArrowLeftSquareFill,
+  BsFillArrowRightSquareFill,
+} from "react-icons/bs";
 
 type PersonPageProps = {
   id: string;
@@ -42,6 +57,20 @@ const PersonPage = ({ id }: PersonPageProps) => {
   const [personRelatedNews, setPersonRelatedNews] = useState<NewsResponse[]>(
     []
   );
+  const [departments, setDepartments] = useState();
+  const [movieCastCredit, setMovieCastCredit] = useState<
+    PersonMovieAsCastResponse[]
+  >([]);
+  const [movieCrewCredit, setMovieCrewCredit] = useState<
+    PersonMovieAsCrewResponse[]
+  >([]);
+  const [seriesCastCredit, setSeriesCastCredit] = useState<
+    PersonTVAsCastResponse[]
+  >([]);
+  const [seriesCrewCredit, setSeriesCrewCredit] = useState<
+    PersonTVAsCrewResponse[]
+  >([]);
+  const [role, setRole] = useState<"cast" | "crew">("cast");
 
   console.log(personRelatedNews);
 
@@ -55,10 +84,14 @@ const PersonPage = ({ id }: PersonPageProps) => {
       const movieCreditsData = await getPersonMovieCreditsFromTMDB(id);
       if (movieCreditsData) {
         setMovieCredits(movieCreditsData);
+        setMovieCastCredit(movieCreditsData.cast);
+        setMovieCrewCredit(movieCreditsData.crew);
       }
       const tvCreditsData = await getPersonTvCreditsFromTMDB(id);
       if (tvCreditsData) {
         setSeriesCredits(tvCreditsData);
+        setSeriesCastCredit(tvCreditsData.cast);
+        setSeriesCrewCredit(tvCreditsData.crew);
       }
       const galleryData = await getPersonGalleryFromTMDB(id);
       if (galleryData) {
@@ -96,11 +129,43 @@ const PersonPage = ({ id }: PersonPageProps) => {
     setSelectedCredit("series");
   };
 
-  const DoesHaveMoreMovieCredits: boolean = movieCredits?.cast.length > 15;
-  const DoesHaveMoreSeriesCredits: boolean = seriesCredits?.cast.length > 15;
+  const handleMoviesCastButtonClick = () => {
+    setRole("cast");
+  };
+
+  const handleMoviesCrewButtonClick = () => {
+    setRole("crew");
+  };
+
+  const handleSeriesCastButtonClick = () => {
+    setRole("cast");
+  };
+
+  const handleSeriesCrewButtonClick = () => {
+    setRole("crew");
+  };
+
+  const DoesHaveMoreMovieCredits: boolean =
+    role === "cast"
+      ? movieCredits?.cast.length > 10
+      : movieCredits?.crew.length > 10;
+  const DoesHaveMoreSeriesCredits: boolean =
+    role === "cast"
+      ? seriesCredits?.cast.length > 10
+      : seriesCredits?.crew.length > 10;
 
   const DoesHaveMoreGalleries: boolean = imageGallery.length > 6;
   const DoesHaveMoreNews: boolean = personRelatedNews.length > 10;
+
+  // credits list  logic
+  const movieCreditsList =
+    selectedCredit === "movie" && role === "cast"
+      ? (movieCastCredit as PersonMovieAsCastResponse[])
+      : (movieCrewCredit as PersonMovieAsCrewResponse[]);
+  const SeriesCreditsList =
+    selectedCredit === "series" && role === "cast"
+      ? seriesCastCredit
+      : seriesCrewCredit;
   return (
     <div>
       {loading && <PersonPageSkeleton />}
@@ -227,6 +292,15 @@ const PersonPage = ({ id }: PersonPageProps) => {
           </div>
           <Separator className="my-1" />
           <div className="flex flex-col gap-1 my-5">
+            <div className=" bg-card my-2 border border-white/50 px-10 py-4 flex rounded-2xl gap-5 w-1/3 mx-auto justify-center">
+              <Button>AS Actor</Button>
+              <Button>AS Producer</Button>
+              <Button>AS Director</Button>
+              <Button>AS Writer</Button>
+            </div>
+            <div className="w-4/5 mx-auto my-2">
+              <Separator />
+            </div>
             <div className=" flex justify-center gap-5">
               <Button
                 className="cursor-pointer"
@@ -243,31 +317,78 @@ const PersonPage = ({ id }: PersonPageProps) => {
                 Series
               </Button>
             </div>
+            <div className="w-2/3 mx-auto flex justify-between">
+              <div className="flex gap-5">
+                <Button
+                  variant={role === "cast" ? "default" : "outline"}
+                  onClick={() =>
+                    selectedCredit === "movie"
+                      ? handleMoviesCastButtonClick()
+                      : handleSeriesCastButtonClick()
+                  }
+                  className="cursor-pointer"
+                >
+                  In Cast
+                </Button>
+                <Button
+                  variant={role === "crew" ? "default" : "outline"}
+                  onClick={() =>
+                    selectedCredit === "series"
+                      ? handleSeriesCrewButtonClick()
+                      : handleMoviesCrewButtonClick()
+                  }
+                  className="cursor-pointer"
+                >
+                  In Crew
+                </Button>
+              </div>
+              <div className="">
+                <Button variant={"secondary"} className="cursor-pointer">
+                  See All Details <BsArrowRightSquare />
+                </Button>
+              </div>
+            </div>
             <div className="w-2/3 mx-auto -[600px] ">
               <Separator className="my-4" />{" "}
               <div className="grid lg:grid-cols-5 gap-4">
                 {" "}
                 {selectedCredit === "movie"
-                  ? movieCredits?.cast.map((credit) => (
+                  ? movieCreditsList.slice(0, 15).map((credit) => (
                       <div key={credit.id} className="">
                         <PosterCard
                           src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${credit.poster_path}`}
                           linkPathTo={`/movies/${credit.id}`}
                         />
-                        As {credit.character}
+                        As {credit.character ?? credit.department}
                       </div>
                     ))
-                  : seriesCredits?.cast.map((credit) => (
+                  : SeriesCreditsList?.slice(0, 15).map((credit) => (
                       <div key={credit.id}>
                         <PosterCard
                           src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${credit.poster_path}`}
                           linkPathTo={`/movies/${credit.id}`}
                         />
-                        As {credit.character}
+                        As {credit.character ?? credit.department}
                       </div>
                     ))}
               </div>
-              <Button>Show More</Button>
+              {/**
+               * logic for showing more button
+               */}
+              {selectedCredit === "movie"
+                ? role === "cast" &&
+                  DoesHaveMoreMovieCredits && (
+                    <Button className="mx-auto flex mt-5">
+                      Show More <FaArrowDown />
+                    </Button>
+                  )
+                : selectedCredit === "series" &&
+                  role === "cast" &&
+                  DoesHaveMoreSeriesCredits && (
+                    <Button className="mx-auto flex mt-5">
+                      Show More <FaArrowDown />
+                    </Button>
+                  )}
             </div>
           </div>
           <Separator className="w-9/15 mx-auto" />
@@ -292,25 +413,28 @@ const PersonPage = ({ id }: PersonPageProps) => {
                 </div>
               ))}
             </div>
-            <Button
-              className="mx-auto flex my-4 cursor-pointer"
-              variant={"outline"}
-              size={"lg"}
-            >
-              See more news <FaAngleRight className="flex flex-col my-auto " />
-            </Button>
+            {DoesHaveMoreNews && (
+              <Button
+                className="mx-auto flex my-4 cursor-pointer"
+                variant={"outline"}
+                size={"lg"}
+              >
+                See more news{" "}
+                <FaAngleRight className="flex flex-col my-auto " />
+              </Button>
+            )}
           </div>
           <Separator className="w-9/15 mx-auto" />
           <div className="my-5">
             <h1 className="">Videos</h1>
           </div>
           <Separator className="w-9/15 mx-auto" />
-          <div className="my-5 w-1/2 mx-auto flex gap-40">
+          <div className="my-5 w-2/3 mx-auto flex gap-40">
             <h1 className="items-center justify- flex font-sans font-semibold text-2xl">
               Gallery
             </h1>
-            <div className="grid grid-cols-3 gap-1">
-              {imageGallery.slice(0, 6).map((image) => (
+            <div className=" relative grid grid-cols-4 gap-1">
+              {imageGallery.slice(0, 8).map((image) => (
                 <div key={image.file_path}>
                   <img
                     src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${image.file_path}`}
@@ -318,6 +442,19 @@ const PersonPage = ({ id }: PersonPageProps) => {
                   ></img>
                 </div>
               ))}
+              {imageGallery.length > 8 && (
+                <>
+                  <div className="absolute h-full flex flex-col items-center justify-center top-0 right-0 w-3/4 mx-auto my-auto bg-linear-to-l from-black via-5% to-transparent"></div>
+                  <div className="absolute h-full flex flex-col items-center justify-center top-0 right-0 w-1/4 mx-auto my-auto ">
+                    <Button
+                      className="font-sans text-lg cursor-pointer  text-white/80 px-3 py-2"
+                      variant={"secondary"}
+                    >
+                      Show All <FaArrowRight />
+                    </Button>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -327,6 +464,8 @@ const PersonPage = ({ id }: PersonPageProps) => {
 };
 
 export default PersonPage;
+
+function extractPersonCreditsDepartment() {}
 
 /**
  * <div className="my-2 w-4/5 mx-auto grid grid-cols-2">
