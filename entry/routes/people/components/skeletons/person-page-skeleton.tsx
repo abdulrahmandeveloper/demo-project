@@ -3,8 +3,6 @@ import { Skeleton } from "@/shared/components/ui/skeleton";
 import React from "react";
 
 const PersonPageSkeleton = () => {
-  console.log(generateRandomWidthLengths(100, 150));
-
   return (
     <div>
       <div className="">

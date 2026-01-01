@@ -41,12 +41,29 @@ type PersonPageProps = {
   id: string;
 };
 
+const ValidDepartments: Record<string, string> = {
+  Acting: "Actor",
+  Directing: "Director",
+  Writing: "Writer",
+  Production: "Producer",
+  Camera: "Cameraman",
+  Editing: "Editor",
+  Sound: "Sound designer",
+  Art: "Artist",
+  CostumeMakeUp: "Costume & Make-Up",
+  VisualEffects: "Visual Effects",
+  Lighting: "Lighter",
+  Creator: "Creator",
+  Crew: "Crew",
+};
+
 const PersonPage = ({ id }: PersonPageProps) => {
   const [personInformation, setPersonInformation] =
     useState<PersonDataFromTMDBResponse | null>(null);
   const [movieCredits, setMovieCredits] =
-    useState<PersonMovieCreditsResponse>();
-  const [seriesCredits, setSeriesCredits] = useState<PersonTvCreditsResponse>();
+    useState<PersonMovieCreditsResponse | null>(null);
+  const [seriesCredits, setSeriesCredits] =
+    useState<PersonTvCreditsResponse | null>(null);
   const [imageGallery, setImageGallery] = useState<
     PersonImageProfileResponse[]
   >([]);
@@ -57,7 +74,6 @@ const PersonPage = ({ id }: PersonPageProps) => {
   const [personRelatedNews, setPersonRelatedNews] = useState<NewsResponse[]>(
     []
   );
-  const [departments, setDepartments] = useState();
   const [movieCastCredit, setMovieCastCredit] = useState<
     PersonMovieAsCastResponse[]
   >([]);
@@ -71,8 +87,10 @@ const PersonPage = ({ id }: PersonPageProps) => {
     PersonTVAsCrewResponse[]
   >([]);
   const [role, setRole] = useState<"cast" | "crew">("cast");
+  const [departments, setDepartments] = useState<string[]>([]);
+  const [selectedDepartment, setSelectedDepartment] = useState<string>("");
 
-  console.log(personRelatedNews);
+  console.log(departments);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,12 +105,7 @@ const PersonPage = ({ id }: PersonPageProps) => {
         setMovieCastCredit(movieCreditsData.cast);
         setMovieCrewCredit(movieCreditsData.crew);
       }
-      const tvCreditsData = await getPersonTvCreditsFromTMDB(id);
-      if (tvCreditsData) {
-        setSeriesCredits(tvCreditsData);
-        setSeriesCastCredit(tvCreditsData.cast);
-        setSeriesCrewCredit(tvCreditsData.crew);
-      }
+
       const galleryData = await getPersonGalleryFromTMDB(id);
       if (galleryData) {
         setImageGallery(galleryData.profiles);
@@ -105,6 +118,28 @@ const PersonPage = ({ id }: PersonPageProps) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
+
+      try {
+        const tvCreditsData = await getPersonTvCreditsFromTMDB(id);
+        setSeriesCredits(tvCreditsData);
+
+        if (tvCreditsData) {
+          setSeriesCastCredit(tvCreditsData.cast);
+          setSeriesCrewCredit(tvCreditsData.crew);
+        }
+      } catch (e) {
+        console.error("error fetching series: ", e);
+      }
+
+      setLoading(false);
+    };
+    fetchData();
+  }, [id]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!personInformation?.name.trim()) return;
       const newsData = await getSearchNewsResultsFromTMDB(
         personInformation?.name
       );
@@ -114,6 +149,18 @@ const PersonPage = ({ id }: PersonPageProps) => {
     };
     fetchData();
   }, [personInformation]);
+
+  useEffect(() => {
+    //roles did in departments
+    const departments = extractPersonCreditsDepartment(
+      movieCredits,
+      seriesCredits
+    );
+
+    setDepartments(departments);
+  }, [movieCredits, seriesCredits]);
+
+  //determinig gender
   const gender =
     personInformation?.gender === 1
       ? "Female"
@@ -154,18 +201,36 @@ const PersonPage = ({ id }: PersonPageProps) => {
       ? seriesCredits?.cast.length > 10
       : seriesCredits?.crew.length > 10;
 
-  const DoesHaveMoreGalleries: boolean = imageGallery.length > 6;
+  const DoesHaveMoreGalleries: boolean = imageGallery.length > 8;
   const DoesHaveMoreNews: boolean = personRelatedNews.length > 10;
 
   // credits list  logic
   const movieCreditsList =
     selectedCredit === "movie" && role === "cast"
       ? (movieCastCredit as PersonMovieAsCastResponse[])
-      : (movieCrewCredit as PersonMovieAsCrewResponse[]);
+      : (movieCrewCredit.filter(
+          (movie) => movie.department === selectedDepartment
+        ) as PersonMovieAsCrewResponse[]);
   const SeriesCreditsList =
     selectedCredit === "series" && role === "cast"
       ? seriesCastCredit
-      : seriesCrewCredit;
+      : seriesCrewCredit.filter(
+          (series) => series.department === selectedDepartment
+        );
+
+  console.log(movieCreditsList);
+  console.log(SeriesCreditsList);
+
+  const handleSelectedDepartmentButtonClick = (value: string) => {
+    console.log(value);
+
+    setSelectedDepartment(value);
+    if (value === "Acting") {
+      setRole("cast");
+    } else if (value !== "Acting") {
+      setRole("crew");
+    }
+  };
   return (
     <div>
       {loading && <PersonPageSkeleton />}
@@ -292,11 +357,25 @@ const PersonPage = ({ id }: PersonPageProps) => {
           </div>
           <Separator className="my-1" />
           <div className="flex flex-col gap-1 my-5">
-            <div className=" bg-card my-2 border border-white/50 px-10 py-4 flex rounded-2xl gap-5 w-1/3 mx-auto justify-center">
-              <Button>AS Actor</Button>
-              <Button>AS Producer</Button>
-              <Button>AS Director</Button>
-              <Button>AS Writer</Button>
+            <div className=" bg-card my-2 border border-white/50 px-10 py-4 flex rounded-2xl gap-5  mx-auto justify-center">
+              {departments.length > 0 &&
+                departments.map((department) => (
+                  <div key={department}>
+                    <Button
+                      className="cursor-pointer"
+                      variant={
+                        selectedDepartment === department
+                          ? "default"
+                          : "outline"
+                      }
+                      onClick={() =>
+                        handleSelectedDepartmentButtonClick(department)
+                      }
+                    >
+                      AS {ValidDepartments[department]}
+                    </Button>
+                  </div>
+                ))}
             </div>
             <div className="w-4/5 mx-auto my-2">
               <Separator />
@@ -319,28 +398,32 @@ const PersonPage = ({ id }: PersonPageProps) => {
             </div>
             <div className="w-2/3 mx-auto flex justify-between">
               <div className="flex gap-5">
-                <Button
-                  variant={role === "cast" ? "default" : "outline"}
-                  onClick={() =>
-                    selectedCredit === "movie"
-                      ? handleMoviesCastButtonClick()
-                      : handleSeriesCastButtonClick()
-                  }
-                  className="cursor-pointer"
-                >
-                  In Cast
-                </Button>
-                <Button
-                  variant={role === "crew" ? "default" : "outline"}
-                  onClick={() =>
-                    selectedCredit === "series"
-                      ? handleSeriesCrewButtonClick()
-                      : handleMoviesCrewButtonClick()
-                  }
-                  className="cursor-pointer"
-                >
-                  In Crew
-                </Button>
+                {selectedDepartment === "Acting" && (
+                  <Button
+                    variant={role === "cast" ? "default" : "outline"}
+                    onClick={() =>
+                      selectedCredit === "movie"
+                        ? handleMoviesCastButtonClick()
+                        : handleSeriesCastButtonClick()
+                    }
+                    className="cursor-pointer"
+                  >
+                    In Cast
+                  </Button>
+                )}
+                {selectedDepartment !== "Acting" && (
+                  <Button
+                    variant={role === "crew" ? "default" : "outline"}
+                    onClick={() =>
+                      selectedCredit === "series"
+                        ? handleSeriesCrewButtonClick()
+                        : handleMoviesCrewButtonClick()
+                    }
+                    className="cursor-pointer"
+                  >
+                    In Crew
+                  </Button>
+                )}
               </div>
               <div className="">
                 <Button variant={"secondary"} className="cursor-pointer">
@@ -359,7 +442,7 @@ const PersonPage = ({ id }: PersonPageProps) => {
                           src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${credit.poster_path}`}
                           linkPathTo={`/movies/${credit.id}`}
                         />
-                        As {credit.character ?? credit.department}
+                        As {credit.character}
                       </div>
                     ))
                   : SeriesCreditsList?.slice(0, 15).map((credit) => (
@@ -368,7 +451,7 @@ const PersonPage = ({ id }: PersonPageProps) => {
                           src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${credit.poster_path}`}
                           linkPathTo={`/movies/${credit.id}`}
                         />
-                        As {credit.character ?? credit.department}
+                        As {credit.department}
                       </div>
                     ))}
               </div>
@@ -442,7 +525,7 @@ const PersonPage = ({ id }: PersonPageProps) => {
                   ></img>
                 </div>
               ))}
-              {imageGallery.length > 8 && (
+              {DoesHaveMoreGalleries && (
                 <>
                   <div className="absolute h-full flex flex-col items-center justify-center top-0 right-0 w-3/4 mx-auto my-auto bg-linear-to-l from-black via-5% to-transparent"></div>
                   <div className="absolute h-full flex flex-col items-center justify-center top-0 right-0 w-1/4 mx-auto my-auto ">
@@ -465,7 +548,35 @@ const PersonPage = ({ id }: PersonPageProps) => {
 
 export default PersonPage;
 
-function extractPersonCreditsDepartment() {}
+function extractPersonCreditsDepartment(
+  movieCredits: PersonMovieCreditsResponse,
+  seriesCredits: PersonTvCreditsResponse
+): string[] {
+  const departments = [];
+  if (
+    (movieCredits?.cast?.length ?? -1) > 0 ||
+    (seriesCredits?.cast?.length ?? -1) > 0
+  ) {
+    departments.push("Acting");
+  }
+  for (let i = 0; i < movieCredits?.crew?.length; i++) {
+    const dep = movieCredits.crew[i].department;
+    if (!departments.includes(dep)) {
+      departments.push(movieCredits.crew[i].department);
+    }
+  }
+
+  for (let i = 0; i < seriesCredits?.crew?.length; i++) {
+    const dep = seriesCredits.crew[i].department;
+    if (!departments.includes(dep)) {
+      console.log(seriesCredits.crew[i]?.department);
+
+      departments.push(seriesCredits.crew[i]?.department);
+    }
+  }
+
+  return departments;
+}
 
 /**
  * <div className="my-2 w-4/5 mx-auto grid grid-cols-2">
