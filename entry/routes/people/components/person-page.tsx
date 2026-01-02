@@ -94,6 +94,10 @@ const PersonPage = ({ id }: PersonPageProps) => {
   //for videos section
   const [videos, setVideos] = useState();
 
+  //for progressive disclosure
+  const [visibleCount, setVissibleCount] = useState<number>(15);
+  const incrementalSizeValue: number = 10;
+
   const router = useRouter();
 
   //useeffect for videos
@@ -202,15 +206,6 @@ const PersonPage = ({ id }: PersonPageProps) => {
     setRole("crew");
   };
 
-  const DoesHaveMoreMovieCredits: boolean =
-    role === "cast"
-      ? movieCredits?.cast.length > 10
-      : movieCredits?.crew.length > 10;
-  const DoesHaveMoreSeriesCredits: boolean =
-    role === "cast"
-      ? seriesCredits?.cast.length > 10
-      : seriesCredits?.crew.length > 10;
-
   const DoesHaveMoreGalleries: boolean = imageGallery.length > 8;
   const DoesHaveMoreNews: boolean = personRelatedNews.length > 10;
 
@@ -228,6 +223,15 @@ const PersonPage = ({ id }: PersonPageProps) => {
           (series) => series.department === selectedDepartment
         );
 
+  const DoesHaveMoreMovieCredits: boolean =
+    role === "cast"
+      ? movieCreditsList.length > 10
+      : movieCreditsList.length > 10;
+  const DoesHaveMoreSeriesCredits: boolean =
+    role === "cast"
+      ? SeriesCreditsList.length > 10
+      : SeriesCreditsList.length > 10;
+
   console.log(movieCreditsList);
   console.log(SeriesCreditsList);
 
@@ -241,6 +245,15 @@ const PersonPage = ({ id }: PersonPageProps) => {
       setRole("crew");
     }
   };
+
+  const handleShowMoreProgressiveCreditsList = (
+    lengthOfSelectedCredit: number
+  ) => {
+    setVissibleCount((prev) =>
+      Math.min(prev + incrementalSizeValue, lengthOfSelectedCredit)
+    );
+  };
+
   return (
     <div>
       {loading && <PersonPageSkeleton />}
@@ -449,61 +462,97 @@ const PersonPage = ({ id }: PersonPageProps) => {
                 </Button>
               </div>
             </div>
-            <div className="w-2/3 mx-auto -[600px] ">
+            <div className=" w-2/3 mx-auto -[600px] ">
               <Separator className="my-4" />{" "}
-              <div className="grid lg:grid-cols-5 gap-4">
-                {" "}
-                {selectedCredit === "movie"
-                  ? movieCreditsList.slice(0, 15).map((credit) => (
-                      <div key={credit.id} className="">
-                        <PosterCard
-                          src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${credit.poster_path}`}
-                          linkPathTo={`/movies/${credit.id}`}
-                        />
-                        As {credit.character}
-                      </div>
-                    ))
-                  : SeriesCreditsList?.slice(0, 15).map((credit) => (
-                      <div key={credit.id}>
-                        <PosterCard
-                          src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${credit.poster_path}`}
-                          linkPathTo={`/movies/${credit.id}`}
-                        />
-                        As {credit.department}
-                      </div>
-                    ))}
+              <div className="relative">
+                <div className="  grid lg:grid-cols-5 gap-4">
+                  {" "}
+                  {selectedCredit === "movie"
+                    ? movieCreditsList.slice(0, visibleCount).map((credit) => (
+                        <div key={credit.id} className="">
+                          <PosterCard
+                            src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${credit.poster_path}`}
+                            linkPathTo={`/movies/${credit.id}`}
+                          />
+                          As {credit.character ?? credit.department}
+                        </div>
+                      ))
+                    : SeriesCreditsList?.slice(0, visibleCount).map(
+                        (credit) => (
+                          <div key={credit.id}>
+                            <PosterCard
+                              src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${credit.poster_path}`}
+                              linkPathTo={`/movies/${credit.id}`}
+                            />
+                            As {credit.department ?? credit.character}
+                          </div>
+                        )
+                      )}
+                  {/**
+                   * gradient overlay
+                   */}
+                  {selectedCredit === "movie"
+                    ? visibleCount < movieCreditsList.length && (
+                        <div className="absolute right-0 bottom-0 left-0 h-3/6 bg-linear-to-t from-black via-black/95 to-transparent pointer-events-none rounded-lg"></div>
+                      )
+                    : visibleCount < SeriesCreditsList.length && (
+                        <div className="absolute right-0 bottom-0 left-0 h-3/6 bg-linear-to-t from-black via-black/95 to-transparent pointer-events-none rounded-lg"></div>
+                      )}{" "}
+                </div>
+                {/**
+                 * logic for showing more button
+                 */}
+                {
+                  <div className="absolute bottom-0 w-full h-1/10">
+                    {selectedCredit === "movie"
+                      ? DoesHaveMoreMovieCredits &&
+                        visibleCount < movieCreditsList.length && (
+                          <Button
+                            className="cursor-pointer  w-40 h-10 flex mx-auto bottom-0"
+                            onClick={() =>
+                              handleShowMoreProgressiveCreditsList(
+                                movieCreditsList.length
+                              )
+                            }
+                          >
+                            Show More <FaArrowDown />
+                          </Button>
+                        )
+                      : selectedCredit === "series" &&
+                        DoesHaveMoreSeriesCredits &&
+                        visibleCount < SeriesCreditsList.length && (
+                          <Button
+                            className="mx-auto flex mt-5 cursor-pointer"
+                            onClick={() =>
+                              handleShowMoreProgressiveCreditsList(
+                                SeriesCreditsList.length
+                              )
+                            }
+                          >
+                            Show More <FaArrowDown />
+                          </Button>
+                        )}
+                  </div>
+                }
               </div>
               {/**
-               * logic for showing more button
+               * logic to show number of  remaining credits to show
                */}
-              {selectedCredit === "movie"
-                ? role === "cast" &&
-                  DoesHaveMoreMovieCredits && (
-                    <Button
-                      className="mx-auto flex mt-5"
-                      onClick={() =>
-                        router.push(
-                          `/discover/people/${personInformation?.id}/details`
-                        )
-                      }
-                    >
-                      Show More <FaArrowDown />
-                    </Button>
-                  )
-                : selectedCredit === "series" &&
-                  role === "cast" &&
-                  DoesHaveMoreSeriesCredits && (
-                    <Button
-                      className="mx-auto flex mt-5"
-                      onClick={() =>
-                        router.push(
-                          `/discover/people/${personInformation?.id}/details`
-                        )
-                      }
-                    >
-                      Show More <FaArrowDown />
-                    </Button>
-                  )}
+              {selectedCredit === "movie" ? (
+                <HandleShowingMoreCreditsInfo
+                  creditType={"movie"}
+                  visibleCount={visibleCount}
+                  movieList={movieCreditsList}
+                  seriesList={SeriesCreditsList}
+                />
+              ) : (
+                <HandleShowingMoreCreditsInfo
+                  creditType={"series"}
+                  visibleCount={visibleCount}
+                  movieList={movieCreditsList}
+                  seriesList={SeriesCreditsList}
+                />
+              )}
             </div>
           </div>
           <Separator className="w-9/15 mx-auto" />
@@ -610,4 +659,37 @@ function extractPersonCreditsDepartment(
   }
 
   return departments;
+}
+
+function HandleShowingMoreCreditsInfo({
+  creditType,
+  visibleCount,
+  movieList,
+  seriesList,
+}: {
+  creditType: "movie" | "series";
+  visibleCount: number;
+  movieList: any[];
+  seriesList: any[];
+}) {
+  const remainingCredits =
+    creditType === "movie"
+      ? movieList.length - visibleCount
+      : seriesList.length - visibleCount;
+  const totalCredits =
+    creditType === "movie" ? movieList.length : seriesList.length;
+  const isShowingMoreInfo =
+    creditType === "movie"
+      ? visibleCount < movieList.length
+      : visibleCount < seriesList.length;
+
+  return (
+    <div className="flex mx-auto w-full my-3">
+      {isShowingMoreInfo && (
+        <p className="flex mx-auto font-sans text-sm opacity-50">
+          Show {remainingCredits} More of {totalCredits} {creditType}s
+        </p>
+      )}
+    </div>
+  );
 }
