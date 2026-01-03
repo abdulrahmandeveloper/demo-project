@@ -12,8 +12,6 @@ type CompanyCardProps = {
   company: CompanyDetailsResponse;
 };
 const CompanyCard = ({ company }: CompanyCardProps) => {
-  console.log("CompanyCard");
-
   return (
     <Card className="px-4 py-3">
       {" "}
