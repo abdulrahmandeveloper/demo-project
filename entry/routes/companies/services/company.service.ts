@@ -18,9 +18,8 @@ export const getPopularCompaniesListFromTMDB = async (
 };
 
 export const getTopCompaniesFromTMDB = async () => {
-  console.log("moviesTopRatedPagesArray: ", moviesTopRatedPagesArray);
-  console.log("seriesTopRatedPagesArray: ", seriesTopRatedPagesArray);
+  const response = await fetch(`/api/tmdb/companies/top-rated`);
+  console.log("raw response: ", response);
 
-  console.log("moviesResponse: ", moviesResponse);
-  console.log("series response: ", seriesResponse);
+  console.log("getTopCompaniesFromTMDB: ", await response.json());
 };
