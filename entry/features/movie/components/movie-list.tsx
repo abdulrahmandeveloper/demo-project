@@ -3,7 +3,7 @@
 import { TMDBMovieResponse } from "entry/features/movie/interfaces/tmdb.interface";
 
 import React, { useEffect, useState } from "react";
-import { getMoviesListFromTmdb } from "../services/tmdb.service";
+import { getMoviesTopRatedListFromTmdb } from "../services/tmdb.service";
 import ListItemCard from "entry/shared/components/card/list-item-card";
 import PaginationContainer from "entry/shared/components/custom-ui/containers/pagination-container";
 import Filters from "@/shared/components/filter/filters";
@@ -20,7 +20,7 @@ const MoviesList = () => {
     const fetchMovies = async () => {
       if (hasFiltersSelected) return;
 
-      const data = await getMoviesListFromTmdb(currentPage);
+      const data = await getMoviesTopRatedListFromTmdb(currentPage);
 
       if (data) {
         setList(data.results);

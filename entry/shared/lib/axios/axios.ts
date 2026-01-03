@@ -5,7 +5,7 @@ export const tmdbApi = axios.create({
   headers: {
     Authorization: `Bearer ${process.env.NEXT_PUBLIC_TMDB_API_KEY}`,
   },
-  timeout: 2500,
+  timeout: 5000,
 });
 
 export const youtubeApi = axios.create({

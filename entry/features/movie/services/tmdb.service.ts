@@ -102,7 +102,7 @@ export const getMoviesVideosID = async (
 };
 
 //
-export const getMoviesListFromTmdb = async (
+export const getMoviesTopRatedListFromTmdb = async (
   page: number = 1
 ): Promise<TMDBMediaResponse<TMDBMovieResponse>> => {
   const response = await tmdbApi.get(

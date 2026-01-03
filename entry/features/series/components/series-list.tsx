@@ -1,6 +1,6 @@
 "use client";
 
-import { getSeriesListFromTmdb } from "entry/features/series/services/tmdb.service";
+import { getSeriesTopRatedListFromTmdb } from "entry/features/series/services/tmdb.service";
 import ListItemCard from "entry/shared/components/card/list-item-card";
 import Filters from "@/shared/components/filter/filters";
 import Pagination from "entry/shared/components/custom-ui/containers/pagination-container";
@@ -17,7 +17,7 @@ const SeriesList = () => {
 
   useEffect(() => {
     const handleListsRequest = async () => {
-      const listsData = await getSeriesListFromTmdb(currentPage);
+      const listsData = await getSeriesTopRatedListFromTmdb(currentPage);
 
       if (!listsData) {
         return;

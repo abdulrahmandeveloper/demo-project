@@ -78,8 +78,16 @@ export const getSeriesVideosID = async (
 };
 
 //
-export const getSeriesListFromTmdb = async (page: number, queries?: string) => {
-  const response = await tmdbApi.get(`/tv/top_rated?page=${page}?${queries}`);
+export const getSeriesTopRatedListFromTmdb = async (
+  page?: number,
+  queries?: string
+): Promise<TMDBMediaResponse<TMDBSeriesResponse>> => {
+  const response = await tmdbApi.get(`/tv/top_rated`, {
+    params: {
+      page: page,
+      q: queries,
+    },
+  });
 
   const data = response.data;
 
