@@ -1,5 +1,8 @@
 import { tmdbApi } from "@/shared/lib/axios/axios";
-import { CompanyDetailsResponse } from "../interfaces/company.interface";
+import {
+  CompanyDetailsResponse,
+  CompanysSearchResultsFromTMDBResponse,
+} from "../interfaces/company.interface";
 import { PopularCompanyIds } from "../constants/companies.constants";
 
 export const getPopularCompaniesListFromTMDB = async (
@@ -21,4 +24,18 @@ export const getTopCompaniesFromTMDB = async () => {
   const response = await fetch(`/api/tmdb/companies/top-rated`);
 
   return await response.json();
+};
+
+export const getCompaniesSearchResultsFromTMDB = async (
+  query: string,
+  page?: number
+): Promise<CompanysSearchResultsFromTMDBResponse> => {
+  const response = await tmdbApi.get(`search/company`, {
+    params: {
+      query: query,
+      page: page,
+    },
+  });
+
+  return await response.data;
 };
