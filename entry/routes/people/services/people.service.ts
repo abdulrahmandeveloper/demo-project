@@ -41,7 +41,6 @@ export const getPeopleSearchResultsFromTMDB = async (
       nationality: parameters?.nationality,
     },
   });
-  console.log(response.data.results);
 
   return response.data;
 };
@@ -50,7 +49,6 @@ export const getPersonDetailsFromTMDB = async (
   id: string
 ): Promise<PersonDataFromTMDBResponse> => {
   const response = await tmdbApi.get(`/person/${id}`);
-  console.log("server res: ", response);
 
   return response.data;
 };

@@ -24,10 +24,6 @@ const NewsIdPage = ({ slug }: { slug: string }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [comments, setComments] = useState([]);
 
-  console.log(article);
-
-  console.log("slug in news id: ", slug);
-
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);

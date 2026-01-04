@@ -25,14 +25,12 @@ const CompaniesMainPage = () => {
   const [newsCompanies, setNewsCompanies] = useState<NewsResponse[]>([]);
   const [videosCompanies, setVideosCompanies] = useState();
 
-  console.log(popularCompanies);
   const newsVisisbleLength = 18;
   const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
       const popularData = await getPopularCompaniesListFromTMDB();
-      console.log("popularData: ", popularData);
 
       if (popularData) {
         setPopularCompanies(popularData);

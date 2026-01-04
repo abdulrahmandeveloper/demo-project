@@ -30,8 +30,6 @@ const PeopleSearchPage = () => {
       nationality: "",
     });
 
-  console.log("queryParameters: ", queryParameters);
-
   useEffect(() => {
     const fetchData = async () => {
       if (!queryContainer) return;

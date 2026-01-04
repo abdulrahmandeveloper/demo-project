@@ -8,7 +8,6 @@ type PageProps = {
 };
 const page = async ({ params }: PageProps) => {
   const { slug } = await params;
-  console.log(slug);
 
   return (
     <div>

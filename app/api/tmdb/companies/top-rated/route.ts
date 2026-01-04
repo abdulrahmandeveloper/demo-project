@@ -38,6 +38,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     const seriesTopRatedTotalPages = seriesTopRated.total_pages;
 
     //works until here
+    console.log("seriesTopRatedTotalPages : ", seriesTopRatedTotalPages);
 
     //creating an array by the length each total page
     const moviesTopRatedPagesArray: number[] = Array.from({
@@ -46,8 +47,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
     const seriesTopRatedPagesArray: number[] = Array.from({
       length: seriesTopRatedTotalPages,
     }).map((_, index) => index + 1);
-
-    //console.log("seriesTopRatedPagesArray: ", seriesTopRatedPagesArray);
 
     const moviesResponse = await Promise.all(
       moviesTopRatedPagesArray
@@ -60,8 +59,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
           return data;
         })
     );
-
-    console.log("moviesResponse: ", moviesResponse);
 
     const movieList: TMDBMovieResponse[] = moviesResponse.map(
       (movie) => movie.results
@@ -82,8 +79,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
     const seriesList: TMDBSeriesResponse[] = seriesResponse.map(
       (series) => series.results
     );
-
-    console.log("seriesResponse: ", seriesResponse);
 
     const companies = [
       {
@@ -120,8 +115,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
         popularity: series.popularity,
       })
     );
-
-    console.log(seriesList);
 
     return NextResponse.json(companies);
   } catch (e) {

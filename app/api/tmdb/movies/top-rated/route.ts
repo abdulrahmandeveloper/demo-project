@@ -15,7 +15,6 @@ export async function GET(req: NextRequest) {
     });
 
     const data = tmdbRes.data;
-    console.log("movie route res data: ", data);
 
     return NextResponse.json(data);
   } catch (error: any) {

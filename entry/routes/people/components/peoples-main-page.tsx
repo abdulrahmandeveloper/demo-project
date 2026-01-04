@@ -60,8 +60,6 @@ const PeoplesMainPage = () => {
     fetchData();
   }, [refreshNewestPerson]);
 
-  console.log("newestActors: ", newestPerson);
-
   const handleRefreshClick = () => {
     setRefreshNewestPerson(!refreshNewestPerson);
   };

@@ -19,7 +19,6 @@ export const getPopularCompaniesListFromTMDB = async (
 
 export const getTopCompaniesFromTMDB = async () => {
   const response = await fetch(`/api/tmdb/companies/top-rated`);
-  console.log("raw response: ", response);
 
-  console.log("getTopCompaniesFromTMDB: ", await response.json());
+  return await response.json();
 };

@@ -232,12 +232,7 @@ const PersonPage = ({ id }: PersonPageProps) => {
       ? SeriesCreditsList.length > 10
       : SeriesCreditsList.length > 10;
 
-  console.log(movieCreditsList);
-  console.log(SeriesCreditsList);
-
   const handleSelectedDepartmentButtonClick = (value: string) => {
-    console.log(value);
-
     setSelectedDepartment(value);
     if (value === "Acting") {
       setRole("cast");
@@ -652,8 +647,6 @@ function extractPersonCreditsDepartment(
   for (let i = 0; i < seriesCredits?.crew?.length; i++) {
     const dep = seriesCredits.crew[i].department;
     if (!departments.includes(dep)) {
-      console.log(seriesCredits.crew[i]?.department);
-
       departments.push(seriesCredits.crew[i]?.department);
     }
   }
