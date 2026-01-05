@@ -200,6 +200,7 @@ const SeriesPage = () => {
                 <Link href={`/series/${series.id}`}>
                   {" "}
                   <PosterCard
+                    linkPathTo={`/series/${series.id}`}
                     src={`${series.poster_path}`}
                     className="rounded-lg  w-[200px] h-[300px] text-sm"
                   />

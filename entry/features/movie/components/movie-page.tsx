@@ -245,6 +245,7 @@ const MoviePage = () => {
                 <Link href={`/movies/${movie.id}`}>
                   {" "}
                   <PosterCard
+                    linkPathTo={`/movies/${movie.id}`}
                     src={`${movie.poster_path}`}
                     className="rounded-lg  w-[200px] h-[300px]"
                   />

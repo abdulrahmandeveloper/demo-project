@@ -156,6 +156,7 @@ const SearchComponent = ({
                     >
                       {" "}
                       <PosterCard
+                        linkPathTo={`/series/${movie.id}`}
                         src={movie.poster_path}
                         className="w-8 h-12"
                       ></PosterCard>
@@ -180,6 +181,7 @@ const SearchComponent = ({
                     >
                       {" "}
                       <PosterCard
+                        linkPathTo={`/series/${series.id}`}
                         src={series.poster_path}
                         className="w-8 h-12 "
                       ></PosterCard>
