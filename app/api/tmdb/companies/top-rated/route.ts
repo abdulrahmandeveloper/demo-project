@@ -247,14 +247,13 @@ function handleFilteringCompaniesDataFromDIfferentMedieas(
     {
       companyName: "",
       moviesProduced: {
-          name: "",
-          id: 0,
-          vote_average: 0,
-          vote_count: 0,
-          popularity: 0,
-          mediaType: "movie",
-        }[
-      ],
+        name: "",
+        id: 0,
+        vote_average: 0,
+        vote_count: 0,
+        popularity: 0,
+        mediaType: "movie",
+      },
     },
   ];
 
@@ -276,7 +275,10 @@ function handleFilteringCompaniesDataFromDIfferentMedieas(
         const name = movieMediaList[i];
 
         console.log(i, " ", company.name);
-        filteredMoviesCompaniesList.push({ companyName: company.name,moviesProduced:{} });
+        filteredMoviesCompaniesList.push({
+          companyName: company.name,
+          moviesProduced: {},
+        });
       }
     });
   }

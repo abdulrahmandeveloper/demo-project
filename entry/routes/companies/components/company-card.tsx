@@ -19,7 +19,9 @@ const CompanyCard = ({ company, isSearchCard }: CompanyCardProps) => {
   return (
     <Card className="px-4 py-3">
       {" "}
-      <CardTitle className="my-2">{company.name}</CardTitle>
+      <Link href={`/discover/companies/${company.id}`}>
+        <CardTitle className="my-2">{company.name}</CardTitle>
+      </Link>
       {isSearchCard === false ? (
         <Link href={company.homepage}>
           <CardHeader className="h-[300px]   bg-white/25 rounded-lg grid grid-cols-1">
