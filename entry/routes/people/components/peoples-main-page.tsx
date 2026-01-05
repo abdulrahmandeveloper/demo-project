@@ -49,13 +49,11 @@ const PeoplesMainPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
       const latestPersonData = await getLatestPersonFromTmdb();
 
       if (latestPersonData) {
         setNewestPerson(latestPersonData);
       }
-      setLoading(false);
     };
     fetchData();
   }, [refreshNewestPerson]);
