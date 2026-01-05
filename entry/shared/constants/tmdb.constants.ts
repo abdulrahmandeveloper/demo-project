@@ -52,3 +52,13 @@ export const countryNameCodes: Record<string, string> = {
   MX: "Mexico",
   IN: "India",
 };
+
+export const TMDBSeriesTypes = {
+  Documentary: " with_type=0 ", // Documentary
+  News: "with_type=1", // News
+  Miniseries: "with_type=2", // Miniseries ✅
+  Reality: "with_type=3", // Reality
+  Scripted: "with_type=4", // Scripted
+  "Talk Show": "with_type=5", // Talk Show
+  Video: "with_type=6", // Video
+};
