@@ -242,14 +242,12 @@ const MoviePage = () => {
                 key={index}
                 className="min-w-[200px] max-w-[300px]  min-h-[300px]"
               >
-                <Link href={`/movies/${movie.id}`}>
-                  {" "}
-                  <PosterCard
-                    linkPathTo={`/movies/${movie.id}`}
-                    src={`${movie.poster_path}`}
-                    className="rounded-lg  w-[200px] h-[300px]"
-                  />
-                </Link>
+                {" "}
+                <PosterCard
+                  linkPathTo={`/movies/${movie.id}`}
+                  src={`${movie.poster_path}`}
+                  className="rounded-lg  w-[200px] h-[300px]"
+                />
                 <h1 className="flex text-center justify-center opacity-70 mt-2">
                   {movie.title}
                 </h1>

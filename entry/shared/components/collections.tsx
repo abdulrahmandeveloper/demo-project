@@ -35,13 +35,11 @@ const CollectionPartsPoster = ({ parts }: { parts: CollectionParts[] }) => {
               <div className="hover:w-28">
                 <Tooltip>
                   <TooltipTrigger>
-                    <Link href={`/movies/${part.id}`}>
-                      {" "}
-                      <PosterCard
-                        src={part.poster_path}
-                        className="w-28 h-44 rounded-md shadow-lg  hover:cursor-pointer"
-                      />
-                    </Link>
+                    <PosterCard
+                      linkPathTo={`/movies/${part.id}`}
+                      src={part.poster_path}
+                      className="w-28 h-44 rounded-md shadow-lg  hover:cursor-pointer"
+                    />
                   </TooltipTrigger>
                   <TooltipContent>
                     <h2 className="text-lg">{part.title}</h2>

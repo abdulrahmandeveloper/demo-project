@@ -197,14 +197,12 @@ const SeriesPage = () => {
             {" "}
             {similarSeries.map((series: TMDBSeriesResponse, index) => (
               <div key={index} className="min-w-[200px] max-w-[300px]  ">
-                <Link href={`/series/${series.id}`}>
-                  {" "}
-                  <PosterCard
-                    linkPathTo={`/series/${series.id}`}
-                    src={`${series.poster_path}`}
-                    className="rounded-lg  w-[200px] h-[300px] text-sm"
-                  />
-                </Link>
+                {" "}
+                <PosterCard
+                  linkPathTo={`/series/${series.id}`}
+                  src={`${series.poster_path}`}
+                  className="rounded-lg  w-[200px] h-[300px] text-sm"
+                />
                 <h1 className="flex text-center justify-center opacity-70 text-sm mt-2">
                   {series.name}
                 </h1>
