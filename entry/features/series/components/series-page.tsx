@@ -8,7 +8,6 @@ import { countryNameCodes } from "@/shared/constants/tmdb.constants";
 import {
   Genres,
   TMDBCastResponse,
-  TMDBCrewResponse,
   TMDBReviewsResponse,
 } from "@/shared/interfaces/tmdb/tmdb.interface";
 import {
@@ -20,14 +19,12 @@ import {
   getSeriesAlternativeTitlesFromTmdb,
   getSeriesCastFromTmdb,
   getSeriesPrimaryContentRatingsFromTmdb,
-  getSeriesCrewFromTmdb,
   getSeriesReviewsByIdFromTmdb,
   getSeriesVideosID,
   GetSimilarSeriesById,
   getSeasonEpisodesFromTMDB,
 } from "@/features/series/services/series.service";
 import { FaArrowRight } from "react-icons/fa6";
-
 import { getSeriesByIDFromTMDB } from "entry/shared/services/tmdb/tmdb.series.service";
 import { DetectOriginalCounryName } from "entry/shared/utils/language-selector";
 import Link from "next/link";
@@ -211,30 +208,15 @@ const SeriesPage = () => {
           </div>
         </div>
         <div className="w-9/10 mx-auto my-5 flex gap-2">
-          <div className="flex justify-center flex-col w-1/3 gap-2">
-            <div className="flex justify- gap-5 text-xl w-full  opacity-90 mx-auto">
-              <p className="">Number of Seasons: {series.number_of_seasons}</p>
-              <div className="">/</div>
-              <p className="">
-                Number of Episodes: {series.number_of_episodes}
-              </p>
-            </div>
-            {series.next_episode_to_air?.air_date !== null && (
-              <p className="text-xl opacity-70 ">
-                Next Episode Air Details: {series.next_episode_to_air?.air_date}
-              </p>
-            )}
-            {series.episode_run_time?.length > 0 && (
-              <p className="text-xl opacity-70">
-                Episode Length:{" "}
-                {series.episode_run_time.map((number) => number)} Minutes
-              </p>
-            )}
-            <p className="text-xl opacity-70 ">
-              Last Media Aired in: {series.last_air_date}
+          <div className="w-1/3 gap-4 flex flex-col items-center justify-center">
+            <p className="text-xl  opacity-90">
+              Number of Seasons: {series.number_of_seasons}
             </p>
-            <p className="text-xl opacity-70 ">
-              Last Episode Aired in: {series.last_episode_to_air?.air_date}
+            <p className="text-xl   opacity-90">
+              Number of Episodes: {series.number_of_episodes}
+            </p>
+            <p className="text-xl opacity-70">
+              TMDB Popularity: {series.popularity}
             </p>
             <p className="text-xl opacity-70 ">
               Created by:{" "}
@@ -245,29 +227,10 @@ const SeriesPage = () => {
                       href={`/discover/people/${creator.id}`}
                       className="hover:underline hover:text-blue-200"
                     >
-                      `${creator.name}, `
+                      {creator.name},
                     </Link>
                   ))
                 : "Unknown"}
-            </p>
-
-            <p className="text-xl opacity-70 ">
-              TMDB Voters: {series.vote_count} votes
-            </p>
-            <p className="text-xl opacity-70 ">
-              TMDB Popularity: {series.popularity}
-            </p>
-            <p className="text-xl opacity-70 ">
-              Other Names:{" "}
-              {alternativeTitles.length > 0 ? (
-                <div className="flex truncate  text-ellipsis">
-                  {alternativeTitles?.map((name) => (
-                    <h1 key={name.iso_3166_1 && name.title}>{name.title}, </h1>
-                  ))}
-                </div>
-              ) : (
-                "Unknown"
-              )}
             </p>
           </div>
           <div className="w-2/3 flex flex-col justify-center">
@@ -331,7 +294,7 @@ const SeriesPage = () => {
               <div className="flex items-center mx-5 justify-center">
                 <Button
                   className=""
-                  onClick={() => router.push(`/series/${seriesId}/details`)}
+                  onClick={() => router.push(`/series/details/${seriesId}`)}
                 >
                   Discover More Credits <FaArrowRight />
                 </Button>

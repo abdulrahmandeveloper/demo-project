@@ -4,8 +4,10 @@ import {
   TMDBContentRating,
   TMDBContentRatingResponse,
   TMDBCrewResponse,
+  TMDBExternalIdsResponse,
   TMDBMediaResponse,
   TMDBReviewsResponse,
+  TMDBSeriesImagesResponse,
   TMDBVideoReferenceResponse,
 } from "@/shared/interfaces/tmdb/tmdb.interface";
 import {
@@ -141,6 +143,30 @@ export const getSeriesPrimaryContentRatingsFromTmdb = async (
     (rate: TMDBContentRating) => rate.iso_3166_1 === "US"
   );
   return rate?.rating.trim() ? rate.rating : "";
+};
+
+export const getSeriesAllContentRatingsFromTmdb = async (
+  tvId: number
+): Promise<TMDBContentRatingResponse> => {
+  const response = await tmdbApi.get(`/tv/${tvId}/content_ratings`);
+  const data = response.data;
+  return data;
+};
+
+export const getSeriesExternalIdsFromTmdb = async (
+  tvId: number
+): Promise<TMDBExternalIdsResponse> => {
+  const response = await tmdbApi.get(`/tv/${tvId}/external_ids`);
+  const data = response.data;
+  return data;
+};
+
+export const getSeriesImagesFromTmdb = async (
+  tvId: number
+): Promise<TMDBSeriesImagesResponse> => {
+  const response = await tmdbApi.get(`/tv/${tvId}/images`);
+  const data = response.data;
+  return data;
 };
 
 export const GetSimilarSeriesById = async (

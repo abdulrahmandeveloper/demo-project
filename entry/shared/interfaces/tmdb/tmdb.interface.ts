@@ -209,3 +209,52 @@ export interface TMDBContentRatingResponse {
   results: TMDBContentRating[];
   id: number;
 }
+
+export interface TMDBExternalIdsResponse {
+  id: number;
+  imdb_id: string;
+  freebase_mid: string;
+  freebase_id: string;
+  tvdb_id: number;
+  tvrage_id: number;
+  wikidata_id: string;
+  facebook_id: string;
+  instagram_id: string;
+  twitter_id: string;
+}
+
+export interface TMDBBackdropsData {
+  aspect_ratio: number;
+  height: number;
+  iso_639_1: string;
+  file_path: string;
+  vote_average: number;
+  vote_count: number;
+  width: number;
+}
+
+export interface TMDBLogosData {
+  aspect_ratio: number;
+  height: number;
+  iso_639_1: string;
+  file_path: string;
+  vote_average: number;
+  vote_count: number;
+  width: number;
+}
+export interface TMDBPostersData {
+  aspect_ratio: number;
+  height: number;
+  iso_639_1: string;
+  file_path: string;
+  vote_average: number;
+  vote_count: number;
+  width: number;
+}
+
+export interface TMDBSeriesImagesResponse {
+  backdrops: TMDBBackdropsData[];
+  id: number;
+  logos: TMDBLogosData[];
+  posters: TMDBPostersData[];
+}
