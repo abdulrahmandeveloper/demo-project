@@ -13,6 +13,7 @@ import {
 } from "@/shared/interfaces/tmdb/tmdb.interface";
 import {
   SeriesAlternativeTitles,
+  TMDBSeasoEpisodesResponse,
   TMDBSeriesResponse,
 } from "entry/features/series/interfaces/tmdb.interface";
 import {
@@ -23,7 +24,8 @@ import {
   getSeriesReviewsByIdFromTmdb,
   getSeriesVideosID,
   GetSimilarSeriesById,
-} from "entry/features/series/services/tmdb.service";
+  getSeasonEpisodesFromTMDB,
+} from "@/features/series/services/series.service";
 import { FaArrowRight } from "react-icons/fa6";
 
 import { getSeriesByIDFromTMDB } from "entry/shared/services/tmdb/tmdb.series.service";
@@ -35,7 +37,10 @@ import NetworksCard from "./networks-card";
 import CompanyCard from "@/routes/companies/components/company-card";
 import { Separator } from "@/shared/components/ui/separator";
 import { SeasonResponse } from "@/shared/interfaces/tmdb/tmdb.series.interface";
-import { GoChevronDown } from "react-icons/go";
+import { GoChevronDown, GoChevronUp } from "react-icons/go";
+import { IoGridOutline } from "react-icons/io5";
+import { CiBoxList } from "react-icons/ci";
+import EpisodeListCard from "./episode-list-card";
 
 const SeriesPage = () => {
   const [series, setSeries] = useState<TMDBSeriesResponse>(
@@ -45,7 +50,6 @@ const SeriesPage = () => {
     string | string[] | null
   >(null);
   const [casts, setCasts] = useState<TMDBCastResponse[] | []>([]);
-  const [crew, setCrew] = useState<TMDBCrewResponse[]>([]);
   const [similarSeries, setSimilarSeries] = useState<TMDBSeriesResponse[]>([]);
   const [reviews, setReviews] = useState<TMDBReviewsResponse[]>([]);
   const [alternativeTitles, setAlternativeTitles] = useState<
@@ -53,7 +57,14 @@ const SeriesPage = () => {
   >([]);
   const [rating, setRating] = useState<string>("");
   const [seasons, setSeasons] = useState<SeasonResponse[]>([]);
-  console.log("rating: ", rating);
+  const [selectedSeasonNumber, setSelectedSeasonNumber] = useState<
+    number | null
+  >(null);
+  const [isSeasonListVisisble, setIsSeasonListVisisble] =
+    useState<boolean>(true);
+  const [episodes, setEpisodes] = useState<TMDBSeasoEpisodesResponse[]>([]);
+  const [selectedEpisodeDisplayStyle, setSelectedEpisodeDisplayStyle] =
+    useState<"grid" | "list">("list");
 
   const params = useParams();
   const router = useRouter();
@@ -61,13 +72,23 @@ const SeriesPage = () => {
 
   const seriesLanguage = DetectOriginalCounryName(series.original_language);
 
-  console.log("cast: ", casts);
-  console.log("crew: ", crew);
+  useEffect(() => {
+    const fetchData = async () => {
+      const episodesData = await getSeasonEpisodesFromTMDB(
+        seriesId,
+        selectedSeasonNumber
+      );
+      if (episodesData) {
+        setEpisodes(episodesData);
+      }
+    };
+    fetchData();
+  }, [seriesId, selectedSeasonNumber]);
+
   useEffect(() => {
     const fetchMovie = async () => {
       const data = await getSeriesByIDFromTMDB(seriesId);
       const castsData = await getSeriesCastFromTmdb(seriesId);
-      const crewData = await getSeriesCrewFromTmdb(seriesId);
       const similarSeriesData = await GetSimilarSeriesById(seriesId);
       const reviewsData = await getSeriesReviewsByIdFromTmdb(seriesId);
       const alternativeData = await getSeriesAlternativeTitlesFromTmdb(
@@ -80,9 +101,7 @@ const SeriesPage = () => {
       if (castsData) {
         setCasts(castsData);
       } else setCasts([]);
-      if (crewData) {
-        setCrew(crewData);
-      }
+
       setSeries(data);
       setSimilarSeries(similarSeriesData);
       setReviews(reviewsData);
@@ -108,6 +127,9 @@ const SeriesPage = () => {
   );
   const specialSeasons = seasons.filter((season) => season.season_number === 0);
 
+  const handleSelectedSeasonNumber = (value: number) => {
+    setSelectedSeasonNumber(value);
+  };
   return (
     <div className="">
       <div className="dark:text-white ">
@@ -325,26 +347,117 @@ const SeriesPage = () => {
           <div className="bg-card rounded-xl p-5">
             <div className="my-5">
               <h1 className="text-xl font-serif my-2">Official</h1>
-              <div className="my-1 mx-3 bg-outline ">
+              <div className=" mx-3 bg-outline  bg-black/20 border border-white/50 rounded-lg px-4 py-1 my-4">
                 {officialSeasons.map((season) => (
-                  <div
-                    key={season.id}
-                    className="flex justify-between  bg-black/20 border border-white/50 rounded-lg p-4 my-4"
-                  >
-                    <div className="flex">
-                      <p className="font-bold">{season.season_number}</p>
-                      <div className=" border mx-2 border-white/50" />
-                      <p className="">{season.name}</p>
-                    </div>
-                    <div className="">
-                      <p className="">Published In: {season.air_date}</p>
-                    </div>
-                    <div className="flex gap-1">
-                      <p className="">{season.episode_count} Episodes</p>
-                      <div className="items-center justify-center flex border border-amber-100 rounded-lg mx-2">
-                        <GoChevronDown className="cursor-pointer h-full w- size-6  " />
+                  <div key={season.id} className="my-5">
+                    <div className="flex justify-between ">
+                      <div className="flex">
+                        <p className="font-bold">{season.season_number}</p>
+                        <div className=" border mx-2 border-white/50" />
+                        <p className="">{season.name}</p>
+                      </div>
+                      <div className="">
+                        <p className="">Published In: {season.air_date}</p>
+                      </div>
+                      <div className="flex gap-1">
+                        <p className="">{season.episode_count} Episodes</p>
+                        <div className="items-center justify-center flex border border-amber-100 rounded-lg mx-2">
+                          {selectedSeasonNumber === season.season_number &&
+                          isSeasonListVisisble ? (
+                            <GoChevronUp
+                              className="cursor-pointer h-full w- size-6  "
+                              onClick={() => {
+                                if (
+                                  selectedSeasonNumber === season.season_number
+                                ) {
+                                  setIsSeasonListVisisble(
+                                    !isSeasonListVisisble
+                                  );
+                                }
+                                handleSelectedSeasonNumber(
+                                  season.season_number
+                                );
+                              }}
+                            />
+                          ) : (
+                            <GoChevronDown
+                              className="cursor-pointer h-full w- size-6  "
+                              onClick={() => {
+                                console.log("clicked");
+
+                                if (
+                                  selectedSeasonNumber === season.season_number
+                                ) {
+                                  setIsSeasonListVisisble(
+                                    !isSeasonListVisisble
+                                  );
+                                }
+                                handleSelectedSeasonNumber(
+                                  season.season_number
+                                );
+                              }}
+                            />
+                          )}
+                        </div>
                       </div>
                     </div>
+
+                    {selectedSeasonNumber === season.season_number &&
+                      isSeasonListVisisble === true && (
+                        <div>
+                          <div className="my-2">
+                            <Separator></Separator>
+                          </div>
+                          <div className="flex gap-5 justify-center">
+                            <Button
+                              variant={
+                                selectedEpisodeDisplayStyle === "grid"
+                                  ? "default"
+                                  : "outline"
+                              }
+                              className="px-5 py-2 "
+                              onClick={() =>
+                                setSelectedEpisodeDisplayStyle("grid")
+                              }
+                            >
+                              <IoGridOutline /> Grid
+                            </Button>
+                            <Button
+                              variant={
+                                selectedEpisodeDisplayStyle === "list"
+                                  ? "default"
+                                  : "outline"
+                              }
+                              className="px-5 py-2 "
+                              onClick={() =>
+                                setSelectedEpisodeDisplayStyle("list")
+                              }
+                            >
+                              <CiBoxList /> List
+                            </Button>
+                          </div>
+                          <div
+                            className={
+                              selectedEpisodeDisplayStyle === "grid"
+                                ? "grid grid-cols-4 gap-4 my-5 w-5/6 mx-auto"
+                                : "flex flex-col gap-4 my-5 w-5/6 mx-auto"
+                            }
+                          >
+                            {episodes.map((episode) => (
+                              <div key={episode.id}>
+                                <EpisodeListCard
+                                  episode={episode}
+                                  orientation={
+                                    selectedEpisodeDisplayStyle === "grid"
+                                      ? "grid"
+                                      : "list"
+                                  }
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                   </div>
                 ))}
               </div>
@@ -361,22 +474,98 @@ const SeriesPage = () => {
                     {specialSeasons.map((season) => (
                       <div
                         key={season.id}
-                        className="flex justify-between bg-black/20 border border-white/50 rounded-lg p-4 my-4"
+                        className=" bg-black/20 border border-white/50 rounded-lg p-4  my-5"
                       >
-                        <div className="flex">
-                          <p className="font-bold">{season.season_number}</p>
-                          <div className=" border mx-2 border-white/50" />
-                          <p className="">{season.name}</p>
-                        </div>
-                        <div className="">
-                          <p className="">Published In: {season.air_date}</p>
-                        </div>
-                        <div className=" flex gap-1">
-                          <p className="">{season.episode_count} Episodes</p>
-                          <div className="items-center justify-center flex border border-amber-100 rounded-lg mx-2">
-                            <GoChevronDown className="cursor-pointer h-full w- size-6  " />
+                        <div className="flex justify-between">
+                          <div className="flex">
+                            <p className="font-bold">{season.season_number}</p>
+                            <div className=" border mx-2 border-white/50" />
+                            <p className="">{season.name}</p>
+                          </div>
+                          <div className="">
+                            <p className="">Published In: {season.air_date}</p>
+                          </div>
+                          <div className=" flex gap-1">
+                            <p className="">{season.episode_count} Episodes</p>
+                            <div className="items-center justify-center flex border border-amber-100 rounded-lg mx-2">
+                              {selectedSeasonNumber === season.season_number ? (
+                                <GoChevronUp
+                                  className="cursor-pointer h-full w- size-6  "
+                                  onClick={() =>
+                                    handleSelectedSeasonNumber(
+                                      season.season_number
+                                    )
+                                  }
+                                />
+                              ) : (
+                                <GoChevronDown
+                                  className="cursor-pointer h-full w- size-6  "
+                                  onClick={() =>
+                                    handleSelectedSeasonNumber(
+                                      season.season_number
+                                    )
+                                  }
+                                />
+                              )}
+                            </div>
                           </div>
                         </div>
+                        {selectedSeasonNumber === season.season_number && (
+                          <div>
+                            <div className="my-2">
+                              <Separator></Separator>
+                            </div>
+                            <div className="flex gap-5 justify-center">
+                              <Button
+                                variant={
+                                  selectedEpisodeDisplayStyle === "grid"
+                                    ? "default"
+                                    : "outline"
+                                }
+                                className="px-5 py-2 "
+                                onClick={() =>
+                                  setSelectedEpisodeDisplayStyle("grid")
+                                }
+                              >
+                                <IoGridOutline /> Grid
+                              </Button>
+                              <Button
+                                variant={
+                                  selectedEpisodeDisplayStyle === "list"
+                                    ? "default"
+                                    : "outline"
+                                }
+                                className="px-5 py-2 "
+                                onClick={() =>
+                                  setSelectedEpisodeDisplayStyle("list")
+                                }
+                              >
+                                <CiBoxList /> List
+                              </Button>
+                            </div>
+                            <div
+                              className={
+                                selectedEpisodeDisplayStyle === "grid"
+                                  ? "grid grid-cols-4 gap-4 my-5 w-5/6 mx-auto"
+                                  : "flex flex-col gap-4 my-5 w-5/6 mx-auto"
+                              }
+                            >
+                              {" "}
+                              {episodes.map((episode) => (
+                                <div key={episode.id}>
+                                  <EpisodeListCard
+                                    episode={episode}
+                                    orientation={
+                                      selectedEpisodeDisplayStyle === "grid"
+                                        ? "grid"
+                                        : "list"
+                                    }
+                                  />{" "}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>

@@ -3,7 +3,7 @@
 import { TMDBMovieResponse } from "@/features/movie/interfaces/tmdb.interface";
 import { getMovieSearchResultsFromTMDB } from "@/features/movie/services/tmdb.service";
 import { TMDBSeriesResponse } from "@/features/series/interfaces/tmdb.interface";
-import { getSeriesSearchResultsFromTMDB } from "@/features/series/services/tmdb.service";
+import { getSeriesSearchResultsFromTMDB } from "@/features/series/services/series.service";
 import ListItemCard from "@/shared/components/card/list-item-card";
 import DropdownContainer from "@/shared/components/custom-ui/containers/dropdown-container";
 import PaginationContainer from "@/shared/components/custom-ui/containers/pagination-container";

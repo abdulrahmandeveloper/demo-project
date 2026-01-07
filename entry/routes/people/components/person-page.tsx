@@ -477,7 +477,7 @@ const PersonPage = ({ id }: PersonPageProps) => {
                           <div key={credit.id}>
                             <PosterCard
                               src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${credit.poster_path}`}
-                              linkPathTo={`/movies/${credit.id}`}
+                              linkPathTo={`/series/${credit.id}`}
                             />
                             As {credit.department ?? credit.character}
                           </div>

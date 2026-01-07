@@ -10,6 +10,8 @@ import {
 } from "@/shared/interfaces/tmdb/tmdb.interface";
 import {
   SeriesAlternativeResponse,
+  TMDBSeasoEpisodesResponse,
+  TMDBSeasonEpisodesResponse,
   TMDBSeriesResponse,
 } from "../interfaces/tmdb.interface";
 
@@ -163,4 +165,15 @@ export const getSeriesSeasonsFromTmdb = async (
   const response = await tmdbApi.get(`/tv/${tvId}/alternative_titles`);
 
   return response.data;
+};
+
+export const getSeasonEpisodesFromTMDB = async (
+  series_id: number,
+  season_number: number
+): Promise<TMDBSeasoEpisodesResponse[]> => {
+  const response = await tmdbApi.get(
+    `/tv/${series_id}/season/${season_number}`
+  );
+  const data: TMDBSeasonEpisodesResponse = response.data;
+  return data.episodes;
 };
