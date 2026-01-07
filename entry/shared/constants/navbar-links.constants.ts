@@ -6,6 +6,7 @@ export const discoverLinks = [
   { value: "/discover/people", content: "People" },
   { value: "/discover/companies", content: "Companies" },
   { value: "/discover/cinemas", content: "Cinemas" },
+  { value: "/discover/watch-providers", content: "Watch Providers" },
 ];
 
 export const navbarLinks: NavbarLinks[] = [
