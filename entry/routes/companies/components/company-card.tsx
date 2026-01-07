@@ -14,17 +14,26 @@ import Link from "next/link";
 type CompanyCardProps = {
   company: CompanyDetailsResponse | CompanySearchResultsFromTMDBResponse;
   isSearchCard: boolean;
+  containerClassname?: string;
+  headerClassnames: string;
 };
-const CompanyCard = ({ company, isSearchCard }: CompanyCardProps) => {
+const CompanyCard = ({
+  company,
+  isSearchCard,
+  containerClassname,
+  headerClassnames,
+}: CompanyCardProps) => {
   return (
-    <Card className="px-4 py-3">
+    <Card className={`${containerClassname} px-4 py-3`}>
       {" "}
       <Link href={`/discover/companies/${company.id}`}>
         <CardTitle className="my-2">{company.name}</CardTitle>
       </Link>
       {isSearchCard === false ? (
-        <Link href={company.homepage}>
-          <CardHeader className="h-[300px]   bg-white/25 rounded-lg grid grid-cols-1">
+        <Link href={company.homepage ?? "/"}>
+          <CardHeader
+            className={`${headerClassnames} h-[100px]   bg-white/25 rounded-lg grid grid-cols-1`}
+          >
             <div className="flex items-center justify-center w-full h-full">
               <img
                 src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${
@@ -37,7 +46,9 @@ const CompanyCard = ({ company, isSearchCard }: CompanyCardProps) => {
           </CardHeader>
         </Link>
       ) : (
-        <CardHeader className="h-[300px]   bg-white/25 rounded-lg grid grid-cols-1">
+        <CardHeader
+          className={`${headerClassnames}   bg-white/25 rounded-lg grid grid-cols-1`}
+        >
           <div className="flex items-center justify-center w-full h-full">
             <img
               src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${

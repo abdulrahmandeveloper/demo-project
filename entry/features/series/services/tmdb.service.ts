@@ -1,11 +1,17 @@
 import { tmdbApi } from "entry/shared/lib/axios/axios";
 import {
   TMDBCastResponse,
+  TMDBContentRating,
+  TMDBContentRatingResponse,
+  TMDBCrewResponse,
   TMDBMediaResponse,
   TMDBReviewsResponse,
   TMDBVideoReferenceResponse,
 } from "@/shared/interfaces/tmdb/tmdb.interface";
-import { TMDBSeriesResponse } from "../interfaces/tmdb.interface";
+import {
+  SeriesAlternativeResponse,
+  TMDBSeriesResponse,
+} from "../interfaces/tmdb.interface";
 
 export const getSeriesSearchResultsFromTMDB = async (
   query: string,
@@ -97,14 +103,42 @@ export const getSeriesTopRatedListFromTmdb = async (
 export const getSeriesCastFromTmdb = async (
   tvId: number
 ): Promise<TMDBCastResponse[] | []> => {
-  const response = await tmdbApi.get(`/tv/${tvId}/credits`);
+  const response = await tmdbApi.get(`/tv/${tvId}/aggregate_credits`);
   if (!response) return [];
-  const data = response.data.cast
-    .filter(
-      (person: TMDBCastResponse) => person.known_for_department === "Acting"
-    )
-    .slice(0, 9);
+  const data = response.data.cast.filter(
+    (person: TMDBCastResponse) => person.known_for_department === "Acting"
+  );
   return data;
+};
+
+export const getSeriesCrewFromTmdb = async (
+  tvId: number
+): Promise<TMDBCrewResponse[] | []> => {
+  const response = await tmdbApi.get(`/tv/${tvId}/aggregate_credits`);
+  if (!response) return [];
+  const data = response.data.crew.filter(
+    (person: TMDBCrewResponse) => person.known_for_department !== "Acting"
+  );
+  return data;
+};
+
+export const getSeriesAlternativeTitlesFromTmdb = async (
+  tvId: number
+): Promise<SeriesAlternativeResponse> => {
+  const response = await tmdbApi.get(`/tv/${tvId}/alternative_titles`);
+
+  return response.data;
+};
+
+export const getSeriesPrimaryContentRatingsFromTmdb = async (
+  tvId: number
+): Promise<string> => {
+  const response = await tmdbApi.get(`/tv/${tvId}/content_ratings`);
+  const data = response.data;
+  const rate: TMDBContentRating = data.results.find(
+    (rate: TMDBContentRating) => rate.iso_3166_1 === "US"
+  );
+  return rate?.rating.trim() ? rate.rating : "";
 };
 
 export const GetSimilarSeriesById = async (
@@ -121,4 +155,12 @@ export const getSeriesReviewsByIdFromTmdb = async (
   const response = await tmdbApi.get(`/tv/${seriesId}/reviews`);
   const data = response.data.results;
   return data;
+};
+
+export const getSeriesSeasonsFromTmdb = async (
+  tvId: number
+): Promise<SeriesAlternativeResponse> => {
+  const response = await tmdbApi.get(`/tv/${tvId}/alternative_titles`);
+
+  return response.data;
 };

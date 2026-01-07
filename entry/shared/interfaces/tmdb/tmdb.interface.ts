@@ -55,7 +55,6 @@ export interface TMDBCommonMediaDataResponse {
   backdrop_path: string;
   genres: Genres[];
   genre_ids: number[];
-
   homepage: string;
   original_language: string;
   origin_country: string[];
@@ -143,6 +142,7 @@ export interface TMDBCreditResponse {
 export interface TMDBCreditMediaResponse {
   id: number;
   cast: TMDBCastResponse;
+  crew: TMDBCrewResponse;
 }
 
 export interface TMDBCastResponse {
@@ -160,6 +160,19 @@ export interface TMDBCastResponse {
   order: number;
 }
 
+export interface TMDBCrewResponse {
+  adult: boolean;
+  gender: number;
+  id: number;
+  known_for_department: string;
+  name: string;
+  original_name: string;
+  popularity: number;
+  profile_path: string;
+  credit_id: string;
+  department: string;
+  job: string;
+}
 export interface Keywords {
   id: 4812;
   name: "plan";
@@ -185,4 +198,14 @@ export interface TMDBReviewsResponse {
   id: string;
   updated_at: string;
   url: string;
+}
+
+export interface TMDBContentRating {
+  descriptors: any[];
+  iso_3166_1: string;
+  rating: string;
+}
+export interface TMDBContentRatingResponse {
+  results: TMDBContentRating[];
+  id: number;
 }

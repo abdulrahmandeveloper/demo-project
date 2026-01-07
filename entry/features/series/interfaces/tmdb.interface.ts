@@ -43,3 +43,13 @@ export interface TMDBSeriesSearchResponse
   total_pages: number;
   total_results: number;
 }
+
+export interface SeriesAlternativeTitles {
+  iso_3166_1: string;
+  title: string;
+  type: string;
+}
+export interface SeriesAlternativeResponse {
+  id: number;
+  results: SeriesAlternativeTitles[];
+}

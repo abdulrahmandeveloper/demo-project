@@ -32,7 +32,7 @@ const ReviewCard = ({ review, className }: ReviewCardProps) => {
 
   return (
     <div
-      className={`bg-zinc-900 border border-yellow-400 rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-200 min-w-[300px] max-w-[380px] flex flex-col gap-3 ${className}`}
+      className={`bg-zinc-900 border border-yellow-400 rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-200 min-w-[300px] max-w-[380px] flex flex-col gap-3 ${className} `}
     >
       <div className="flex items-center gap-3">
         <div className="relative w-12 h-12 rounded-full overflow-hidden border border-yellow-400">

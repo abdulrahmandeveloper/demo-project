@@ -46,7 +46,7 @@ export const getPeopleSearchResultsFromTMDB = async (
 };
 
 export const getPersonDetailsFromTMDB = async (
-  id: string
+  id: number
 ): Promise<PersonDataFromTMDBResponse> => {
   const response = await tmdbApi.get(`/person/${id}`);
 
