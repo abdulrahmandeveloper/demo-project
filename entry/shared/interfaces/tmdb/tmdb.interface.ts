@@ -226,6 +226,7 @@ export interface TMDBExternalIdsResponse {
 export interface TMDBBackdropsData {
   aspect_ratio: number;
   height: number;
+  iso_3166_1: string;
   iso_639_1: string;
   file_path: string;
   vote_average: number;
@@ -236,6 +237,7 @@ export interface TMDBBackdropsData {
 export interface TMDBLogosData {
   aspect_ratio: number;
   height: number;
+  iso_3166_1: string;
   iso_639_1: string;
   file_path: string;
   vote_average: number;
@@ -245,6 +247,7 @@ export interface TMDBLogosData {
 export interface TMDBPostersData {
   aspect_ratio: number;
   height: number;
+  iso_3166_1: string;
   iso_639_1: string;
   file_path: string;
   vote_average: number;

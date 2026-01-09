@@ -26,7 +26,7 @@ import {
 } from "@/features/series/services/series.service";
 import { FaArrowRight } from "react-icons/fa6";
 import { getSeriesByIDFromTMDB } from "entry/shared/services/tmdb/tmdb.series.service";
-import { DetectOriginalCounryName } from "entry/shared/utils/language-selector";
+import { convertOriginalCounryName } from "@/shared/utils/code-converters";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -67,7 +67,7 @@ const SeriesPage = () => {
   const router = useRouter();
   const seriesId = Number(params.seriesId);
 
-  const seriesLanguage = DetectOriginalCounryName(series.original_language);
+  const seriesLanguage = convertOriginalCounryName(series.original_language);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -451,84 +451,104 @@ const SeriesPage = () => {
                           <div className=" flex gap-1">
                             <p className="">{season.episode_count} Episodes</p>
                             <div className="items-center justify-center flex border border-amber-100 rounded-lg mx-2">
-                              {selectedSeasonNumber === season.season_number ? (
+                              {selectedSeasonNumber === season.season_number &&
+                              isSeasonListVisisble ? (
                                 <GoChevronUp
                                   className="cursor-pointer h-full w- size-6  "
-                                  onClick={() =>
+                                  onClick={() => {
+                                    if (
+                                      selectedSeasonNumber ===
+                                      season.season_number
+                                    ) {
+                                      setIsSeasonListVisisble(
+                                        !isSeasonListVisisble
+                                      );
+                                    }
                                     handleSelectedSeasonNumber(
                                       season.season_number
-                                    )
-                                  }
+                                    );
+                                  }}
                                 />
                               ) : (
                                 <GoChevronDown
                                   className="cursor-pointer h-full w- size-6  "
-                                  onClick={() =>
+                                  onClick={() => {
+                                    console.log("clicked");
+
+                                    if (
+                                      selectedSeasonNumber ===
+                                      season.season_number
+                                    ) {
+                                      setIsSeasonListVisisble(
+                                        !isSeasonListVisisble
+                                      );
+                                    }
                                     handleSelectedSeasonNumber(
                                       season.season_number
-                                    )
-                                  }
+                                    );
+                                  }}
                                 />
                               )}
                             </div>
                           </div>
                         </div>
-                        {selectedSeasonNumber === season.season_number && (
-                          <div>
-                            <div className="my-2">
-                              <Separator></Separator>
-                            </div>
-                            <div className="flex gap-5 justify-center">
-                              <Button
-                                variant={
+                        {selectedSeasonNumber === season.season_number &&
+                          isSeasonListVisisble && (
+                            <div>
+                              <div className="my-2">
+                                <Separator></Separator>
+                              </div>
+                              <div className="flex gap-5 justify-center">
+                                <Button
+                                  variant={
+                                    selectedEpisodeDisplayStyle === "grid"
+                                      ? "default"
+                                      : "outline"
+                                  }
+                                  className="px-5 py-2 "
+                                  onClick={() =>
+                                    setSelectedEpisodeDisplayStyle("grid")
+                                  }
+                                >
+                                  <IoGridOutline /> Grid
+                                </Button>
+                                <Button
+                                  variant={
+                                    selectedEpisodeDisplayStyle === "list"
+                                      ? "default"
+                                      : "outline"
+                                  }
+                                  className="px-5 py-2 "
+                                  onClick={() =>
+                                    setSelectedEpisodeDisplayStyle("list")
+                                  }
+                                >
+                                  <CiBoxList /> List
+                                </Button>
+                              </div>
+                              <div
+                                className={
                                   selectedEpisodeDisplayStyle === "grid"
-                                    ? "default"
-                                    : "outline"
-                                }
-                                className="px-5 py-2 "
-                                onClick={() =>
-                                  setSelectedEpisodeDisplayStyle("grid")
+                                    ? "grid grid-cols-4 gap-4 my-5 w-5/6 mx-auto"
+                                    : "flex flex-col gap-4 my-5 w-5/6 mx-auto"
                                 }
                               >
-                                <IoGridOutline /> Grid
-                              </Button>
-                              <Button
-                                variant={
-                                  selectedEpisodeDisplayStyle === "list"
-                                    ? "default"
-                                    : "outline"
-                                }
-                                className="px-5 py-2 "
-                                onClick={() =>
-                                  setSelectedEpisodeDisplayStyle("list")
-                                }
-                              >
-                                <CiBoxList /> List
-                              </Button>
+                                {" "}
+                                {episodes.map((episode) => (
+                                  <div key={episode.id}>
+                                    <EpisodeListCard
+                                      episode={episode}
+                                      orientation={
+                                        selectedEpisodeDisplayStyle === "grid"
+                                          ? "grid"
+                                          : "list"
+                                      }
+                                    />{" "}
+                                  </div>
+                                ))}
+                              </div>
                             </div>
-                            <div
-                              className={
-                                selectedEpisodeDisplayStyle === "grid"
-                                  ? "grid grid-cols-4 gap-4 my-5 w-5/6 mx-auto"
-                                  : "flex flex-col gap-4 my-5 w-5/6 mx-auto"
-                              }
-                            >
-                              {" "}
-                              {episodes.map((episode) => (
-                                <div key={episode.id}>
-                                  <EpisodeListCard
-                                    episode={episode}
-                                    orientation={
-                                      selectedEpisodeDisplayStyle === "grid"
-                                        ? "grid"
-                                        : "list"
-                                    }
-                                  />{" "}
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
+                          )}
                       </div>
                     ))}
                   </div>

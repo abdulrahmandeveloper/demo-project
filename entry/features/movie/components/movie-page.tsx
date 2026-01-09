@@ -26,7 +26,7 @@ import {
   getMovieByIDFromTMDB,
   getMovieByIdKeywordsFromTMDB,
 } from "entry/shared/services/tmdb/tmdb.movie.service";
-import { DetectOriginalCounryName } from "entry/shared/utils/language-selector";
+import { convertOriginalCounryName } from "@/shared/utils/code-converters";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -51,7 +51,7 @@ const MoviePage = () => {
 
   const movieId = Number(params.movieId);
 
-  const movieLanguage = DetectOriginalCounryName(movie.original_language);
+  const movieLanguage = convertOriginalCounryName(movie.original_language);
 
   useEffect(() => {
     const fetchMovie = async () => {

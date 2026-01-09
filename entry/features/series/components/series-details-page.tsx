@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   SeriesAlternativeTitles,
   TMDBSeriesResponse,
@@ -20,10 +20,29 @@ import {
   TMDBContentRating,
   TMDBCrewResponse,
   TMDBExternalIdsResponse,
+  TMDBLogosData,
   TMDBSeriesImagesResponse,
 } from "@/shared/interfaces/tmdb/tmdb.interface";
 import { Separator } from "@/shared/components/ui/separator";
 import PersonInfoCard from "@/routes/people/components/person-info-card";
+import {
+  convertOriginalCounryName,
+  translateCountryCodeToCountryName,
+} from "@/shared/utils/code-converters";
+import { ComboboxContainer } from "@/shared/components/custom-ui/containers/combobox-container";
+import { BsAspectRatio } from "react-icons/bs";
+import { Badge } from "@/shared/components/ui/badge";
+import { seriesDetailsPageSections } from "../constants/series-details";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/shared/components/ui/accordion";
+import { AccordionContent } from "@radix-ui/react-accordion";
+import { Button } from "@/shared/components/ui/button";
+import { ChevronDown } from "lucide-react";
+import FilterSelection from "@/shared/components/custom-ui/containers/filter-selection-container";
+import { tmdbCountryCodes } from "@/shared/constants/tmdb.constants";
 
 type SeriesDetailsPageProps = {
   seriesId: number;
@@ -34,14 +53,47 @@ const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
   );
   const [cast, setCast] = useState<TMDBCastResponse[]>([]);
   const [crew, setCrew] = useState<TMDBCrewResponse[]>([]);
-  const [images, setImages] = useState<TMDBSeriesImagesResponse>();
+  const [images, setImages] = useState<TMDBSeriesImagesResponse | null>(null);
   const [alternativeTitles, setAlternativeTitles] = useState<
     SeriesAlternativeTitles[]
   >([]);
   const [contentRating, setContent] = useState<TMDBContentRating[]>([]);
   const [externalIds, setExternalIds] = useState<TMDBExternalIdsResponse>();
+  const [showCastSection, setShowCastSection] = useState<boolean>(true);
+  const [showCrewSection, setShowCrewSection] = useState<boolean>(true);
+  const [showPostersSection, setShowPostersSection] = useState<boolean>(true);
+  const [showBackdropsSection, setShowBackdropsSection] =
+    useState<boolean>(true);
+  const [showLogosSection, setShowLogosSection] = useState<boolean>(true);
 
-  console.log(series);
+  //gallery section filter states
+  //poster
+  const [posterLanguageValue, setPosterLanguageValue] = useState<string | null>(
+    null
+  );
+  const [postervotesValue, setPosterVotesValue] = useState<number | null>(null);
+  const [posterRateValue, setPosterRateValue] = useState<number | null>(null);
+
+  //backdrops
+  const [backdropLanguageValue, setBackdropLanguageValue] = useState<
+    string | null
+  >(null);
+  const [backdropvotesValue, setBackdropVotesValue] = useState<number | null>(
+    null
+  );
+  const [backdropRateValue, setBackdropRateValue] = useState<number | null>(
+    null
+  );
+
+  //logo
+  const [logoLanguageValue, setlogoLanguageValue] = useState<string | null>(
+    null
+  );
+  const [logoVoteValue, setlogoVotesValue] = useState<number | null>(null);
+  const [logoRateValue, setlogoRateValue] = useState<number | null>(null);
+
+  console.log(images?.posters);
+  console.log(images?.logos);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,194 +138,476 @@ const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
     fetchData();
   }, []);
 
+  //filtered gallery list
+  const logosFilteredList: TMDBLogosData[] | [] =
+    images?.logos.length > 0 &&
+    images?.logos.find((logo) => {
+      if (
+        logo.iso_639_1 === logoLanguageValue &&
+        logo.vote_average === logoRateValue &&
+        logo.vote_count === logoVoteValue
+      ) {
+        return logo;
+      } else {
+        return [];
+      }
+    });
   const generalInformationClassname = "text-xl  opacity-70";
   const sectionHeadersClassname = "my-4 text-2xl font-serif";
+  const generalInformationGroupsContainerClassname =
+    "border border-white/20 p-4 m-4 rounded-lg";
+  const generalInformationGroupsTitleContainerClassname =
+    "my-1 font-semibold text-lg font-sans";
+  const generalInformationGroupsContentContainerClassname = "w-19/20 mx-auto";
 
+  const infoSectionTitleStyles = "text-xl opacity-70";
   return (
     <div>
       <div className="  overflow-x-auto w-9/10 mx-auto my-5">
-        <div className="">
-          <p className={sectionHeadersClassname}>General Information: </p>
-          <div className="grid grid-cols-2  gap-2 bg-card p-4 rounded-lg">
-            <p className={generalInformationClassname}>TMDB ID: {series.id}</p>
-            <p className={generalInformationClassname}>
-              Media Display Art Type: {series.type}
-            </p>
-            <p className="text-xl  opacity-70">
-              Media Type: {series.media_type === "tv" ? "TV" : "Movie/Film"}
-            </p>
-            <p className="text-xl  opacity-70">
-              Number of Seasons: {series.number_of_seasons}
-            </p>
-            <p className="text-xl   opacity-70">
-              Number of Episodes: {series.number_of_episodes}
-            </p>
-            {series.next_episode_to_air?.air_date !== null && (
-              <p className="text-xl opacity-70 ">
-                Next Episode Air Details: {series.next_episode_to_air?.air_date}
+        <div className="flex justify-between">
+          <h1 className={sectionHeadersClassname}>Name: {series.name}</h1>
+          <div className="flex items-center mx-5">
+            <ComboboxContainer
+              triggerTitle="Go to Section..."
+              values={seriesDetailsPageSections}
+              searchPlaceholder="Search Seactions.."
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-2  gap-2 bg-card p-4 rounded-lg">
+          <div className={generalInformationGroupsContainerClassname}>
+            <h1 className={generalInformationGroupsTitleContainerClassname}>
+              Series Details
+            </h1>
+            <div className="my-2">
+              <Separator />
+            </div>
+            <div className={generalInformationGroupsContentContainerClassname}>
+              <p className={generalInformationClassname}>
+                Original series name: {series.original_name}
+              </p>{" "}
+              <p className={infoSectionTitleStyles}>
+                Original Languages in the Series:{" "}
+                {convertOriginalCounryName(series.original_language)}
               </p>
-            )}
-            {series.episode_run_time?.length > 0 && (
-              <p className="text-xl opacity-70">
-                Episode Length:{" "}
-                {series.episode_run_time.map((number) => number)} Minutes
+              <p className={infoSectionTitleStyles}>
+                IS Adultry: {series.adult ? "True" : "False"}
               </p>
-            )}
-            <p className="text-xl opacity-70 ">
-              First Aired in: {series.first_air_date}
-            </p>
-            <p className="text-xl opacity-70 ">
-              Last Media Aired in: {series.last_air_date}
-            </p>
-            <p className="text-xl opacity-70 ">
-              Last Episode Aired in: {series.last_episode_to_air?.air_date}
-            </p>
-            <p className="text-xl opacity-70 ">
-              In Production: {series.in_production ? "Yes" : "No"}
-            </p>
-            <p className="text-xl opacity-70 ">
-              Created by:{" "}
-              {series.created_by?.length > 0
-                ? series.created_by?.map((creator) => (
-                    <Link
-                      key={creator.id}
-                      href={`/discover/people/${creator.id}`}
-                      className="hover:underline hover:text-blue-200"
-                    >
-                      {creator.name},
-                    </Link>
-                  ))
-                : "Unknown"}
-            </p>
-
-            <p className="text-xl opacity-70 ">
-              TMDB Voters: {series.vote_count} votes
-            </p>
-            <p className="text-xl opacity-70 ">
-              TMDB Voters Average: {series.vote_average}
-            </p>
-            <p className="text-xl opacity-70 ">
-              TMDB Popularity: {series.popularity}
-            </p>
-            <p className="text-xl opacity-70 w-full flex gap-4">
-              <h1 className="text-xl opacity-70">Other Names: </h1>
-              {alternativeTitles.length > 0 ? (
-                <div className="text-xl opacity-70">
-                  {alternativeTitles?.map((name) => (
-                    <h1 key={name.iso_3166_1 && name.title}>
-                      {" "}
-                      - {name.title},{" "}
-                    </h1>
-                  ))}
-                </div>
-              ) : (
-                "Unknown"
+              <p className={infoSectionTitleStyles}>
+                Genres:{" "}
+                {series.genres?.length > 0
+                  ? series.genres?.map((genre) => genre.name)
+                  : "Unknown"}
+              </p>
+              <p className={generalInformationClassname}>
+                Media Type: {series.media_type === "tv" ? "TV" : "Unknown"}
+              </p>
+              <div className="text-xl opacity-70 w-full ">
+                <Accordion type="single" collapsible className="w-full my-0">
+                  <AccordionItem value={"alternative_names"}>
+                    <AccordionTrigger className="text-xl hover:no-underline lg:mr-5 cursor-pointer">
+                      Other Names:
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      {alternativeTitles.length > 0 ? (
+                        <div className="text-xl opacity-70">
+                          {alternativeTitles?.map((name) => (
+                            <h1 key={name.iso_3166_1 && name.title}>
+                              {" "}
+                              - {name.title},{" "}
+                            </h1>
+                          ))}
+                        </div>
+                      ) : (
+                        "Unknown"
+                      )}
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </div>
+              <div className={`${infoSectionTitleStyles} overflow-hidden`}>
+                <Accordion type="single" collapsible className="w-full my-0">
+                  <AccordionItem value={"alternative_names"}>
+                    <AccordionTrigger className="text-xl hover:no-underline lg:mr-5 cursor-pointer my-0">
+                      Other Spoken Languages in the Series:{" "}
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      {series.spoken_languages?.map(
+                        (language, index) =>
+                          `- ${language.english_name}${
+                            series.spoken_languages.length - 1 > index
+                              ? ","
+                              : ""
+                          }`
+                      )}
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </div>
+              <p className={generalInformationClassname}>
+                Series Slogan:{" "}
+                <p className="font-serif ">&quot; {series.tagline} &quot;</p>
+              </p>
+            </div>
+          </div>
+          <div className={generalInformationGroupsContainerClassname}>
+            <h1 className={generalInformationGroupsTitleContainerClassname}>
+              Airing Info
+            </h1>
+            <div className="my-2">
+              <Separator />
+            </div>
+            <div className={generalInformationGroupsContentContainerClassname}>
+              {series.next_episode_to_air?.air_date !== null && (
+                <p className={infoSectionTitleStyles}>
+                  Next Episode Air Details:{" "}
+                  {series.next_episode_to_air?.air_date}
+                </p>
               )}
-            </p>
-            <p className="text-xl opacity-70">
-              IS Adultry: {series.adult ? "True" : "False"}
-            </p>
-            <p className="text-xl opacity-70">
-              Genres:{" "}
-              {series.genres?.length > 0
-                ? series.genres?.map((genre) => genre.name)
-                : "Unknown"}
-            </p>
-            <p className="text-xl opacity-70">
-              Genres ID&apos;s:{" "}
-              {series.genre_ids?.length > 0
-                ? series.genre_ids?.map((genre) => genre)
-                : "Unknown"}
-            </p>
+              <p className={infoSectionTitleStyles}>
+                First Aired in: {series.first_air_date}
+              </p>
+              <p className={infoSectionTitleStyles}>
+                Last Media Aired in: {series.last_air_date}
+              </p>
+              <p className={infoSectionTitleStyles}>
+                Last Episode Aired in: {series.last_episode_to_air?.air_date}
+              </p>
+              {series.episode_run_time?.length > 0 && (
+                <p className="text-xl opacity-70">
+                  Episode Length:{" "}
+                  {series.episode_run_time.map((number) => number)} Minutes
+                </p>
+              )}
+            </div>
+          </div>
+          <div className={generalInformationGroupsContainerClassname}>
+            <h1 className={generalInformationGroupsTitleContainerClassname}>
+              TMDB Data
+            </h1>
+            <div className="my-2">
+              <Separator />
+            </div>
+            <div className={generalInformationGroupsContentContainerClassname}>
+              <p className={generalInformationClassname}>
+                TMDB ID: {series.id}
+              </p>
+              <p className={generalInformationClassname}>
+                TMDB Series Genres ID:{" "}
+                {series.genre_ids?.map(
+                  (id, index) =>
+                    `${id}${series.genre_ids.length - 1 > index ? "," : ""}`
+                )}
+              </p>
+              <p className={infoSectionTitleStyles}>
+                TMDB Voters: {series.vote_count} votes
+              </p>
+              <p className={infoSectionTitleStyles}>
+                TMDB Voters Average: {series.vote_average}
+              </p>
+              <p className={infoSectionTitleStyles}>
+                TMDB Popularity: {series.popularity}
+              </p>
+            </div>
+          </div>
+          <div className={generalInformationGroupsContainerClassname}>
+            <h1 className={generalInformationGroupsTitleContainerClassname}>
+              Production Details
+            </h1>
+            <div className="my-2">
+              <Separator />
+            </div>
+            <div className={generalInformationGroupsContentContainerClassname}>
+              <p className={infoSectionTitleStyles}>
+                In Production: {series.in_production ? "Yes" : "No"}
+              </p>
+              <p className={generalInformationClassname}>
+                Media Display Art Type: {series.type}
+              </p>
+              <p className={generalInformationClassname}>
+                Number of Seasons: {series.number_of_seasons}
+              </p>
+              <p className={generalInformationClassname}>
+                Number of Episodes: {series.number_of_episodes}
+              </p>
+              <p className={infoSectionTitleStyles}>
+                Created by:{" "}
+                {series.created_by?.length > 0
+                  ? series.created_by?.map((creator) => (
+                      <Link
+                        key={creator.id}
+                        href={`/discover/people/${creator.id}`}
+                        className="hover:underline hover:text-blue-200"
+                      >
+                        {creator.name},
+                      </Link>
+                    ))
+                  : "N/A"}
+              </p>
+            </div>
           </div>
         </div>
         <div className="my-5">
           <Separator />
         </div>
         <div className="grid grid-cols-2 gap-10">
-          <div className="">
-            <h1 className="my-2 text-2xl font-serif">Cast</h1>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {cast.map((cast) => {
-                return (
-                  <div className="" key={cast.id}>
-                    <PersonInfoCard
-                      containerClassName={""}
-                      personImage={cast.profile_path}
-                      name={cast.name}
-                      id={cast.id}
-                      originalName={cast.original_name}
-                      gender={cast.gender}
-                      role={cast.known_for_department}
-                      popular={cast.popularity}
-                    />
-                  </div>
-                );
-              })}
+          <div className="" id="cast">
+            <div className="flex justify-between items-center my-2">
+              <h1 className="my-2 text-2xl font-serif">Cast</h1>
+              <Button
+                variant={"outline"}
+                onClick={() => setShowCastSection(!showCastSection)}
+              >
+                <ChevronDown className="shrink-0 translate-y-0.5 transition-transform duration-200" />{" "}
+                {showCastSection ? "Collapse" : "Open"}
+              </Button>
             </div>
+            {showCastSection && (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {cast.map((cast) => {
+                  return (
+                    <div className="" key={cast.id}>
+                      <PersonInfoCard
+                        containerClassName={""}
+                        personImage={cast.profile_path}
+                        name={cast.name}
+                        id={cast.id}
+                        originalName={cast.original_name}
+                        gender={cast.gender}
+                        role={cast.known_for_department}
+                        popular={cast.popularity}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
-          <div className="">
-            <h1 className="my-2 text-2xl font-serif">Crew</h1>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {crew.map((crew) => {
-                return (
-                  <div className="" key={crew.id}>
-                    <PersonInfoCard
-                      containerClassName={""}
-                      personImage={crew.profile_path}
-                      name={crew.name}
-                      id={crew.id}
-                      originalName={crew.original_name}
-                      gender={crew.gender}
-                      role={crew.known_for_department}
-                      popular={crew.popularity}
-                    />
-                  </div>
-                );
-              })}
+          <div className="" id="crew">
+            <div className="flex justify-between items-center my-2">
+              <h1 className="my-2 text-2xl font-serif">Crew</h1>
+              <Button
+                variant={"outline"}
+                onClick={() => setShowCrewSection(!showCrewSection)}
+              >
+                {" "}
+                <ChevronDown className="shrink-0 translate-y-0.5 transition-transform duration-200" />{" "}
+                {showCrewSection ? "Collapse" : "Open"}
+              </Button>
+            </div>{" "}
+            {showCrewSection && (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {crew.map((crew) => {
+                  return (
+                    <div className="" key={crew.id}>
+                      <PersonInfoCard
+                        containerClassName={""}
+                        personImage={crew.profile_path}
+                        name={crew.name}
+                        id={crew.id}
+                        originalName={crew.original_name}
+                        gender={crew.gender}
+                        role={crew.known_for_department}
+                        popular={crew.popularity}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="my-5">
+          <Separator />
+        </div>
+        <div className="" id="gallery">
+          <h1 className={sectionHeadersClassname}>Gallery</h1>
+          <div className="w-9/10 mx-auto">
+            <div className="" id="posters">
+              <div className="grid grid-cols-3 gap-5">
+                {" "}
+                <h1 className="my-2 text-xl font-sans font-semibold">
+                  Posters
+                </h1>
+                <div className="flex justify-center">
+                  <SeriesDetailsPagefilterSelectionGroup
+                    firstFilter={{
+                      value: posterLanguageValue,
+                      setvalues: setPosterLanguageValue,
+                    }}
+                    secondFilter={{
+                      value: postervotesValue,
+                      setvalues: setPosterVotesValue,
+                    }}
+                    thirdFilter={{
+                      value: posterRateValue,
+                      setvalues: setPosterRateValue,
+                    }}
+                  />
+                </div>
+                <div className="flex justify-end">
+                  {" "}
+                  <Button
+                    variant={"outline"}
+                    onClick={() => setShowPostersSection(!showPostersSection)}
+                    className="w-1/"
+                  >
+                    <ChevronDown className="shrink-0 translate-y-0.5 transition-transform duration-200 my-auto" />{" "}
+                    {showPostersSection ? "Collapse" : "Open"}
+                  </Button>
+                </div>
+              </div>
+              {showPostersSection && (
+                <div className="grid lg:grid-cols-7 gap-5 my-4">
+                  {images?.posters.map((poster) => {
+                    console.log("inside posters: ", poster.iso_639_1);
+
+                    return (
+                      <div className="" key={poster.iso_639_1}>
+                        <SeriesDetailsImageCard image={poster} />
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+            <div className="my-2">
+              <Separator />
+            </div>
+            <div className="" id="backdrops">
+              <div className="grid grid-cols-3 gap-5">
+                {" "}
+                <h1 className="my-2 text-xl font-sans font-semibold">
+                  Backdrops
+                </h1>
+                <div className="flex justify-center">
+                  <SeriesDetailsPagefilterSelectionGroup
+                    firstFilter={{
+                      value: backdropLanguageValue,
+                      setvalues: setBackdropLanguageValue,
+                    }}
+                    secondFilter={{
+                      value: backdropvotesValue,
+                      setvalues: setBackdropVotesValue,
+                    }}
+                    thirdFilter={{
+                      value: backdropRateValue,
+                      setvalues: setBackdropRateValue,
+                    }}
+                  />
+                </div>
+                <div className="flex justify-end">
+                  {" "}
+                  <Button
+                    variant={"outline"}
+                    onClick={() =>
+                      setShowBackdropsSection(!showBackdropsSection)
+                    }
+                  >
+                    <ChevronDown className="shrink-0 translate-y-0.5 transition-transform duration-200" />{" "}
+                    {showBackdropsSection ? "Collapse" : "Open"}
+                  </Button>
+                </div>
+              </div>{" "}
+              {showBackdropsSection && (
+                <div className="grid lg:grid-cols-7 gap-5 my-4">
+                  {images?.backdrops.map((backdrop) => {
+                    if (backdrop.iso_639_1 !== backdropLanguageValue) {
+                      return (
+                        <div className="" key={backdrop.iso_639_1}>
+                          <SeriesDetailsImageCard image={backdrop} />
+                        </div>
+                      );
+                    }
+                  })}
+                </div>
+              )}
+            </div>
+            <div className="my-2">
+              <Separator />
+            </div>
+            <div className="" id="logos">
+              <div className="grid grid-cols-3 gap-5">
+                {" "}
+                <h1 className="my-2 text-xl font-sans font-semibold">Logos</h1>
+                <div className="flex justify-center">
+                  <SeriesDetailsPagefilterSelectionGroup
+                    firstFilter={{
+                      value: logoLanguageValue,
+                      setvalues: setlogoLanguageValue,
+                    }}
+                    secondFilter={{
+                      value: logoVoteValue,
+                      setvalues: setlogoVotesValue,
+                    }}
+                    thirdFilter={{
+                      value: logoRateValue,
+                      setvalues: setlogoRateValue,
+                    }}
+                  />
+                </div>
+                <div className="flex justify-end">
+                  {" "}
+                  <Button
+                    variant={"outline"}
+                    onClick={() => setShowLogosSection(!showLogosSection)}
+                  >
+                    <ChevronDown className="shrink-0 translate-y-0.5 transition-transform duration-200" />{" "}
+                    {showLogosSection ? "Collapse" : "Open"}
+                  </Button>
+                </div>
+              </div>{" "}
+              {showLogosSection && (
+                <div className="grid lg:grid-cols-7 gap-5 my-4">
+                  {images?.logos?.map((logo) => {
+                    return (
+                      <div className="" key={logo.iso_639_1}>
+                        <SeriesDetailsImageCard image={logo} />
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
         </div>
         <div className="my-5">
           <Separator />
         </div>
-        <div className="">
-          <h1 className={sectionHeadersClassname}>Gallery</h1>
-          <div className="">
-            <h1 className="my-2 text-xl font-sans font-semibold">Posters</h1>
-            <div className="grid lg:grid-cols-6 gap-4 my-4">
-              {images?.posters.map((poster) => {
-                return (
-                  <div className="" key={poster.iso_639_1}>
-                    {poster.height}
-                  </div>
-                );
-              })}
-            </div>
+        <div className="" id="external_ids">
+          <h1 className={sectionHeadersClassname}>External ID&apos;s</h1>
+          <div className="grid grid-cols-3 gap-8 w-8/10 mx-auto">
+            <ExternalIdsList list={externalIds ?? null} />
           </div>
-          <div className="">
-            <h1 className="my-2 text-xl font-sans font-semibold">Backdrops</h1>
-            <div className="grid lg:grid-cols-6 gap-4 my-4">
-              {images?.backdrops.map((backdrop) => {
-                return (
-                  <div className="" key={backdrop.iso_639_1}>
-                    {backdrop.height}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          <div className="">
-            <h1 className="my-2 text-xl font-sans font-semibold">Logos</h1>
-            <div className="grid lg:grid-cols-6 gap-4 my-4">
-              {images?.logos.map((logo) => {
-                return (
-                  <div className="" key={logo.iso_639_1}>
-                    {logo.height}
-                  </div>
-                );
-              })}
-            </div>
+        </div>
+        <div className="my-5">
+          <Separator />
+        </div>
+        <div className="" id="content_rating">
+          <h1 className={sectionHeadersClassname}>
+            Series Content Rating&apos;s{" "}
+          </h1>
+          <div className="grid grid-cols-6 gap-5">
+            {contentRating.map((rate) => (
+              <div
+                key={rate.iso_3166_1}
+                className="bg-gray-900 rounded-lg px-4 py-2"
+              >
+                <h2 className="flex my-2 gap-1">
+                  <p className="opacity-60">Country System: </p>
+                  {"    "}
+                  {convertOriginalCounryName(rate.iso_3166_1)}
+                </h2>
+                <div className="my-1">
+                  <Separator />
+                </div>
+                <h4 className="flex my-2 gap-2 ">
+                  {" "}
+                  <p className="opacity-60">Rating: </p>
+                  {rate.rating}
+                </h4>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -282,3 +616,173 @@ const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
 };
 
 export default SeriesDetailsPage;
+
+type SeriesDetailsImageCardProps = {
+  image: TMDBLogosData;
+};
+
+export const SeriesDetailsImageCard = ({
+  image,
+}: SeriesDetailsImageCardProps) => {
+  console.log(
+    "translate: ",
+    translateCountryCodeToCountryName(image.iso_639_1)
+  );
+
+  return (
+    <div className="min-h-[150px] min-w-[100px]">
+      <div>
+        <img
+          src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${image.file_path}`}
+          className="w-full h-full rounded-lg object-cover"
+        ></img>
+      </div>
+      <div className="opacity-50 text-sm p-2">
+        <div className="flex justify-between items-center mx-1 my-0.5 ">
+          <p className="">
+            {translateCountryCodeToCountryName(image.iso_639_1)}
+          </p>
+          <p className="flex  items-center justify-center">
+            <BsAspectRatio className="mx-2" /> {image.width} - {image.height}
+          </p>
+        </div>
+
+        <div className="flex justify-between mx-2">
+          <p className="">{image.vote_count} votes</p>
+          <p className="">{image.vote_average} avg</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+type ExternalIdsListProps = {
+  list: TMDBExternalIdsResponse | null;
+};
+
+export const ExternalIdsList = ({ list }: ExternalIdsListProps) => {
+  const titlesClassnames = " font-medium text-white/60";
+  const idsClassnames = "font- font-medium font-sans text-lg";
+  const contanersClassname =
+    " text-2xl flex items-center gap-2 font-bold bg-stone-900 px-4 py-5 rounded-lg";
+  return (
+    <>
+      <div className={contanersClassname}>
+        <span className={titlesClassnames}>TMDB ID:</span>
+        <Badge variant="secondary" className={idsClassnames}>
+          {list?.id || "N/A"}
+        </Badge>
+      </div>{" "}
+      <div className={contanersClassname}>
+        <span className={titlesClassnames}>Imdb ID:</span>
+        <Badge variant="secondary" className={idsClassnames}>
+          {list?.imdb_id || "N/A"}
+        </Badge>
+      </div>{" "}
+      <div className={contanersClassname}>
+        <span className={titlesClassnames}>Freebase mid ID:</span>
+        <Badge variant="secondary" className={idsClassnames}>
+          {list?.freebase_mid || "N/A"}
+        </Badge>
+      </div>{" "}
+      <div className={contanersClassname}>
+        <span className={titlesClassnames}>tvdb ID:</span>
+        <Badge variant="secondary" className={idsClassnames}>
+          {list?.tvdb_id || "N/A"}
+        </Badge>
+      </div>{" "}
+      <div className={contanersClassname}>
+        <span className={titlesClassnames}>tvrage ID:</span>
+        <Badge variant="secondary" className={idsClassnames}>
+          {list?.tvrage_id || "N/A"}
+        </Badge>
+      </div>{" "}
+      <div className={contanersClassname}>
+        <span className={titlesClassnames}>Wikidata ID:</span>
+        <Badge variant="secondary" className={idsClassnames}>
+          {list?.wikidata_id || "N/A"}
+        </Badge>
+      </div>{" "}
+      <div className={contanersClassname}>
+        <span className={titlesClassnames}>Facebook ID:</span>
+        <Badge variant="secondary" className={idsClassnames}>
+          {list?.facebook_id || "N/A"}
+        </Badge>
+      </div>{" "}
+      <div className={contanersClassname}>
+        <span className={titlesClassnames}>Instagram ID: </span>
+        <Badge variant="secondary" className={idsClassnames}>
+          {list?.instagram_id || "N/A"}
+        </Badge>
+      </div>{" "}
+      <div className={contanersClassname}>
+        <span className={titlesClassnames}>Twitter ID: </span>
+        <Badge variant="secondary" className={idsClassnames}>
+          {list?.twitter_id || "N/A"}
+        </Badge>
+      </div>{" "}
+    </>
+  );
+};
+
+type SeriesDetailsPagefilterSelectionGroupProps = {
+  firstFilter: {
+    value: string;
+    setvalues: Dispatch<SetStateAction<string>>;
+  };
+  secondFilter: {
+    value: number | null;
+    setvalues: Dispatch<SetStateAction<number | null>>;
+  };
+  thirdFilter: {
+    value: number | null;
+    setvalues: Dispatch<SetStateAction<number | null>>;
+  };
+};
+
+const tmdbVoteCount = [
+  { name: "All", value: null },
+  { name: "1 - 3", value: 3 },
+  { name: "4 - 5", value: 5 },
+  { name: "6 - 7", value: 7 },
+  { name: "8 - 9", value: 9 },
+  { name: "10 - 12", value: 12 },
+  { name: "13+", value: 13 },
+];
+const tmdbVoteRating = [
+  { name: "0.25 - 0.5", value: 0.5 },
+  { name: "0.5 - 0.75", value: 0.75 },
+  { name: "0.75 - 1", value: 1 },
+  { name: "1 - 1.5", value: 1.5 },
+  { name: "1.5 - 2", value: 2 },
+  { name: "2+", value: 2.1 },
+];
+
+const SeriesDetailsPagefilterSelectionGroup = ({
+  firstFilter,
+  secondFilter,
+  thirdFilter,
+}: SeriesDetailsPagefilterSelectionGroupProps) => {
+  return (
+    <div className="flex gap-4">
+      <FilterSelection
+        placeHolder={"Language"}
+        values={tmdbCountryCodes}
+        value={firstFilter.value}
+        setValues={firstFilter.setvalues}
+      />
+      <FilterSelection
+        placeHolder={"Votes"}
+        values={tmdbVoteCount}
+        value={secondFilter.value ?? undefined}
+        setValues={secondFilter.setvalues}
+      />
+      <FilterSelection
+        placeHolder={"Rating"}
+        values={tmdbVoteRating}
+        value={thirdFilter.value ?? undefined}
+        setValues={thirdFilter.setvalues}
+      />
+    </div>
+  );
+};
