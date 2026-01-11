@@ -162,9 +162,14 @@ export const getSeriesExternalIdsFromTmdb = async (
 };
 
 export const getSeriesImagesFromTmdb = async (
-  tvId: number
+  tvId: number,
+  languageCode: string | null
 ): Promise<TMDBSeriesImagesResponse> => {
-  const response = await tmdbApi.get(`/tv/${tvId}/images`);
+  const response = await tmdbApi.get(`/tv/${tvId}/images`, {
+    params: {
+      include_image_language: languageCode,
+    },
+  });
   const data = response.data;
   return data;
 };

@@ -3,6 +3,7 @@ import {
   TMDBCommonMediaDataResponse,
   TMDBCrewResponse,
   TMDBMediaResponse,
+  TMDBPostersData,
 } from "@/shared/interfaces/tmdb/tmdb.interface";
 import {
   EpisodeResponse,
@@ -74,7 +75,7 @@ export interface TMDBSeasoEpisodesResponse {
   crew: TMDBCrewResponse[];
   guest_stars: TMDBCastResponse[];
 }
-export interface TMDBSeasonEpisodesResponse {
+export interface TMDBSeasonResponse {
   _id: string;
   air_date: string;
   episodes: TMDBSeasoEpisodesResponse[];
@@ -85,4 +86,45 @@ export interface TMDBSeasonEpisodesResponse {
   poster_path: string;
   season_number: number;
   vote_average: number;
+}
+
+export interface TMDBEpisodeStillsData {
+  aspect_ratio: number;
+  height: number;
+  iso_639_1: null;
+  file_path: string;
+  vote_average: number;
+  vote_count: number;
+  width: number;
+}
+export interface TMDBEpisodeImagesResponse {
+  id: number;
+  stills: TMDBEpisodeStillsData[];
+}
+
+export interface TMDBSeasonImageResponse {
+  id: number;
+  posters: TMDBPostersData[];
+}
+
+export interface TMDBSeasonVideosResponse {
+  id: number;
+  results: TMDBSeasonEpisodeVideosData[];
+}
+
+export interface TMDBSeasonEpisodeVideosData {
+  iso_639_1: string;
+  iso_3166_1: string;
+  name: string;
+  key: string;
+  site: string;
+  size: number;
+  type: string;
+  official: true;
+  published_at: string;
+  id: string;
+}
+export interface TMDBEpisodeVideosResponse {
+  id: number;
+  results: TMDBSeasonEpisodeVideosData[];
 }

@@ -16,12 +16,13 @@ import {
   getSeriesImagesFromTmdb,
 } from "../services/series.service";
 import {
+  TMDBBackdropsData,
   TMDBCastResponse,
   TMDBContentRating,
   TMDBCrewResponse,
   TMDBExternalIdsResponse,
   TMDBLogosData,
-  TMDBSeriesImagesResponse,
+  TMDBPostersData,
 } from "@/shared/interfaces/tmdb/tmdb.interface";
 import { Separator } from "@/shared/components/ui/separator";
 import PersonInfoCard from "@/routes/people/components/person-info-card";
@@ -32,7 +33,10 @@ import {
 import { ComboboxContainer } from "@/shared/components/custom-ui/containers/combobox-container";
 import { BsAspectRatio } from "react-icons/bs";
 import { Badge } from "@/shared/components/ui/badge";
-import { seriesDetailsPageSections } from "../constants/series-details";
+import {
+  seriesDetailsPageSections,
+  tmdbVoteRating,
+} from "../constants/series-details";
 import {
   Accordion,
   AccordionItem,
@@ -53,7 +57,10 @@ const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
   );
   const [cast, setCast] = useState<TMDBCastResponse[]>([]);
   const [crew, setCrew] = useState<TMDBCrewResponse[]>([]);
-  const [images, setImages] = useState<TMDBSeriesImagesResponse | null>(null);
+  const [posters, setPosters] = useState<TMDBPostersData[]>([]);
+  const [backdrops, setBackdrops] = useState<TMDBBackdropsData[]>([]);
+  const [logos, setLogos] = useState<TMDBLogosData[]>([]);
+
   const [alternativeTitles, setAlternativeTitles] = useState<
     SeriesAlternativeTitles[]
   >([]);
@@ -92,15 +99,52 @@ const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
   const [logoVoteValue, setlogoVotesValue] = useState<number | null>(null);
   const [logoRateValue, setlogoRateValue] = useState<number | null>(null);
 
-  console.log(images?.posters);
-  console.log(images?.logos);
+  console.log("posterLanguageValue: ", posterLanguageValue);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const postersData = await getSeriesImagesFromTmdb(
+        seriesId,
+        posterLanguageValue
+      );
+      console.log("postersData: ", postersData);
+
+      if (postersData.posters.length > 0) {
+        setPosters(postersData.posters);
+      }
+    };
+    fetchData();
+  }, [posterLanguageValue, seriesId]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const backdropsData = await getSeriesImagesFromTmdb(
+        seriesId,
+        backdropLanguageValue
+      );
+      if (backdropsData.posters.length > 0) {
+        setBackdrops(backdropsData.backdrops);
+      }
+    };
+    fetchData();
+  }, [backdropLanguageValue, seriesId]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const logosData = await getSeriesImagesFromTmdb(
+        seriesId,
+        logoLanguageValue
+      );
+      if (logosData.posters.length > 0) {
+        setLogos(logosData.logos);
+      }
+    };
+    fetchData();
+  }, [logoLanguageValue, seriesId]);
   useEffect(() => {
     const fetchData = async () => {
       const seriesData = await getSeriesByIDFromTMDB(seriesId);
       const castData = await getSeriesCastFromTmdb(seriesId);
       const crewData = await getSeriesCrewFromTmdb(seriesId);
-      const imagesData = await getSeriesImagesFromTmdb(seriesId);
       const contentRatingsData = await getSeriesAllContentRatingsFromTmdb(
         seriesId
       );
@@ -117,9 +161,7 @@ const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
       if (crewData) {
         setCrew(crewData);
       }
-      if (imagesData) {
-        setImages(imagesData);
-      }
+
       if (contentRatingsData) {
         setContent(contentRatingsData.results);
       }
@@ -139,7 +181,8 @@ const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
   }, []);
 
   //filtered gallery list
-  const logosFilteredList: TMDBLogosData[] | [] =
+  /**
+   * const logosFilteredList: TMDBLogosData[] | [] =
     images?.logos.length > 0 &&
     images?.logos.find((logo) => {
       if (
@@ -152,6 +195,7 @@ const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
         return [];
       }
     });
+   */
   const generalInformationClassname = "text-xl  opacity-70";
   const sectionHeadersClassname = "my-4 text-2xl font-serif";
   const generalInformationGroupsContainerClassname =
@@ -211,11 +255,8 @@ const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
                     <AccordionContent>
                       {alternativeTitles.length > 0 ? (
                         <div className="text-xl opacity-70">
-                          {alternativeTitles?.map((name) => (
-                            <h1 key={name.iso_3166_1 && name.title}>
-                              {" "}
-                              - {name.title},{" "}
-                            </h1>
+                          {alternativeTitles?.map((name, index) => (
+                            <h1 key={index}> - {name.title}, </h1>
                           ))}
                         </div>
                       ) : (
@@ -364,9 +405,9 @@ const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
             </div>
             {showCastSection && (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {cast.map((cast) => {
+                {cast.map((cast, index) => {
                   return (
-                    <div className="" key={cast.id}>
+                    <div className="" key={index}>
                       <PersonInfoCard
                         containerClassName={""}
                         personImage={cast.profile_path}
@@ -397,9 +438,9 @@ const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
             </div>{" "}
             {showCrewSection && (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {crew.map((crew) => {
+                {crew.map((crew, index) => {
                   return (
-                    <div className="" key={crew.id}>
+                    <div className="" key={index}>
                       <PersonInfoCard
                         containerClassName={""}
                         personImage={crew.profile_path}
@@ -459,11 +500,9 @@ const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
               </div>
               {showPostersSection && (
                 <div className="grid lg:grid-cols-7 gap-5 my-4">
-                  {images?.posters.map((poster) => {
-                    console.log("inside posters: ", poster.iso_639_1);
-
+                  {posters.map((poster, index) => {
                     return (
-                      <div className="" key={poster.iso_639_1}>
+                      <div className="" key={index}>
                         <SeriesDetailsImageCard image={poster} />
                       </div>
                     );
@@ -511,10 +550,10 @@ const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
               </div>{" "}
               {showBackdropsSection && (
                 <div className="grid lg:grid-cols-7 gap-5 my-4">
-                  {images?.backdrops.map((backdrop) => {
+                  {backdrops.map((backdrop, index) => {
                     if (backdrop.iso_639_1 !== backdropLanguageValue) {
                       return (
-                        <div className="" key={backdrop.iso_639_1}>
+                        <div className="" key={index}>
                           <SeriesDetailsImageCard image={backdrop} />
                         </div>
                       );
@@ -557,17 +596,18 @@ const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
                   </Button>
                 </div>
               </div>{" "}
-              {showLogosSection && (
+              {showLogosSection && logos.length > 0 && (
                 <div className="grid lg:grid-cols-7 gap-5 my-4">
-                  {images?.logos?.map((logo) => {
+                  {logos?.map((logo, index) => {
                     return (
-                      <div className="" key={logo.iso_639_1}>
+                      <div className="" key={index}>
                         <SeriesDetailsImageCard image={logo} />
                       </div>
                     );
                   })}
                 </div>
               )}
+              {showLogosSection && logos.length < 1 && <EmptyMessage />}
             </div>
           </div>
         </div>
@@ -588,11 +628,8 @@ const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
             Series Content Rating&apos;s{" "}
           </h1>
           <div className="grid grid-cols-6 gap-5">
-            {contentRating.map((rate) => (
-              <div
-                key={rate.iso_3166_1}
-                className="bg-gray-900 rounded-lg px-4 py-2"
-              >
+            {contentRating.map((rate, index) => (
+              <div key={index} className="bg-gray-900 rounded-lg px-4 py-2">
                 <h2 className="flex my-2 gap-1">
                   <p className="opacity-60">Country System: </p>
                   {"    "}
@@ -624,11 +661,6 @@ type SeriesDetailsImageCardProps = {
 export const SeriesDetailsImageCard = ({
   image,
 }: SeriesDetailsImageCardProps) => {
-  console.log(
-    "translate: ",
-    translateCountryCodeToCountryName(image.iso_639_1)
-  );
-
   return (
     <div className="min-h-[150px] min-w-[100px]">
       <div>
@@ -749,16 +781,8 @@ const tmdbVoteCount = [
   { name: "10 - 12", value: 12 },
   { name: "13+", value: 13 },
 ];
-const tmdbVoteRating = [
-  { name: "0.25 - 0.5", value: 0.5 },
-  { name: "0.5 - 0.75", value: 0.75 },
-  { name: "0.75 - 1", value: 1 },
-  { name: "1 - 1.5", value: 1.5 },
-  { name: "1.5 - 2", value: 2 },
-  { name: "2+", value: 2.1 },
-];
 
-const SeriesDetailsPagefilterSelectionGroup = ({
+export const SeriesDetailsPagefilterSelectionGroup = ({
   firstFilter,
   secondFilter,
   thirdFilter,
@@ -783,6 +807,17 @@ const SeriesDetailsPagefilterSelectionGroup = ({
         value={thirdFilter.value ?? undefined}
         setValues={thirdFilter.setvalues}
       />
+    </div>
+  );
+};
+
+type EmptyMessageProps = {
+  containerClassname?: string;
+};
+export const EmptyMessage = ({ containerClassname }: EmptyMessageProps) => {
+  return (
+    <div className={`${containerClassname} flex items-center justify-center`}>
+      <p className="">Sorry, there is no results for your search</p>
     </div>
   );
 };

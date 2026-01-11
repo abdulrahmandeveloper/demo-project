@@ -14,10 +14,7 @@ export const convertOriginalCounryName = (code: string): string => {
 
 //for using iso_3166_1 country codes, this function is needed
 export const translateCountryCodeToCountryName = (code: string): string => {
-  console.log("code: ", code);
-
   const countryName = countriesISO_639_1Codes[code];
-  console.log("country name: ", countryName);
 
   return countryName ?? code;
 };

@@ -26,7 +26,10 @@ import {
 } from "@/features/series/services/series.service";
 import { FaArrowRight } from "react-icons/fa6";
 import { getSeriesByIDFromTMDB } from "entry/shared/services/tmdb/tmdb.series.service";
-import { convertOriginalCounryName } from "@/shared/utils/code-converters";
+import {
+  convertOriginalCounryName,
+  translateCountryCodeToCountryName,
+} from "@/shared/utils/code-converters";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -187,7 +190,8 @@ const SeriesPage = () => {
                 {" "}
                 {seriesLanguage ? (
                   <p className="text-xl opacity-85 gap-1 grid">
-                    Language: {seriesLanguage}
+                    Language:{" "}
+                    {translateCountryCodeToCountryName(seriesLanguage)}
                   </p>
                 ) : null}
               </div>
@@ -296,7 +300,7 @@ const SeriesPage = () => {
                   className=""
                   onClick={() => router.push(`/series/details/${seriesId}`)}
                 >
-                  Discover More Credits <FaArrowRight />
+                  Discover More Details <FaArrowRight />
                 </Button>
               </div>
             </div>
@@ -408,14 +412,18 @@ const SeriesPage = () => {
                           >
                             {episodes.map((episode) => (
                               <div key={episode.id}>
-                                <EpisodeListCard
-                                  episode={episode}
-                                  orientation={
-                                    selectedEpisodeDisplayStyle === "grid"
-                                      ? "grid"
-                                      : "list"
-                                  }
-                                />
+                                <Link
+                                  href={`/series/${seriesId}/season/${season.season_number}`}
+                                >
+                                  <EpisodeListCard
+                                    episode={episode}
+                                    orientation={
+                                      selectedEpisodeDisplayStyle === "grid"
+                                        ? "grid"
+                                        : "list"
+                                    }
+                                  />
+                                </Link>
                               </div>
                             ))}
                           </div>
