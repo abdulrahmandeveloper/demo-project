@@ -33,6 +33,7 @@ import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Separator } from "@/shared/components/ui/separator";
 import { ScrollArea } from "@/shared/components/ui/scroll-area";
+import MoviePageSkeleton from "./skeleton/movie-page-skeleton";
 
 const MoviePage = () => {
   const [movie, setMovie] = useState<TMDBMovieResponse>(
@@ -76,6 +77,7 @@ const MoviePage = () => {
       setKeywords(keywords.keywords);
       setSimilarMovies(similarMovies);
       setReviews(reviews);
+      setLoading(false);
     };
 
     fetchMovie();
@@ -87,15 +89,15 @@ const MoviePage = () => {
       if (!data) return;
 
       setMovieTrailerUrl(data);
-      setLoading(false);
+      //setLoading(false);
     };
     fetchYoutubeUrl();
   }, [movieId]);
 
   return (
     <div className="w-9/10 mx-auto">
-      {loading && <></>}
-      {!loading && (
+      {loading && !movie.title && <MoviePageSkeleton />}
+      {!loading && movie.original_title && movieTrailerUrl?.length > 0 && (
         <div className="">
           {" "}
           <img
