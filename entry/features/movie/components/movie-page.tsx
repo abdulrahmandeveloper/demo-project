@@ -34,6 +34,7 @@ import React, { useEffect, useState } from "react";
 import { Separator } from "@/shared/components/ui/separator";
 import { ScrollArea } from "@/shared/components/ui/scroll-area";
 import MoviePageSkeleton from "./skeleton/movie-page-skeleton";
+import { FaArrowRight } from "react-icons/fa";
 
 const MoviePage = () => {
   const [movie, setMovie] = useState<TMDBMovieResponse>(
@@ -226,29 +227,36 @@ const MoviePage = () => {
           </div>
           <div className="w-2/3 ">
             <p className="text-lg font-bold mb-4">Cast:</p>
-            <ScrollArea>
-              <div className=" flex gap-5 ">
-                {casts?.map((cast, key) => (
-                  <Link
-                    href={`/discover/people/${cast.id}`}
-                    key={key}
-                    className="text-center"
-                  >
-                    <CastCard
-                      name={cast.name}
-                      playedAs={cast.character}
-                      profilePath={cast.profile_path}
-                      className={"h-full flex flex-col  items-center "}
-                    />
-                  </Link>
-                ))}
+            <div className="flex gap-5 justify-center">
+              <ScrollArea>
+                <div className=" flex gap-5 ">
+                  {casts?.map((cast, key) => (
+                    <Link
+                      href={`/discover/people/${cast.id}`}
+                      key={key}
+                      className="text-center"
+                    >
+                      <CastCard
+                        name={cast.name}
+                        playedAs={cast.character}
+                        profilePath={cast.profile_path}
+                        className={"h-full flex flex-col  items-center "}
+                      />
+                    </Link>
+                  ))}
+                </div>
+              </ScrollArea>
+              <div className="flex items-center">
+                <Button
+                  onClick={() => router.push(`/movies/${movieId}/details`)}
+                >
+                  See more details <FaArrowRight />
+                </Button>
               </div>
-            </ScrollArea>
-            <div className="">
-              <Button onClick={() => router.push(`/movies/${movieId}/details`)}>
-                See more details
-              </Button>
             </div>
+          </div>
+          <div className="my-5">
+            <Separator />
           </div>
           <div className="h-[18vh] flex items-center justify-center">
             <h1 className="font-bold text-4xl text-center">{movie.tagline}</h1>
@@ -260,6 +268,9 @@ const MoviePage = () => {
               }
             />
             <VideoProviderCard />
+          </div>
+          <div className="my-5">
+            <Separator />
           </div>
           <div className="flex flex-col w-9/10 mx-auto my-8">
             <h1 className="font-medium text-2xl mb-5">Reviews</h1>

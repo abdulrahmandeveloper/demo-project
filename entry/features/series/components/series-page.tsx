@@ -589,29 +589,31 @@ const SeriesPage = () => {
             )}
           </div>
         </div>
-        <div className="w-4/5 mx-auto my-2">
-          {" "}
-          <h1 className="font-medium text-2xl my-4">Similar Series: </h1>
-          <div className="flex flex-nowrap gap-3 overflow-x-auto w-full">
+        {similarSeries.length > 0 && (
+          <div className="w-4/5 mx-auto my-2">
             {" "}
-            {similarSeries.map((series: TMDBSeriesResponse, index) => (
-              <div key={index} className="min-w-[200px] max-w-[300px]  ">
-                {" "}
-                <PosterCard
-                  linkPathTo={`/series/${series.id}`}
-                  src={`${series.poster_path}`}
-                  className="rounded-lg  w-[200px] h-[300px] text-sm"
-                />
-                <h1 className="flex text-center justify-center opacity-70 text-sm mt-2">
-                  {series.name}
-                </h1>
-                <p className="justify-center flex opacity-45 text-sm">
-                  {series.first_air_date + " | " + series.vote_average}
-                </p>
-              </div>
-            ))}
+            <h1 className="font-medium text-2xl my-4">Similar Series: </h1>
+            <div className="flex flex-nowrap gap-3 overflow-x-auto w-full">
+              {" "}
+              {similarSeries.map((series: TMDBSeriesResponse, index) => (
+                <div key={index} className="min-w-[200px] max-w-[300px]  ">
+                  {" "}
+                  <PosterCard
+                    linkPathTo={`/series/${series.id}`}
+                    src={`${series.poster_path}`}
+                    className="rounded-lg  w-[200px] h-[300px] text-sm"
+                  />
+                  <h1 className="flex text-center justify-center opacity-70 text-sm mt-2">
+                    {series.name}
+                  </h1>
+                  <p className="justify-center flex opacity-45 text-sm">
+                    {series.first_air_date + " | " + series.vote_average}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
