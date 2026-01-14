@@ -332,9 +332,10 @@ const ProductionCompaniesCard = ({ company }: ProductionCompaniesCardProps) => {
 
   return (
     <div className="bg-card p-4 rounded-lg border-gray-500/50 border h-[180px] w-[260px] flex-col flex justify-between">
-      <div className="mt-1 h-[120px] w-full">
+      <div className="mt-1 h-[120px] ">
         <img
           src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${company.logo_path}`}
+          className="object-cover  w-full h-full"
           alt=""
         />
       </div>
