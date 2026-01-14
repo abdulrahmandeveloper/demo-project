@@ -32,13 +32,6 @@ export interface TMDBCompanyInfo {
   origin_country: string;
 }
 
-export interface TMDBCompanyInfo {
-  id: number;
-  logo_path: string;
-  name: string;
-  origin_country: string;
-}
-
 export interface TMDBCountryInfo {
   iso_3166_1: string;
   name: string;

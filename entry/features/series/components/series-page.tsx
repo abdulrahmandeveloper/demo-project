@@ -140,12 +140,12 @@ const SeriesPage = () => {
             className="absolute top-0 -z-50 opacity-75 h-[30vh] w-full object-cover object-center "
           />
           <div className="h- mt-28 grid grid-cols-3 m-5">
-            <div className="p-20 ">
+            <div className="p-14 flex justify-center items-center">
               {" "}
               <img
                 src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${series.poster_path}`}
                 alt={series.name}
-                className=" h-full w-full ml-10 rounded-lg shadow-lg    top-0 object-cover"
+                className=" h-full w-full ml-10 rounded-lg shadow-lg  object-cover"
               />
             </div>
 
