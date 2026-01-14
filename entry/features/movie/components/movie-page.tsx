@@ -29,7 +29,7 @@ import {
 } from "entry/shared/services/tmdb/tmdb.movie.service";
 import { translateCountryCodeToCountryName } from "@/shared/utils/code-converters";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Separator } from "@/shared/components/ui/separator";
 import { ScrollArea } from "@/shared/components/ui/scroll-area";
@@ -60,6 +60,7 @@ const MoviePage = () => {
     movie.original_language
   );
 
+  const router = useRouter();
   useEffect(() => {
     const fetchMovie = async () => {
       const data = await getMovieByIDFromTMDB(movieId);
@@ -241,6 +242,11 @@ const MoviePage = () => {
                 ))}
               </div>
             </ScrollArea>
+            <div className="">
+              <Button onClick={() => router.push(`/movies/${movieId}/details`)}>
+                See more details
+              </Button>
+            </div>
           </div>
           <div className="h-[18vh] flex items-center justify-center">
             <h1 className="font-bold text-4xl text-center">{movie.tagline}</h1>
