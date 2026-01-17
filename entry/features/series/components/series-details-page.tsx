@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SeriesAlternativeTitles,
   TMDBSeriesResponse,
@@ -32,11 +32,7 @@ import {
 } from "@/shared/utils/code-converters";
 import { ComboboxContainer } from "@/shared/components/custom-ui/containers/combobox-container";
 import { BsAspectRatio } from "react-icons/bs";
-import { Badge } from "@/shared/components/ui/badge";
-import {
-  seriesDetailsPageSections,
-  tmdbVoteRating,
-} from "../constants/series-details";
+import { seriesDetailsPageSections } from "../constants/series-details";
 import {
   Accordion,
   AccordionItem,
@@ -45,8 +41,16 @@ import {
 import { AccordionContent } from "@radix-ui/react-accordion";
 import { Button } from "@/shared/components/ui/button";
 import { ChevronDown } from "lucide-react";
-import FilterSelection from "@/shared/components/custom-ui/containers/filter-selection-container";
-import { tmdbCountryCodes } from "@/shared/constants/tmdb.constants";
+
+import {
+  generalInformationGroupsContainerClassname,
+  generalInformationGroupsTitleContainerClassname,
+  sectionHeadersClassname,
+} from "@/shared/constants/styles-constants";
+import { SeriesDetailsPagefilterSelectionGroup } from "@/shared/components/filter/series-details-page-filter-selection-group";
+import { ExternalIdsList } from "@/shared/components/external-ids-list";
+import { EmptyMessage } from "@/shared/components/empty-message";
+import { SeriesDetailsImageCard } from "@/shared/components/card/media-gallery-images-card";
 
 type SeriesDetailsPageProps = {
   seriesId: number;
@@ -197,11 +201,7 @@ const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
     });
    */
   const generalInformationClassname = "text-xl  opacity-70";
-  const sectionHeadersClassname = "my-4 text-2xl font-serif";
-  const generalInformationGroupsContainerClassname =
-    "border border-white/20 p-4 m-4 rounded-lg";
-  const generalInformationGroupsTitleContainerClassname =
-    "my-1 font-semibold text-lg font-sans";
+
   const generalInformationGroupsContentContainerClassname = "w-19/20 mx-auto";
 
   const infoSectionTitleStyles = "text-xl opacity-70";
@@ -461,7 +461,7 @@ const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
         <div className="my-5">
           <Separator />
         </div>
-        <div className="" id="gallery">
+        <div className="my-5" id="gallery">
           <h1 className={sectionHeadersClassname}>Gallery</h1>
           <div className="w-9/10 mx-auto">
             <div className="" id="posters">
@@ -614,7 +614,7 @@ const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
         <div className="my-5">
           <Separator />
         </div>
-        <div className="" id="external_ids">
+        <div className="my-5" id="external_ids">
           <h1 className={sectionHeadersClassname}>External ID&apos;s</h1>
           <div className="grid grid-cols-3 gap-8 w-8/10 mx-auto">
             <ExternalIdsList list={externalIds ?? null} />
@@ -623,7 +623,7 @@ const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
         <div className="my-5">
           <Separator />
         </div>
-        <div className="" id="content_rating">
+        <div className="my-5" id="content_rating">
           <h1 className={sectionHeadersClassname}>
             Series Content Rating&apos;s{" "}
           </h1>
@@ -653,171 +653,3 @@ const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
 };
 
 export default SeriesDetailsPage;
-
-type SeriesDetailsImageCardProps = {
-  image: TMDBLogosData;
-};
-
-export const SeriesDetailsImageCard = ({
-  image,
-}: SeriesDetailsImageCardProps) => {
-  return (
-    <div className="min-h-[150px] min-w-[100px]">
-      <div>
-        <img
-          src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${image.file_path}`}
-          className="w-full h-full rounded-lg object-cover"
-        ></img>
-      </div>
-      <div className="opacity-50 text-sm p-2">
-        <div className="flex justify-between items-center mx-1 my-0.5 ">
-          <p className="">
-            {translateCountryCodeToCountryName(image.iso_639_1)}
-          </p>
-          <p className="flex  items-center justify-center">
-            <BsAspectRatio className="mx-2" /> {image.width} - {image.height}
-          </p>
-        </div>
-
-        <div className="flex justify-between mx-2">
-          <p className="">{image.vote_count} votes</p>
-          <p className="">{image.vote_average} avg</p>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-type ExternalIdsListProps = {
-  list: TMDBExternalIdsResponse | null;
-};
-
-export const ExternalIdsList = ({ list }: ExternalIdsListProps) => {
-  const titlesClassnames = " font-medium text-white/60";
-  const idsClassnames = "font- font-medium font-sans text-lg";
-  const contanersClassname =
-    " text-2xl flex items-center gap-2 font-bold bg-stone-900 px-4 py-5 rounded-lg";
-  return (
-    <>
-      <div className={contanersClassname}>
-        <span className={titlesClassnames}>TMDB ID:</span>
-        <Badge variant="secondary" className={idsClassnames}>
-          {list?.id || "N/A"}
-        </Badge>
-      </div>{" "}
-      <div className={contanersClassname}>
-        <span className={titlesClassnames}>Imdb ID:</span>
-        <Badge variant="secondary" className={idsClassnames}>
-          {list?.imdb_id || "N/A"}
-        </Badge>
-      </div>{" "}
-      <div className={contanersClassname}>
-        <span className={titlesClassnames}>Freebase mid ID:</span>
-        <Badge variant="secondary" className={idsClassnames}>
-          {list?.freebase_mid || "N/A"}
-        </Badge>
-      </div>{" "}
-      <div className={contanersClassname}>
-        <span className={titlesClassnames}>tvdb ID:</span>
-        <Badge variant="secondary" className={idsClassnames}>
-          {list?.tvdb_id || "N/A"}
-        </Badge>
-      </div>{" "}
-      <div className={contanersClassname}>
-        <span className={titlesClassnames}>tvrage ID:</span>
-        <Badge variant="secondary" className={idsClassnames}>
-          {list?.tvrage_id || "N/A"}
-        </Badge>
-      </div>{" "}
-      <div className={contanersClassname}>
-        <span className={titlesClassnames}>Wikidata ID:</span>
-        <Badge variant="secondary" className={idsClassnames}>
-          {list?.wikidata_id || "N/A"}
-        </Badge>
-      </div>{" "}
-      <div className={contanersClassname}>
-        <span className={titlesClassnames}>Facebook ID:</span>
-        <Badge variant="secondary" className={idsClassnames}>
-          {list?.facebook_id || "N/A"}
-        </Badge>
-      </div>{" "}
-      <div className={contanersClassname}>
-        <span className={titlesClassnames}>Instagram ID: </span>
-        <Badge variant="secondary" className={idsClassnames}>
-          {list?.instagram_id || "N/A"}
-        </Badge>
-      </div>{" "}
-      <div className={contanersClassname}>
-        <span className={titlesClassnames}>Twitter ID: </span>
-        <Badge variant="secondary" className={idsClassnames}>
-          {list?.twitter_id || "N/A"}
-        </Badge>
-      </div>{" "}
-    </>
-  );
-};
-
-type SeriesDetailsPagefilterSelectionGroupProps = {
-  firstFilter: {
-    value: string;
-    setvalues: Dispatch<SetStateAction<string>>;
-  };
-  secondFilter: {
-    value: number | null;
-    setvalues: Dispatch<SetStateAction<number | null>>;
-  };
-  thirdFilter: {
-    value: number | null;
-    setvalues: Dispatch<SetStateAction<number | null>>;
-  };
-};
-
-const tmdbVoteCount = [
-  { name: "All", value: null },
-  { name: "1 - 3", value: 3 },
-  { name: "4 - 5", value: 5 },
-  { name: "6 - 7", value: 7 },
-  { name: "8 - 9", value: 9 },
-  { name: "10 - 12", value: 12 },
-  { name: "13+", value: 13 },
-];
-
-export const SeriesDetailsPagefilterSelectionGroup = ({
-  firstFilter,
-  secondFilter,
-  thirdFilter,
-}: SeriesDetailsPagefilterSelectionGroupProps) => {
-  return (
-    <div className="flex gap-4">
-      <FilterSelection
-        placeHolder={"Language"}
-        values={tmdbCountryCodes}
-        value={firstFilter.value}
-        setValues={firstFilter.setvalues}
-      />
-      <FilterSelection
-        placeHolder={"Votes"}
-        values={tmdbVoteCount}
-        value={secondFilter.value ?? undefined}
-        setValues={secondFilter.setvalues}
-      />
-      <FilterSelection
-        placeHolder={"Rating"}
-        values={tmdbVoteRating}
-        value={thirdFilter.value ?? undefined}
-        setValues={thirdFilter.setvalues}
-      />
-    </div>
-  );
-};
-
-type EmptyMessageProps = {
-  containerClassname?: string;
-};
-export const EmptyMessage = ({ containerClassname }: EmptyMessageProps) => {
-  return (
-    <div className={`${containerClassname} flex items-center justify-center`}>
-      <p className="">Sorry, there is no results for your search</p>
-    </div>
-  );
-};

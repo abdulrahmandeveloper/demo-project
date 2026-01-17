@@ -13,6 +13,8 @@ import {
   TMDBReviewsResponse,
   TMDBVideoReferenceResponse,
 } from "@/shared/interfaces/tmdb/tmdb.interface";
+import { convertWatchProviderstObjectToArray } from "../utils/convert-object-to-array";
+import { MovieWatchProviders } from "../interfaces/movie-watch-providers.interface";
 
 export const getPopularMoviesPosters = async (
   limitNumber: number
@@ -177,7 +179,7 @@ export class movieService {
   }
 
   async getMovieContentRatingsFromTMDB(): Promise<MovieRtingsData[]> {
-    const ratings = [{ country: "", rating: "" }];
+    const ratings: MovieRtingsData[] = [];
     const response = await tmdbApi.get(`/movie/${this.movieId}/release_dates`);
     const data: TMDBMovieReleaseDatesResponse = response.data;
     data.results.map((provider) => {
@@ -190,11 +192,13 @@ export class movieService {
     });
     return ratings;
   }
-  async getMovieProvidersFromTMDB(): Promise<TMDBMovieWatchProvidersResponse> {
+  async getMovieProvidersFromTMDB(): Promise<MovieWatchProviders[]> {
     const response = await tmdbApi.get(
       `/movie/${this.movieId}/watch/providers`
     );
-    return response.data;
+    const data: TMDBMovieWatchProvidersResponse = response.data;
+    const results = convertWatchProviderstObjectToArray(data.results);
+    return results;
   }
   async getMovieExternalIdsFromTMDB(): Promise<TMDBMovieExternalIdsResponse> {
     const response = await tmdbApi.get(`/movie/${this.movieId}/external_ids`);

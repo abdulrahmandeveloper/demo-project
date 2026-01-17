@@ -113,3 +113,13 @@ export const TMDBSeriesTypes = {
   "Talk Show": "with_type=5", // Talk Show
   Video: "with_type=6", // Video
 };
+
+export const tmdbMediaDetailsGalleryVoteCount = [
+  { name: "All", value: null },
+  { name: "1 - 3", value: 3 },
+  { name: "4 - 5", value: 5 },
+  { name: "6 - 7", value: 7 },
+  { name: "8 - 9", value: 9 },
+  { name: "10 - 12", value: 12 },
+  { name: "13+", value: 13 },
+];

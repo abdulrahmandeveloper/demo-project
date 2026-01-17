@@ -49,21 +49,21 @@ export interface TMDBMovieCreditResponse {
   crew: TMDBMovieCrewData[];
 }
 
-export interface TMDBMovieReleaseTypes {
-  1: "Premiere";
-  2: "Theatrical (limited)";
-  3: "Theatrical	";
-  4: "Digital";
-  5: "Physical";
-  6: "TV";
-}
+export const TMDBMovieReleaseTypes = [
+  "Premiere",
+  "Theatrical (limited)",
+  "Theatrical",
+  "Digital",
+  "Physical",
+  "TV",
+];
 export interface TMDBMovieCountryReleaseDatesResponse {
   certification: string;
   descriptors: [];
   iso_639_1: string;
   note: string;
   release_date: string;
-  type: TMDBMovieReleaseTypes;
+  type: number;
 }
 export interface TMDBMovieReleaseDatesResultsResponse {
   iso_3166_1: string;
@@ -74,6 +74,7 @@ export interface TMDBMovieReleaseDatesResponse {
   results: TMDBMovieReleaseDatesResultsResponse[];
 }
 
+//tmdb response
 export interface TMDBMovieProvider {
   logo_path: string;
   provider_id: number;
@@ -89,9 +90,106 @@ export interface TMDBMovieCountryWatchProvidersResponse {
   ads?: TMDBMovieProvider[];
 }
 
+export interface TMDBMovieWatchProviderCountries {
+  AE?: TMDBMovieCountryWatchProvidersResponse;
+  AL?: TMDBMovieCountryWatchProvidersResponse;
+  AR?: TMDBMovieCountryWatchProvidersResponse;
+  AT?: TMDBMovieCountryWatchProvidersResponse;
+  AU?: TMDBMovieCountryWatchProvidersResponse;
+  BA?: TMDBMovieCountryWatchProvidersResponse;
+  BB?: TMDBMovieCountryWatchProvidersResponse;
+  BE?: TMDBMovieCountryWatchProvidersResponse;
+  BG?: TMDBMovieCountryWatchProvidersResponse;
+  BH?: TMDBMovieCountryWatchProvidersResponse;
+  BO?: TMDBMovieCountryWatchProvidersResponse;
+  BR?: TMDBMovieCountryWatchProvidersResponse;
+  BS?: TMDBMovieCountryWatchProvidersResponse;
+  CA?: TMDBMovieCountryWatchProvidersResponse;
+  CH?: TMDBMovieCountryWatchProvidersResponse;
+  CL?: TMDBMovieCountryWatchProvidersResponse;
+  CO?: TMDBMovieCountryWatchProvidersResponse;
+  CR?: TMDBMovieCountryWatchProvidersResponse;
+  CV?: TMDBMovieCountryWatchProvidersResponse;
+  CZ?: TMDBMovieCountryWatchProvidersResponse;
+  DE?: TMDBMovieCountryWatchProvidersResponse;
+  DK?: TMDBMovieCountryWatchProvidersResponse;
+  DO?: TMDBMovieCountryWatchProvidersResponse;
+  EC?: TMDBMovieCountryWatchProvidersResponse;
+  EE?: TMDBMovieCountryWatchProvidersResponse;
+  EG?: TMDBMovieCountryWatchProvidersResponse;
+  ES?: TMDBMovieCountryWatchProvidersResponse;
+  FI?: TMDBMovieCountryWatchProvidersResponse;
+  FJ?: TMDBMovieCountryWatchProvidersResponse;
+  FR?: TMDBMovieCountryWatchProvidersResponse;
+  GB?: TMDBMovieCountryWatchProvidersResponse;
+  GF?: TMDBMovieCountryWatchProvidersResponse;
+  GI?: TMDBMovieCountryWatchProvidersResponse;
+  GR?: TMDBMovieCountryWatchProvidersResponse;
+  GT?: TMDBMovieCountryWatchProvidersResponse;
+  HK?: TMDBMovieCountryWatchProvidersResponse;
+  HN?: TMDBMovieCountryWatchProvidersResponse;
+  HR?: TMDBMovieCountryWatchProvidersResponse;
+  HU?: TMDBMovieCountryWatchProvidersResponse;
+  ID?: TMDBMovieCountryWatchProvidersResponse;
+  IE?: TMDBMovieCountryWatchProvidersResponse;
+  IL?: TMDBMovieCountryWatchProvidersResponse;
+  IN?: TMDBMovieCountryWatchProvidersResponse;
+  IQ?: TMDBMovieCountryWatchProvidersResponse;
+  IS?: TMDBMovieCountryWatchProvidersResponse;
+  IT?: TMDBMovieCountryWatchProvidersResponse;
+  JM?: TMDBMovieCountryWatchProvidersResponse;
+  JO?: TMDBMovieCountryWatchProvidersResponse;
+  JP?: TMDBMovieCountryWatchProvidersResponse;
+  KR?: TMDBMovieCountryWatchProvidersResponse;
+  KW?: TMDBMovieCountryWatchProvidersResponse;
+  LB?: TMDBMovieCountryWatchProvidersResponse;
+  LI?: TMDBMovieCountryWatchProvidersResponse;
+  LT?: TMDBMovieCountryWatchProvidersResponse;
+  LV?: TMDBMovieCountryWatchProvidersResponse;
+  MD?: TMDBMovieCountryWatchProvidersResponse;
+  MK?: TMDBMovieCountryWatchProvidersResponse;
+  MT?: TMDBMovieCountryWatchProvidersResponse;
+  MU?: TMDBMovieCountryWatchProvidersResponse;
+  MX?: TMDBMovieCountryWatchProvidersResponse;
+  MY?: TMDBMovieCountryWatchProvidersResponse;
+  MZ?: TMDBMovieCountryWatchProvidersResponse;
+  NL?: TMDBMovieCountryWatchProvidersResponse;
+  NO?: TMDBMovieCountryWatchProvidersResponse;
+  NZ?: TMDBMovieCountryWatchProvidersResponse;
+  OM?: TMDBMovieCountryWatchProvidersResponse;
+  PA?: TMDBMovieCountryWatchProvidersResponse;
+  PE?: TMDBMovieCountryWatchProvidersResponse;
+  PH?: TMDBMovieCountryWatchProvidersResponse;
+  PK?: TMDBMovieCountryWatchProvidersResponse;
+  PL?: TMDBMovieCountryWatchProvidersResponse;
+  PS?: TMDBMovieCountryWatchProvidersResponse;
+  PT?: TMDBMovieCountryWatchProvidersResponse;
+  PY?: TMDBMovieCountryWatchProvidersResponse;
+  QA?: TMDBMovieCountryWatchProvidersResponse;
+  RO?: TMDBMovieCountryWatchProvidersResponse;
+  RS?: TMDBMovieCountryWatchProvidersResponse;
+  RU?: TMDBMovieCountryWatchProvidersResponse;
+  SA?: TMDBMovieCountryWatchProvidersResponse;
+  SE?: TMDBMovieCountryWatchProvidersResponse;
+  SG?: TMDBMovieCountryWatchProvidersResponse;
+  SI?: TMDBMovieCountryWatchProvidersResponse;
+  SK?: TMDBMovieCountryWatchProvidersResponse;
+  SM?: TMDBMovieCountryWatchProvidersResponse;
+  SV?: TMDBMovieCountryWatchProvidersResponse;
+  TH?: TMDBMovieCountryWatchProvidersResponse;
+  TR?: TMDBMovieCountryWatchProvidersResponse;
+  TT?: TMDBMovieCountryWatchProvidersResponse;
+  TW?: TMDBMovieCountryWatchProvidersResponse;
+  UG?: TMDBMovieCountryWatchProvidersResponse;
+  US?: TMDBMovieCountryWatchProvidersResponse;
+  UY?: TMDBMovieCountryWatchProvidersResponse;
+  VE?: TMDBMovieCountryWatchProvidersResponse;
+  YE?: TMDBMovieCountryWatchProvidersResponse;
+  ZA?: TMDBMovieCountryWatchProvidersResponse;
+}
 export interface TMDBMovieWatchProvidersResponse {
   id: number;
-  results: Record<string, TMDBMovieCountryWatchProvidersResponse>;
+  results: TMDBMovieWatchProviderCountries;
 }
 
 export interface TMDBMovieExternalIdsResponse {

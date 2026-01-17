@@ -298,7 +298,7 @@ const SeriesPage = () => {
               <div className="flex items-center mx-5 justify-center">
                 <Button
                   className=""
-                  onClick={() => router.push(`/series/details/${seriesId}`)}
+                  onClick={() => router.push(`/series/${seriesId}/details`)}
                 >
                   Discover More Details <FaArrowRight />
                 </Button>

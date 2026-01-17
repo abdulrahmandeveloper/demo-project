@@ -1,4 +1,4 @@
-import MovieDescriptionPage from "@/features/movie/components/movie-description-page";
+import MovieDescriptionPage from "@/features/movie/components/movie-details-page";
 import Navbar from "@/shared/components/navigation/navbar";
 import { navbarLinks } from "@/shared/constants/navbar-links.constants";
 import React from "react";

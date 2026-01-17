@@ -3,8 +3,8 @@ import Navbar from "@/shared/components/navigation/navbar";
 import { navbarLinks } from "@/shared/constants/navbar-links.constants";
 import React from "react";
 
-const page = async ({ params }: { params: { id: number } }) => {
-  const { id } = await params;
+const page = async ({ params }: { params: { seriesId: number } }) => {
+  const { seriesId } = await params;
   return (
     <div>
       <Navbar
@@ -12,7 +12,7 @@ const page = async ({ params }: { params: { id: number } }) => {
         links={navbarLinks}
         search={true}
       />
-      <SeriesDetailsPage seriesId={id} />
+      <SeriesDetailsPage seriesId={seriesId} />
     </div>
   );
 };
