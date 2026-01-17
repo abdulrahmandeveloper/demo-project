@@ -98,7 +98,7 @@ const MoviePage = () => {
   return (
     <div className="w-9/10 mx-auto">
       {loading && !movie.title && <MoviePageSkeleton />}
-      {!loading && movie.original_title && movieTrailerUrl?.length > 0 && (
+      {!loading && movie.title && (
         <div className="">
           {" "}
           <img
@@ -140,12 +140,17 @@ const MoviePage = () => {
             </div>
             <div className="justify-center flex flex-col mb-4/5 w-full ">
               <div className=" h-[30vh] ">
-                <div className="flex items-center gap-2 mb-5">
+                <div className="flex items-center justify-between gap-2 mb-5">
                   {" "}
                   <h1 className="text-4xl font-bold">{movie.title}</h1>{" "}
-                  <p className="text-sm text-center mx-2 mt-5 bg-green-500 py-px px-0.5 text-black rounded-sm">
-                    {movie.vote_average}
-                  </p>{" "}
+                  <div className="flex items-center gap-2">
+                    <p className="px-2 py-1 text-xs text-center bg-green-500  text-black rounded-sm">
+                      {movie.vote_average}
+                    </p>{" "}
+                    <p className="px-2 py-1 text-xs text-center bg-green-500  text-black rounded-sm">
+                      {movie.runtime} mins
+                    </p>{" "}
+                  </div>
                 </div>
                 <p className="text-lg font-sm ">{movie.overview}</p>
                 <div className="flex gap-4 mt-10 mb-2">
@@ -246,7 +251,7 @@ const MoviePage = () => {
                   ))}
                 </div>
               </ScrollArea>
-              <div className="flex items-center">
+              <div className="flex items-center mx-10">
                 <Button
                   onClick={() => router.push(`/movies/${movieId}/details`)}
                 >

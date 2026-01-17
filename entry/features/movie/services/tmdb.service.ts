@@ -1,6 +1,14 @@
 import { tmdbApi } from "entry/shared/lib/axios/axios";
-import { TMDBMovieResponse } from "entry/features/movie/interfaces/tmdb.interface";
 import {
+  MovieRtingsData,
+  TMDBMovieCreditResponse,
+  TMDBMovieExternalIdsResponse,
+  TMDBMovieReleaseDatesResponse,
+  TMDBMovieResponse,
+  TMDBMovieWatchProvidersResponse,
+} from "entry/features/movie/interfaces/tmdb.interface";
+import {
+  TMDBImagesResponse,
   TMDBMediaResponse,
   TMDBReviewsResponse,
   TMDBVideoReferenceResponse,
@@ -142,3 +150,54 @@ export const getMovieReviewsByIdFromTmdb = async (
   const data = response.data.results;
   return data;
 };
+
+export class movieService {
+  movieId: number;
+  constructor(movieId: number) {
+    this.movieId = movieId;
+  }
+  async getMovieDetailsFromTMDB(): Promise<TMDBMovieResponse> {
+    const response = await tmdbApi.get(`/movie/${this.movieId}`);
+    return response.data;
+  }
+
+  async getMovieCreditsFromTMDB(): Promise<TMDBMovieCreditResponse> {
+    const response = await tmdbApi.get(`/movie/${this.movieId}/credits`);
+    return response.data;
+  }
+
+  async getMovieGalleryFromTMDB(): Promise<TMDBImagesResponse> {
+    const response = await tmdbApi.get(`/movie/${this.movieId}/images`);
+    return response.data;
+  }
+
+  async getMovieReleaseDatesFromTMDB(): Promise<TMDBMovieReleaseDatesResponse> {
+    const response = await tmdbApi.get(`/movie/${this.movieId}/release_dates`);
+    return response.data;
+  }
+
+  async getMovieContentRatingsFromTMDB(): Promise<MovieRtingsData[]> {
+    const ratings = [{ country: "", rating: "" }];
+    const response = await tmdbApi.get(`/movie/${this.movieId}/release_dates`);
+    const data: TMDBMovieReleaseDatesResponse = response.data;
+    data.results.map((provider) => {
+      provider.release_dates.map((release) => {
+        ratings.push({
+          country: provider.iso_3166_1,
+          rating: release.certification,
+        });
+      });
+    });
+    return ratings;
+  }
+  async getMovieProvidersFromTMDB(): Promise<TMDBMovieWatchProvidersResponse> {
+    const response = await tmdbApi.get(
+      `/movie/${this.movieId}/watch/providers`
+    );
+    return response.data;
+  }
+  async getMovieExternalIdsFromTMDB(): Promise<TMDBMovieExternalIdsResponse> {
+    const response = await tmdbApi.get(`/movie/${this.movieId}/external_ids`);
+    return response.data;
+  }
+}

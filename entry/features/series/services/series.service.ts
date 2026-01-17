@@ -7,13 +7,12 @@ import {
   TMDBExternalIdsResponse,
   TMDBMediaResponse,
   TMDBReviewsResponse,
-  TMDBSeriesImagesResponse,
+  TMDBImagesResponse,
   TMDBVideoReferenceResponse,
 } from "@/shared/interfaces/tmdb/tmdb.interface";
 import {
   SeriesAlternativeResponse,
   TMDBSeasoEpisodesResponse,
-  TMDBSeasonEpisodesResponse,
   TMDBSeriesResponse,
 } from "../interfaces/tmdb.interface";
 
@@ -164,7 +163,7 @@ export const getSeriesExternalIdsFromTmdb = async (
 export const getSeriesImagesFromTmdb = async (
   tvId: number,
   languageCode: string | null
-): Promise<TMDBSeriesImagesResponse> => {
+): Promise<TMDBImagesResponse> => {
   const response = await tmdbApi.get(`/tv/${tvId}/images`, {
     params: {
       include_image_language: languageCode,

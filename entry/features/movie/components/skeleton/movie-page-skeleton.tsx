@@ -12,7 +12,7 @@ const MoviePageSkeleton = () => {
         <div className="px-20 py-14">
           <Skeleton className="w-full h-full " />
         </div>
-        <div className="flex flex-col justify-center gap-2">
+        <div className="flex flex-col justify-end items-start lg:my-10 gap-2">
           <Skeleton className="h-8 w-20" />
           <Skeleton className="h-8 w-64" />
           <Skeleton className="h-32 w-40" />
