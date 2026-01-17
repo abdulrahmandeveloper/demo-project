@@ -41,6 +41,7 @@ import { SeriesDetailsImageCard } from "@/shared/components/card/media-gallery-i
 import { EmptyMessage } from "@/shared/components/empty-message";
 import { TMDBMovieReleaseTypes } from "../interfaces/tmdb.interface";
 import { MovieWatchProviders } from "../interfaces/movie-watch-providers.interface";
+import MediaDetailsPageSkeleton from "@/shared/components/skeletons/media-details-skeleton";
 
 interface MovieDescriptionPageProps {
   movieId: number;
@@ -159,7 +160,7 @@ const MovieDescriptionPage = ({ movieId }: MovieDescriptionPageProps) => {
   const generalInfoTextsClassnames = "text-xl opacity-70 w-full ";
   return (
     <div className="w-9/10 mx-auto">
-      {loading && <>loading</>}
+      {loading && <MediaDetailsPageSkeleton />}
       {!loading && (
         <div>
           <div className="">
@@ -526,10 +527,10 @@ const MovieDescriptionPage = ({ movieId }: MovieDescriptionPageProps) => {
             </div>{" "}
             {showProvidersSection && (
               <div className="my-5 grid lg:grid-cols-4 md:grid-cols-3 gap-3">
-                {providers.map((provider) => (
-                  <>
+                {providers.map((provider, index) => (
+                  <div key={index}>
                     <ProviderSection provider={provider} />
-                  </>
+                  </div>
                 ))}
               </div>
             )}{" "}
