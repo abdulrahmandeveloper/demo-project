@@ -350,8 +350,6 @@ const SeriesPage = () => {
                             <GoChevronDown
                               className="cursor-pointer h-full w- size-6  "
                               onClick={() => {
-                                console.log("clicked");
-
                                 if (
                                   selectedSeasonNumber === season.season_number
                                 ) {
@@ -481,8 +479,6 @@ const SeriesPage = () => {
                                 <GoChevronDown
                                   className="cursor-pointer h-full w- size-6  "
                                   onClick={() => {
-                                    console.log("clicked");
-
                                     if (
                                       selectedSeasonNumber ===
                                       season.season_number

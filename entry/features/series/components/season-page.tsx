@@ -57,9 +57,6 @@ const SeasonDetailsPage = ({
     string | null
   >(null);
 
-  console.log(selectedPosterLanguage);
-  console.log(seasonVideos.length);
-
   useEffect(() => {
     const fetchData = async () => {
       const seasonData = await seasonService.GetSeasonDetailsFromTMDB();
@@ -367,7 +364,6 @@ const EpisodeDialogSection = ({
   useEffect(() => {
     const fetchData = async () => {
       const imagesData = await episodeService.getEpisodeImagesFromTMDB();
-      console.log("images data: ", imagesData);
 
       if (imagesData.stills.length > 0) {
         setImages(imagesData);

@@ -46,7 +46,6 @@ const WatchProvidersPage = () => {
         );
       const seriesData =
         await watchProvidersService.getAvailableProvidersForTvFromTMDB(region);
-      console.log("seriesData: ", seriesData);
 
       if (moviesData.results.length > 0) {
         setMovieProviders(moviesData.results);
@@ -58,8 +57,6 @@ const WatchProvidersPage = () => {
     };
     fetchData();
   }, [region, mediaType]);
-
-  console.log(loading);
 
   const selectedMediaTypeListResult =
     mediaType === "movie" ? movieProviders : seriesProviders;
@@ -97,7 +94,6 @@ const WatchProvidersPage = () => {
 
   const handleInputChange = (value: string) => {
     if (!value.trim()) {
-      console.log("inside trim");
       setValue("");
     }
     setQuery(value);

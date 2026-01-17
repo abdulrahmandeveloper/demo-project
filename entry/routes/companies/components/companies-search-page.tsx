@@ -33,11 +33,6 @@ const CompaniesSearchPage = () => {
   const [totalPages, setTotalPages] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  console.log("query: ", query);
-  console.log("value: ", value);
-
-  console.log("results: ", results);
-
   //filter specific state
   const [popularCompanies, setPopularCompanies] = useState();
   const [companiesByCountry, setCompaniesByCountry] = useState();
@@ -64,13 +59,10 @@ const CompaniesSearchPage = () => {
   }, [value, currentPage]);
 
   const handleInputValueChange = (query: string) => {
-    console.log(query);
-
     setQuery(query);
   };
 
   const handleSearchButtonClick = (query: string) => {
-    console.log(query);
     if (query.trim().length < 1) {
       toast.error("Search Input Cannot Be Empty!");
       return;

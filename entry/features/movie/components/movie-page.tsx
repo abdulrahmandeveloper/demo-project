@@ -352,8 +352,6 @@ interface ProductionCompaniesCardProps {
 }
 
 const ProductionCompaniesCard = ({ company }: ProductionCompaniesCardProps) => {
-  console.log(company.name);
-
   return (
     <div className="bg-card p-4 rounded-lg border-gray-500/50 border h-[180px] w-[260px] flex-col flex justify-between">
       <div className="mt-1 h-[120px] ">

@@ -113,7 +113,6 @@ const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
         seriesId,
         posterLanguageValue
       );
-      console.log("postersData: ", postersData);
 
       if (postersData.posters.length > 0) {
         setPosters(postersData.posters);

@@ -183,16 +183,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
         filteredUniqueCompanyNames.add(nameAndId.name)
       )
     );
-    /**
-     * console.log(
-      "filteredUniqueCompanyNames: ",
-      filteredUniqueCompanyNames.forEach((name) => console.log(name))
-    );
-    console.log("companies: ", companies);
-     */
-
-    //combined medias, becuse we are dealing with media based on companies
-    //const combinedTopMediaContentList = [...seriesFullData, ...moviesFullData];
 
     const topCompaniesList = handleFilteringCompaniesDataFromDIfferentMedieas(
       moviesFullData,
@@ -274,7 +264,6 @@ function handleFilteringCompaniesDataFromDIfferentMedieas(
       if (Boolean(company.name) === companiesList.has(company.name)) {
         const name = movieMediaList[i];
 
-        console.log(i, " ", company.name);
         filteredMoviesCompaniesList.push({
           companyName: company.name,
           moviesProduced: {},
@@ -313,7 +302,6 @@ function handleFilteringCompaniesDataFromDIfferentMedieas(
 
     seriesMediaList[i].production_companies.map((company) => {
       if (Boolean(company.name) === companiesList.has(company.name)) {
-        console.log(i, " ", company.name);
         filteredSeriesCompaniesList.push({});
       }
     });

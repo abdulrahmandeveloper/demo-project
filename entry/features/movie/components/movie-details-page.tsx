@@ -105,9 +105,6 @@ const MovieDescriptionPage = ({ movieId }: MovieDescriptionPageProps) => {
   //loading state
   const [loading, setLoading] = useState<boolean>(true);
 
-  console.log(providers);
-  console.log("content ratingS: ", contentRatings);
-
   const movieServiceObject = new movieService(movieId);
   useEffect(() => {
     const fetchData = async () => {

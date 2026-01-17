@@ -50,7 +50,6 @@ const CompanyPage = ({ id }: { id: number }) => {
   const [movieCredits, setMovieCredits] = useState<TMDBMovieResponse[]>();
   const [seriesCredit, setSeriesCredit] = useState<TMDBSeriesResponse[]>([]);
 
-  console.log(id);
   const router = useRouter();
 
   useEffect(() => {
@@ -88,7 +87,6 @@ const CompanyPage = ({ id }: { id: number }) => {
         setLogos(logoData.logos);
       }
       const newsData = await getSearchNewsResultsFromTMDB(company.name);
-      console.log(newsData);
 
       if (newsData) {
         setCompanyNews(newsData.articles);
@@ -102,7 +100,6 @@ const CompanyPage = ({ id }: { id: number }) => {
       const newsData = await getSearchNewsResultsFromTMDB(
         company.name ?? "unknown"
       );
-      console.log(newsData);
 
       if (newsData.status === "ok") {
         setCompanyNews(newsData.articles);

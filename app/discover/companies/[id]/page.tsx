@@ -11,7 +11,6 @@ type PageProps = {
 
 const page = async ({ params }: PageProps) => {
   const { id } = await params;
-  console.log();
 
   return (
     <div>
