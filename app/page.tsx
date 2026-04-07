@@ -1,4 +1,4 @@
-import HomePage from "@/pages/home";
+import HomePage from "@/routes/home-page/components/home-page";
 
 const page = () => {
   return <HomePage />;

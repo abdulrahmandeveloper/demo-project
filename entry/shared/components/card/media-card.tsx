@@ -1,0 +1,90 @@
+"use client";
+
+import { getPopularMoviesPosters } from "entry/features/movie/services/tmdb.service";
+import { Eye } from "lucide-react";
+import { useEffect, useState } from "react";
+import { AiFillHeart } from "react-icons/ai";
+import { TMDBMovieResponse } from "entry/features/movie/interfaces/tmdb.interface";
+import Link from "next/link";
+
+type MediaCardProps = {
+  showOverlay?: boolean;
+  size: "sm" | "md" | "lg";
+  limit?: number;
+  showDataBeneth?: boolean;
+  imgSource?: string;
+};
+
+const MediaCard = ({
+  showOverlay,
+  size,
+  limit = 1,
+  imgSource,
+}: MediaCardProps) => {
+  const [posters, setPosters] = useState<TMDBMovieResponse[]>([]);
+
+  const handleGetPosters = async (limit: number) => {
+    const data = await getPopularMoviesPosters(limit);
+
+    if (data) setPosters(data);
+  };
+  useEffect(() => {
+    const fetchData = () => {
+      handleGetPosters(limit);
+    };
+
+    fetchData();
+  }, [limit]);
+
+  return (
+    <div
+      className={`flex items-center justify-center ${
+        size === "lg" ? "h-[40vh]" : size === "md" ? "h-[30vh]" : "h-[20vh]"
+      } gap-4 `}
+    >
+      {posters.map((movie) => {
+        return (
+          <div
+            key={movie.id}
+            className="w-[10%] relative group border border-transparent overflow-hidden rounded-md transition-all duration-300 hover:border-[#00E054] hover:shadow-[0_0_10px_#00E054] hover:cursor-pointer "
+          >
+            <Link href={`/movies/${movie.id}`}>
+              <img
+                src={`${
+                  imgSource
+                    ? `${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}${imgSource}`
+                    : `${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}${movie.poster_path}`
+                }`}
+                alt="poster"
+                className="w-full h-full "
+              />
+            </Link>
+
+            {showOverlay && (
+              <Link href={`/movies/${movie.id}`}>
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="flex flex-col items-center gap-1 bg-black/60 rounded-lg px-3 py-2">
+                    <div className="flex items-center gap-1 text-green-400 text-3xl">
+                      <Eye className="size-14" />
+                    </div>
+                    <div className="flex items-center gap-1 text-green-400 text-3xl">
+                      {movie.vote_count}
+                    </div>
+                    <div className="flex items-center gap-1 text-green-400 text-3xl">
+                      <AiFillHeart className="size-14" />
+                    </div>
+                    <div className="flex items-center gap-1 text-green-400 text-3xl">
+                      {movie.popularity}
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+export default MediaCard;

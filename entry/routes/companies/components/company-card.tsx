@@ -1,0 +1,72 @@
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/shared/components/ui/card";
+import {
+  CompanyDetailsResponse,
+  CompanySearchResultsFromTMDBResponse,
+} from "../interfaces/company.interface";
+import { Separator } from "@/shared/components/ui/separator";
+import Link from "next/link";
+
+type CompanyCardProps = {
+  company: CompanyDetailsResponse | CompanySearchResultsFromTMDBResponse;
+  isSearchCard: boolean;
+  containerClassname?: string;
+  headerClassnames: string;
+};
+const CompanyCard = ({
+  company,
+  isSearchCard,
+  containerClassname,
+  headerClassnames,
+}: CompanyCardProps) => {
+  return (
+    <Card className={`${containerClassname} px-4 py-3`}>
+      {" "}
+      <Link href={`/discover/companies/${company.id}`}>
+        <CardTitle className="my-2">{company.name}</CardTitle>
+      </Link>
+      {isSearchCard === false ? (
+        <Link href={company.homepage ?? "/"}>
+          <CardHeader
+            className={`${headerClassnames} h-[100px]   bg-white/25 rounded-lg grid grid-cols-1`}
+          >
+            <div className="flex items-center justify-center w-full h-full">
+              <img
+                src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${
+                  company.logo_path ?? ""
+                }`}
+                alt={company.name}
+                className="object-cover spect-square"
+              ></img>
+            </div>
+          </CardHeader>
+        </Link>
+      ) : (
+        <CardHeader
+          className={`${headerClassnames}   bg-white/25 rounded-lg grid grid-cols-1`}
+        >
+          <div className="flex items-center justify-center w-full h-full">
+            <img
+              src={`${process.env.NEXT_PUBLIC_IMAGES_BASE_URL}/${
+                company.logo_path ?? ""
+              }`}
+              alt={company.name}
+              className="object-cover spect-square"
+            ></img>
+          </div>
+        </CardHeader>
+      )}
+      <Separator />
+      <CardContent className="flex justify-between opacity-50 text-sm font-serif">
+        {isSearchCard === false && <p className="">{company.headquarters}</p>}{" "}
+        <p className="">{company.origin_country ?? "unknown"}</p>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default CompanyCard;

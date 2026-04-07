@@ -1,0 +1,201 @@
+"use client";
+
+import { Input } from "entry/shared/components/ui/input";
+import { Button } from "entry/shared/components/ui/button";
+import PosterCard from "entry/shared/components/card/poster-card";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "entry/shared/components/ui/popover";
+import { Search } from "lucide-react";
+import { QueryResultsResponseData } from "@/shared/interfaces/search.interface";
+import { Dispatch, SetStateAction } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Spinner } from "../ui/spinner";
+import { Separator } from "../ui/separator";
+import { toast } from "sonner";
+
+type TMDBSearchResults = QueryResultsResponseData;
+
+type SearchComponentProps = {
+  query: string;
+  setQuery: (queryValue: string) => void;
+  handleSearchInput: (value: string) => void;
+  loading: boolean;
+  searchResult: TMDBSearchResults;
+  hasResults: boolean;
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  mediaType: "movie" | "series" | "any";
+};
+
+const SearchComponent = ({
+  query,
+  setQuery,
+  searchResult,
+  handleSearchInput,
+  loading,
+  hasResults,
+  open,
+  setOpen,
+  mediaType,
+}: SearchComponentProps) => {
+  //destructuring results
+  const { movies, series } = searchResult;
+
+  const router = useRouter();
+
+  const handleInputKeyChange = (e) => {
+    if (e.key === "Enter" && query.trim()) {
+      router.push(`/search`);
+      setOpen(false);
+    }
+  };
+
+  const handleInputValueChange = (value: string) => {
+    setQuery(value);
+    handleSearchInput(value);
+  };
+
+  const handleClick = () => {
+    if (!query.trim()) {
+      toast.error("Error!", { description: "Please write a query to search" });
+      return;
+    }
+
+    router.push(`/search`);
+    setOpen(false);
+  };
+
+  const isShowingMovieResults: boolean =
+    (mediaType === "movie" || mediaType === "any") &&
+    movies &&
+    movies.length > 0 &&
+    loading === false
+      ? true
+      : false;
+
+  const isShowingSeriesResults: boolean =
+    (mediaType === "series" || mediaType === "any") &&
+    series &&
+    series?.length > 0 &&
+    loading === false
+      ? true
+      : false;
+
+  return (
+    <div className="relative ">
+      <Popover open={open}>
+        <PopoverTrigger asChild>
+          <div
+            className="flex relative"
+            onFocus={() => setOpen(true)}
+            onKeyDown={handleInputKeyChange}
+          >
+            <Input
+              type="text"
+              aria-label="Search"
+              className=" w-25 focus-within:w-40 transition-all duration-300 ease-in-out shadow-sm origin-right ml-auto border-none bg-white dark:bg-white dark:text-black"
+              value={query}
+              onChange={(e) => handleInputValueChange(e.target.value)}
+            />
+            <Button
+              className="absolute right-0.5  top-1/2 -translate-y-1/2 text-gray-500    cursor-pointer bg-transparent hover:bg-transparent"
+              onClick={handleClick}
+              onMouseDown={(e) => e.preventDefault()}
+            >
+              <Search
+                aria-hidden="true"
+                className="text-black cursor-pointer size-5"
+              />
+            </Button>
+          </div>
+        </PopoverTrigger>
+        {open ? (
+          <PopoverContent
+            forceMount
+            onPointerDownOutside={(e) => {
+              const target = e.target as Element;
+              if (!target.closest('input[aria-label="Search"]')) {
+                setOpen(false);
+              } else {
+                e.preventDefault();
+              }
+            }}
+            className={`w-64 p-2 max-h-60 overflow-y-auto space-y-2 transition-opacity duration-500 ${
+              query && open ? "opacity-100 visible" : "opacity-0 invisible"
+            }`}
+            sideOffset={8}
+            onOpenAutoFocus={(e) => e.preventDefault()}
+          >
+            {!hasResults && (
+              <p className="text-sm text-center text-gray-500">
+                {loading ? null : "No results found"}
+              </p>
+            )}
+
+            {loading && (
+              <div className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded cursor-pointer dark:hover:bg-gray-800">
+                <Spinner />{" "}
+                <p className="text-sm opacity-70">Loading Matched Results...</p>
+              </div>
+            )}
+
+            {/* Movies */}
+            {isShowingMovieResults && (
+              <>
+                <h4 className="text-sm font-semibold mb-1">Movies</h4>{" "}
+                <Separator />
+                {movies?.slice(0, 10).map((movie, key) => (
+                  <Link href={`/movies/${movie.id}`} key={key}>
+                    <div
+                      key={movie.id}
+                      className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded cursor-pointer dark:hover:bg-gray-800"
+                    >
+                      {" "}
+                      <PosterCard
+                        linkPathTo={`/series/${movie.id}`}
+                        src={movie.poster_path}
+                        className="w-8 h-12"
+                      ></PosterCard>
+                      <p className="text-sm">{movie.title}</p>
+                    </div>
+                  </Link>
+                ))}
+              </>
+            )}
+
+            {/* Series */}
+            {isShowingSeriesResults && (
+              <>
+                <h4 className="text-sm font-semibold mt-2 mb-1">Series</h4>
+                <Separator />
+
+                {series?.slice(0, 10).map((series, key) => (
+                  <Link href={`/series/${series.id}`} key={key}>
+                    <div
+                      key={series.id}
+                      className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded cursor-pointer dark:hover:bg-gray-800"
+                    >
+                      {" "}
+                      <PosterCard
+                        linkPathTo={`/series/${series.id}`}
+                        src={series.poster_path}
+                        className="w-8 h-12 "
+                      ></PosterCard>
+                      <p className="text-sm ">{series.name}</p>
+                    </div>
+                  </Link>
+                ))}
+              </>
+            )}
+          </PopoverContent>
+        ) : null}
+      </Popover>
+    </div>
+  );
+};
+
+export default SearchComponent;
